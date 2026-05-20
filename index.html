@@ -71,6 +71,7 @@
     max-width:980px;margin:0 auto;padding:13px 32px;
     display:flex;align-items:center;justify-content:space-between;
   }
+  .nav-burger{display:none}
   .brand{font-family:var(--serif);font-size:19px;font-weight:500;letter-spacing:-.01em;text-decoration:none;color:var(--ink)}
   .brand .dot{color:var(--accent)}
   .nav-links{display:flex;gap:2px;flex-wrap:wrap}
@@ -151,11 +152,56 @@
   .hero-sub{font-size:15.5px;color:var(--ink-soft);max-width:56ch}
   .hero-metric{
     margin-top:36px;padding-top:24px;border-top:1px solid var(--line);
-    display:inline-block;
+    display:inline-block;position:relative;
   }
   .hm-label{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink-faint);margin-bottom:6px}
-  .hm-value{font-family:var(--serif);font-size:34px;font-weight:500;color:var(--ink);line-height:1}
+  .hm-value{font-family:var(--serif);font-size:34px;font-weight:500;color:var(--ink);line-height:1;display:inline-flex;align-items:center;gap:6px}
   .hm-value span{font-size:18px;color:var(--ink-faint)}
+  .hm-info{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:14px;height:14px;border-radius:50%;
+    background:var(--bg-warm);border:1px solid var(--line);
+    font-family:var(--sans);font-size:10px;color:var(--ink-faint);
+    margin-left:4px;font-style:normal;font-weight:600;line-height:1;
+    transition:all .18s ease;cursor:help;align-self:center;
+    vertical-align:middle;text-indent:0.5px;
+  }
+  .hm-info:hover,.hero-metric.open .hm-info{
+    background:var(--accent-wash);border-color:var(--accent);color:var(--accent-deep);
+  }
+  .hm-tooltip{
+    position:absolute;top:calc(100% + 12px);left:0;
+    background:var(--bg);border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;width:340px;
+    box-shadow:0 16px 40px -12px rgba(44,44,42,.18);
+    opacity:0;visibility:hidden;transform:translateY(-6px);
+    transition:opacity .22s ease, transform .22s ease, visibility 0s linear .22s;
+    z-index:50;
+  }
+  .hero-metric.open .hm-tooltip{
+    opacity:1;visibility:visible;transform:translateY(0);
+    transition:opacity .22s ease, transform .22s ease, visibility 0s linear 0s;
+  }
+  .hm-tooltip-h{
+    font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);
+    letter-spacing:.1em;text-transform:uppercase;margin:0 0 12px;
+  }
+  .hm-tooltip ul{
+    list-style:none;padding:0;margin:0;font-size:12.5px;color:var(--ink-soft);
+    line-height:1.6;
+  }
+  .hm-tooltip li{padding:3px 0 3px 14px;position:relative}
+  .hm-tooltip li::before{
+    content:"·";position:absolute;left:0;top:3px;color:var(--accent);font-weight:600;
+  }
+  .hm-tooltip-foot{
+    margin-top:12px;padding-top:10px;border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:11px;color:var(--ink-faint);
+  }
+  .hm-tooltip-foot a{color:var(--accent-deep);text-decoration:none;border-bottom:1px solid var(--accent)}
+  @media (max-width:680px){
+    .hm-tooltip{width:280px;left:auto;right:0}
+  }
 
   .sec-head{margin-bottom:28px}
   .sec-head:has(p.lead){margin-bottom:16px}
@@ -444,13 +490,57 @@
   footer .footer-slogan{margin-top:0}
   footer .footer-meta{margin-top:28px}
   footer .footer-policy{margin-top:0}
+  footer .footer-stack{
+    margin-top:24px;font-size:10.5px;color:var(--ink-faint);
+    opacity:.7;max-width:580px;margin-left:auto;margin-right:auto;
+    line-height:1.7;letter-spacing:.02em;
+  }
   footer .footer-link{color:var(--ink-faint);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
   footer .footer-link:hover{color:var(--ink-soft);text-decoration-color:var(--ink-faint)}
 
   @media(max-width:720px){
     .wrap{padding:0 22px}
-    .nav-links{display:none}
-    .nav-in{padding:12px 22px}
+    .nav-burger{display:flex;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:8px;width:36px;height:36px;border-radius:6px;transition:background .15s ease}
+    .nav-burger:hover{background:var(--bg-warm)}
+    .nav-burger span{display:block;height:1.5px;background:var(--ink);border-radius:1px;transition:transform .25s ease, opacity .2s ease;transform-origin:center}
+    .nav-burger.active span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+    .nav-burger.active span:nth-child(2){opacity:0}
+    .nav-burger.active span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+    .nav-in{padding:12px 22px;position:relative}
+    .nav-links{
+      display:none;position:absolute;top:100%;left:0;right:0;
+      flex-direction:column;background:var(--bg);
+      border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+      padding:6px 0;gap:0;
+      box-shadow:0 14px 30px -10px rgba(44,44,42,.14);
+      z-index:200;max-height:calc(100vh - 56px);overflow-y:auto;
+    }
+    .nav-links.open{display:flex}
+    .nav-links > a,.nav-group > a{
+      padding:13px 24px;font-size:14px;border-radius:0;width:100%;box-sizing:border-box;
+    }
+    .nav-group{width:100%;flex-direction:column;align-items:stretch;position:static}
+    .nav-group > a{display:block;position:relative}
+    .nav-group > a::after{
+      content:"›";position:absolute;right:24px;top:50%;
+      transform:translateY(-50%);transition:transform .25s ease;color:var(--ink-faint);font-size:16px;
+    }
+    .nav-group.open-mobile > a::after{transform:translateY(-50%) rotate(90deg);color:var(--accent-deep)}
+    .nav-dropdown{
+      position:static;background:var(--bg-warm);box-shadow:none;border:none;
+      border-radius:0;opacity:1;visibility:visible;transform:none;
+      max-height:0;overflow:hidden;padding:0;width:100%;
+      transition:max-height .3s ease, padding .3s ease;
+    }
+    .nav-group.open-mobile .nav-dropdown{max-height:400px;padding:4px 0}
+    .nav-group:hover .nav-dropdown,.nav-group:focus-within .nav-dropdown{
+      opacity:1;visibility:visible;transform:none;transition:max-height .3s ease, padding .3s ease;
+    }
+    .nav-dropdown a{padding:11px 38px;font-size:13px}
+    .nav-lang{
+      border-left:none;border-top:1px solid var(--line);
+      margin-left:0;padding:14px 24px;justify-content:flex-start;
+    }
     section.wrap{padding:60px 22px}
     section.wrap:first-of-type{padding-top:55px}
     .hero{padding:120px 22px 80px}
@@ -459,6 +549,405 @@
     .mlayers{grid-template-columns:1fr 1fr}
     .cad-row{grid-template-columns:1fr;gap:7px}
   }
+  /* Аудит секция */
+  .audit-manifesto{
+    position:relative;max-width:680px;margin:36px auto 44px;
+    padding:32px 24px;text-align:center;
+  }
+  .audit-manifesto::before,.audit-manifesto::after{
+    content:"";position:absolute;left:50%;transform:translateX(-50%);
+    width:48px;height:1px;background:var(--accent);
+  }
+  .audit-manifesto::before{top:0}
+  .audit-manifesto::after{bottom:0}
+  .audit-manifesto p{
+    font-family:var(--serif);font-size:21px;font-style:italic;
+    color:var(--ink);margin:12px 0;line-height:1.5;
+    opacity:0;animation:manifestoFade .9s ease-out forwards;
+  }
+  .audit-manifesto p:nth-child(1){animation-delay:.1s}
+  .audit-manifesto p:nth-child(2){animation-delay:.4s}
+  @keyframes manifestoFade{
+    from{opacity:0;transform:translateY(8px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .badges{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 26px}
+  .badge{
+    font-family:var(--mono);font-size:12px;padding:7px 13px;
+    background:var(--bg-warm);border:1px solid var(--line);border-radius:6px;
+    color:var(--ink-soft);transition:all .22s ease;cursor:default;
+    position:relative;
+  }
+  .badge:hover{
+    transform:translateY(-2px);border-color:var(--accent);
+    color:var(--accent-deep);background:var(--accent-wash);
+    box-shadow:0 4px 12px -4px rgba(74,124,100,.25);
+  }
+  .std-list{display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--ink-soft)}
+  .std-list p{margin:0;padding-left:14px;border-left:2px solid var(--line);transition:border-color .2s ease}
+  .std-list p:hover{border-left-color:var(--accent)}
+  .std-list b{color:var(--ink);font-weight:500}
+  .comp-wrap{
+    overflow-x:auto;margin:14px 0;
+    border:1px solid var(--line);border-radius:8px;
+  }
+  .comp-table{
+    width:100%;min-width:680px;border-collapse:collapse;
+    font-size:12.5px;font-family:var(--mono);
+  }
+  .comp-table th,.comp-table td{
+    padding:11px 14px;border-bottom:1px solid var(--line);
+    text-align:left;vertical-align:top;color:var(--ink-soft);
+  }
+  .comp-table tbody tr:last-child td{border-bottom:none}
+  .comp-table th{
+    background:var(--bg-warm);font-weight:500;color:var(--ink);
+    font-size:11.5px;letter-spacing:.02em;
+  }
+  .comp-table th:first-child,.comp-table td:first-child{
+    font-weight:500;color:var(--ink);background:rgba(0,0,0,0.025);
+  }
+  .comp-table th:last-child,.comp-table td:last-child{
+    background:var(--accent-wash);color:var(--accent-deep);font-weight:500;
+    border-left:2px solid var(--accent);
+  }
+  .comp-table tbody tr{transition:background .15s ease}
+  .comp-table tbody tr:hover td{background:rgba(74,124,100,.04)}
+  .comp-table tbody tr:hover td:last-child{background:var(--accent-wash)}
+  /* Кейсы */
+  .case-card{
+    background:var(--bg);border:1px solid var(--line);border-radius:12px;
+    padding:32px 28px;margin:24px 0;transition:all .25s ease;
+  }
+  .case-card:hover{box-shadow:0 16px 40px -12px rgba(44,44,42,.10);border-color:var(--line-strong)}
+  .case-head{margin-bottom:24px}
+  .case-h{font-family:var(--serif);font-size:26px;font-weight:500;color:var(--ink);margin:0 0 6px;letter-spacing:-.01em;line-height:1.2}
+  .case-sub{font-size:14px;color:var(--ink-soft);font-family:var(--mono);margin:0}
+  .case-badge-row{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+  .case-badge{
+    font-family:var(--mono);font-size:10px;padding:3px 8px;
+    background:var(--accent-wash);color:var(--accent-deep);
+    border-radius:4px;letter-spacing:.05em;
+  }
+  .case-sub-h{
+    margin:24px 0 8px;font-family:var(--mono);font-size:11px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);
+  }
+  .case-tracks{
+    display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;
+  }
+  .case-tracks.three{grid-template-columns:1fr 1fr 1fr}
+  .case-track{
+    padding:18px;background:var(--bg-warm);border-radius:10px;
+    border:1px solid var(--line);transition:all .22s ease;
+  }
+  .case-track:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .case-track-h{
+    font-family:var(--mono);font-size:11px;color:var(--ink-faint);
+    letter-spacing:.1em;text-transform:uppercase;margin:0 0 10px;
+  }
+  .case-track ul{list-style:none;padding:0;margin:0;font-size:13px;color:var(--ink-soft)}
+  .case-track li{padding:5px 0;border-bottom:1px solid var(--line)}
+  .case-track li:last-child{border-bottom:none}
+  .case-track li b{color:var(--ink);font-weight:500}
+  .case-vs{
+    display:grid;grid-template-columns:1fr auto 1fr;gap:0;
+    margin:20px 0;background:var(--bg-warm);border-radius:10px;
+    overflow:hidden;border:1px solid var(--line);
+  }
+  .case-vs-col{padding:24px 22px;text-align:center}
+  .case-vs-col.before{color:var(--ink-faint)}
+  .case-vs-col.after{background:var(--accent-wash);color:var(--accent-deep)}
+  .case-vs-divider{display:flex;align-items:center;color:var(--ink-faint);font-size:18px;padding:0 14px;background:var(--bg-warm)}
+  .case-vs-h{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin:0 0 14px;opacity:.65}
+  .case-vs-main{font-family:var(--mono);font-size:32px;font-weight:500;margin:0 0 4px;line-height:1}
+  .case-vs-main span{font-size:14px;opacity:.7}
+  .case-vs-sub{font-size:13px;margin:6px 0 0}
+  .case-vs ul{list-style:none;padding:0;margin:14px 0 0;font-size:12.5px}
+  .case-vs li{padding:3px 0}
+  .case-vs-foot{
+    grid-column:1 / -1;text-align:center;padding:14px;font-family:var(--mono);
+    font-size:12px;color:var(--accent-deep);background:rgba(74,124,100,.06);
+    border-top:1px solid var(--line);letter-spacing:.02em;
+  }
+  .case-flow{margin:14px 0;display:flex;flex-direction:column;gap:2px}
+  .case-flow-step{
+    display:grid;grid-template-columns:36px 1fr;gap:14px;align-items:start;
+    padding:10px 0;
+  }
+  .case-flow-num{
+    width:30px;height:30px;border-radius:50%;background:var(--accent-wash);
+    color:var(--accent-deep);font-family:var(--mono);font-size:13px;font-weight:500;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .case-flow-body{font-size:13.5px;color:var(--ink-soft);line-height:1.55;padding-top:5px}
+  .case-flow-body b{color:var(--ink);font-weight:500}
+  .case-flow-foot{
+    margin-top:10px;padding:12px;background:var(--accent-wash);
+    border-radius:6px;font-family:var(--mono);font-size:12px;
+    color:var(--accent-deep);text-align:center;letter-spacing:.02em;
+  }
+  .case-stack-row{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
+  .case-stack-row .badge{font-size:11px;padding:5px 10px}
+  .case-roadmap{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:16px 0;
+  }
+  .case-stage{
+    padding:14px 10px;background:var(--bg-warm);border:1px solid var(--line);
+    border-radius:8px;text-align:center;font-family:var(--mono);font-size:11px;
+    color:var(--ink-soft);transition:all .22s ease;
+  }
+  .case-stage.done{background:var(--accent-wash);border-color:var(--accent)}
+  .case-stage.now{
+    background:var(--bg);border-color:var(--accent);
+    box-shadow:0 4px 12px -4px rgba(74,124,100,.2);
+  }
+  .case-stage-num{display:block;font-size:9.5px;opacity:.7;margin-bottom:6px;letter-spacing:.1em}
+  .case-stage-name{display:block;font-weight:500;color:var(--ink);font-size:11px;line-height:1.3}
+  .case-stage.done .case-stage-name{color:var(--accent-deep)}
+  .case-roadmap-final{
+    margin-top:12px;padding:14px;text-align:center;
+    font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ink);
+    background:var(--bg-warm);border-radius:8px;border:1px solid var(--line);
+  }
+  .case-playables{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0}
+  .case-playable{
+    padding:18px;background:var(--bg-warm);border:1px solid var(--line);
+    border-radius:8px;transition:all .22s ease;
+  }
+  .case-playable:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 8px 20px -8px rgba(0,0,0,.08)}
+  .case-playable-name{font-family:var(--serif);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 4px}
+  .case-playable-meta{font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);margin:0 0 10px}
+  .case-playable-desc{font-size:12.5px;color:var(--ink-soft);margin:0 0 10px;line-height:1.5}
+  .case-playable-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+  .case-playable-tag{font-family:var(--mono);font-size:9.5px;padding:2px 7px;background:var(--bg);border:1px solid var(--line);border-radius:3px;color:var(--ink-faint);letter-spacing:.02em}
+  .case-quote{
+    margin:32px 0 8px;padding:24px;text-align:center;
+    font-family:var(--serif);font-size:17px;font-style:italic;
+    color:var(--ink);line-height:1.5;
+    border-top:1px solid var(--accent);border-bottom:1px solid var(--accent);
+  }
+  .case-placeholder{
+    padding:48px 28px;text-align:center;background:var(--bg-warm);
+    border:1px dashed var(--line-strong);border-radius:12px;margin:24px 0;
+  }
+  .case-placeholder-h{font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin:0 0 8px;letter-spacing:.12em;text-transform:uppercase}
+  .case-placeholder-text{font-family:var(--serif);font-size:17px;color:var(--ink-soft);font-style:italic;margin:0}
+  /* Case 02 — market video */
+  .case02{
+    display:grid;grid-template-columns:320px 1fr;gap:28px;
+    margin:24px 0;padding:24px;
+    background:var(--bg-warm);border:1px solid var(--line);border-radius:12px;
+    align-items:start;
+  }
+  .case02-eyebrow{
+    font-family:var(--mono);font-size:11px;color:var(--ink-faint);
+    letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px;
+  }
+  .case02-video{
+    position:relative;width:100%;aspect-ratio:9/16;
+    border-radius:8px;overflow:hidden;background:#000;
+    border:1px solid var(--line);
+    display:block;text-decoration:none;
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .case02-video:hover{
+    transform:translateY(-3px);
+    box-shadow:0 16px 34px -16px rgba(44,44,42,.22);
+    border-color:var(--accent);
+  }
+  .case02-video img{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;display:block;
+  }
+  .case02-play{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:64px;height:64px;border-radius:50%;
+    background:rgba(0,0,0,.65);
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .25s ease, background .25s ease;
+    backdrop-filter:blur(4px);
+  }
+  .case02-video:hover .case02-play{
+    transform:translate(-50%,-50%) scale(1.08);
+    background:rgba(0,0,0,.8);
+  }
+  .case02-play svg{width:22px;height:22px;margin-left:3px;fill:#fff}
+  .case02-yt-label{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:10px 14px;
+    background:linear-gradient(to top, rgba(0,0,0,.75), transparent);
+    color:#fff;font-family:var(--mono);font-size:11px;
+    letter-spacing:.08em;text-transform:uppercase;
+    text-align:center;
+  }
+  .case02-content h3{
+    font-family:var(--serif);font-size:22px;line-height:1.3;
+    margin:0 0 14px;color:var(--ink);font-weight:500;
+  }
+  .case02-transcript{
+    font-size:14px;line-height:1.65;color:var(--ink-soft);
+    padding:14px 16px;background:#fff;border:1px solid var(--line);
+    border-left:3px solid var(--accent);border-radius:6px;margin:0 0 18px;
+  }
+  .case02-transcript p{margin:0 0 10px}
+  .case02-transcript p:last-child{margin:0}
+  .case02-transcript ul{margin:8px 0;padding-left:18px;font-size:13px}
+  .case02-transcript ul li{margin:3px 0}
+  .case02-transcript .metrics{
+    font-family:var(--mono);font-size:13px;color:var(--ink);
+    margin-top:12px;padding-top:10px;border-top:1px solid var(--line);
+  }
+  .case02-context-h{
+    font-family:var(--mono);font-size:11px;color:var(--ink-faint);
+    letter-spacing:.12em;text-transform:uppercase;margin:0 0 10px;
+  }
+  .case02-context{
+    font-size:14px;line-height:1.6;color:var(--ink-soft);
+  }
+  .case02-context ul{list-style:none;padding:0;margin:8px 0 10px}
+  .case02-context li{padding:8px 0;border-bottom:1px solid var(--line)}
+  .case02-context li:last-child{border-bottom:none}
+  .case02-context li b{color:var(--ink);font-weight:500}
+  .case02-tagline{
+    font-family:var(--serif);font-style:italic;font-size:15px;
+    color:var(--ink);margin:14px 0 0;padding-top:14px;
+    border-top:1px solid var(--line);
+  }
+  @media (max-width:780px){
+    .case02{grid-template-columns:1fr;gap:18px;padding:18px}
+    .case02-video{max-width:280px;margin:0 auto}
+  }
+  /* Roadmap */
+  .roadmap-cols{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px 0;
+    align-items:start;
+  }
+  .rm-col{
+    padding:20px;background:var(--bg-warm);border:1px solid var(--line);
+    border-radius:10px;transition:all .22s ease;
+  }
+  .rm-col-h{
+    font-family:var(--mono);font-size:11px;color:var(--ink-faint);
+    letter-spacing:.12em;text-transform:uppercase;margin:0 0 4px;font-weight:500;
+  }
+  .rm-col-period{
+    font-size:11px;color:var(--ink-faint);margin:0 0 14px;
+    font-family:var(--mono);letter-spacing:.02em;
+  }
+  .rm-col.now{background:var(--accent-wash);border-color:var(--accent)}
+  .rm-col.now .rm-col-h{color:var(--accent-deep)}
+  .rm-col.now .rm-col-period{color:var(--accent-deep);opacity:.75}
+  .rm-list{list-style:none;padding:0;margin:0}
+  .rm-item{
+    padding:0 0 0 22px;font-size:13px;color:var(--ink-soft);
+    position:relative;line-height:1.5;border-bottom:1px solid rgba(0,0,0,.05);
+    transition:color .15s ease;
+  }
+  .rm-item:last-child{border-bottom:none}
+  .rm-item-head{
+    display:flex;align-items:flex-start;justify-content:space-between;gap:8px;
+    cursor:pointer;padding:9px 0;
+  }
+  .rm-item-head:hover .rm-item-title{color:var(--ink)}
+  .rm-item-title{flex:1;line-height:1.5}
+  .rm-item-chev{
+    color:var(--ink-faint);transition:transform .25s ease;
+    font-size:14px;line-height:1.5;flex-shrink:0;
+  }
+  .rm-item.open .rm-item-chev{transform:rotate(90deg);color:var(--accent-deep)}
+  .rm-item-detail{
+    max-height:0;overflow:hidden;
+    transition:max-height .3s ease, padding-bottom .3s ease;
+  }
+  .rm-item.open .rm-item-detail{max-height:200px;padding-bottom:10px}
+  .rm-item-detail p{
+    margin:0;font-size:12px;color:var(--ink-faint);
+    line-height:1.55;padding-right:10px;
+  }
+  .rm-item::before{
+    content:"";position:absolute;left:2px;top:14px;
+    width:11px;height:11px;
+  }
+  .rm-item.done::before{
+    content:"\2713";color:var(--accent-deep);font-weight:600;font-size:13px;
+    left:0;top:9px;background:none;border:none;width:auto;height:auto;
+  }
+  .rm-item.wip::before{
+    background:#e8c89a;border-radius:50%;
+  }
+  .rm-item.todo::before{
+    border:1.5px solid var(--ink-faint);border-radius:2px;
+  }
+  .rm-item.vision::before{
+    border:1.5px solid var(--ink-faint);border-radius:50%;
+  }
+  @media (max-width:680px){
+    .roadmap-cols{grid-template-columns:1fr}
+  }
+  /* Case showcase — по стандарту .live-row.two */
+  .case-showcase{
+    display:grid;grid-template-columns:1fr 1fr;gap:14px;
+    margin:14px 0;max-width:680px;
+  }
+  .case-shot-stack{display:flex;flex-direction:column;gap:14px}
+  .case-showcase .live-shot{padding:0;background:transparent;border:none;border-radius:5px;cursor:zoom-in}
+  .case-showcase .live-shot img{
+    width:100%;height:auto;display:block;
+    border-radius:5px;border:1px solid var(--line);
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .case-showcase .live-shot:hover img{
+    transform:translateY(-3px);
+    box-shadow:0 16px 34px -16px rgba(44,44,42,.22);
+    border-color:var(--accent);
+  }
+  .case-showcase-caption{
+    margin:10px 0 0;font-size:11.5px;color:var(--ink-faint);
+    font-family:var(--mono);line-height:1.5;letter-spacing:.02em;
+  }
+  @media (max-width:680px){
+    .case-showcase{grid-template-columns:1fr}
+  }
+  /* Stage accordion */
+  .stage-accordion{display:flex;flex-direction:column;gap:8px;margin:16px 0}
+  .stage-row{
+    background:var(--bg-warm);border:1px solid var(--line);border-radius:8px;
+    overflow:hidden;transition:all .2s ease;
+  }
+  .stage-row.done{background:var(--accent-wash);border-color:var(--accent)}
+  .stage-row.now{background:var(--bg);border-color:var(--accent);box-shadow:0 4px 12px -4px rgba(74,124,100,.15)}
+  .stage-head{
+    display:grid;grid-template-columns:120px 1fr 20px;gap:14px;
+    padding:14px 18px;align-items:center;cursor:pointer;
+    transition:background .15s ease;
+  }
+  .stage-head:hover{background:rgba(74,124,100,.05)}
+  .stage-tag{
+    font-family:var(--mono);font-size:10px;color:var(--ink-faint);
+    letter-spacing:.1em;text-transform:uppercase;font-weight:500;
+  }
+  .stage-row.done .stage-tag,.stage-row.now .stage-tag{color:var(--accent-deep)}
+  .stage-title{font-family:var(--serif);font-size:15.5px;color:var(--ink);font-weight:500}
+  .stage-chev{color:var(--ink-faint);transition:transform .25s ease;font-size:16px;text-align:center}
+  .stage-row.open .stage-chev{transform:rotate(90deg)}
+  .stage-detail{
+    max-height:0;overflow:hidden;
+    transition:max-height .3s ease,padding .3s ease;
+  }
+  .stage-row.open .stage-detail{max-height:280px;padding:0 18px 18px}
+  .stage-detail p{margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.6}
+  .stage-detail b{color:var(--ink);font-weight:500}
+  @media (max-width:680px){
+    .case-tracks,.case-tracks.three,.case-roadmap,.case-playables{grid-template-columns:1fr}
+    .case-vs{grid-template-columns:1fr}
+    .case-vs-divider{justify-content:center;padding:14px 0}
+    .playable-showcase{grid-template-columns:1fr}
+    .playable-phone{margin:0 auto;max-width:280px}
+    .stage-head{grid-template-columns:90px 1fr 20px;gap:10px;padding:12px 14px}
+    .stage-tag{font-size:9px}
+    .stage-title{font-size:14px}
+  }
 </style>
 </head>
 <body>
@@ -466,6 +955,9 @@
 <nav>
   <div class="nav-in">
     <a href="#alive" class="brand">Alive<span class="dot">.</span></a>
+    <button class="nav-burger" aria-label="Меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
     <div class="nav-links">
       <div class="nav-group">
         <a href="#alive" data-i18n="nav.intro">Введение</a>
@@ -481,6 +973,7 @@
           <a href="#model" data-i18n="nav.model">Модель</a>
           <a href="#interfaces" data-i18n="nav.interfaces">Интерфейсы</a>
           <a href="#processes" data-i18n="nav.processes">Процессы</a>
+          <a href="#cases" data-i18n="nav.cases">Кейсы</a>
         </div>
       </div>
       <div class="nav-group">
@@ -489,8 +982,18 @@
           <a href="#arch" data-i18n="nav.architecture">Архитектура</a>
           <a href="#infra" data-i18n="nav.infrastructure">Инфраструктура</a>
           <a href="#evolution" data-i18n="nav.evolution">Эволюция</a>
+          <a href="#roadmap" data-i18n="nav.roadmap">Roadmap</a>
         </div>
       </div>
+      <div class="nav-group">
+        <a href="#audit" data-i18n="nav.audit">Аудит</a>
+        <div class="nav-dropdown">
+          <a href="#standards" data-i18n="nav.standards">Стандарты</a>
+          <a href="#carriers" data-i18n="nav.carriers">Носители</a>
+          <a href="#competitors" data-i18n="nav.competitors">Конкуренты</a>
+        </div>
+      </div>
+      <a href="#faq" data-i18n="nav.faq">FAQ</a>
       <a href="#contact" data-i18n="nav.contact">Контакты</a>
       <div class="nav-lang">
         <a href="#" class="lang-opt active" data-lang="ru">RU</a>
@@ -512,7 +1015,25 @@
   </div>
   <div class="hero-metric">
     <div class="hm-label" data-i18n="hero.metric.label">Целевой уровень фреймворка</div>
-    <div class="hm-value">98 <span>/ 100</span></div>
+    <div class="hm-value">98 <span>/ 100</span><i class="hm-info">?</i></div>
+    <div class="hm-tooltip">
+      <p class="hm-tooltip-h">По 12 критериям</p>
+      <ul>
+        <li>Open standards alignment (MCP / A2A / AAIF)</li>
+        <li>Multi-layer memory (4 концептуальных слоя)</li>
+        <li>Per-agent governance (allow/deny на Gateway)</li>
+        <li>Audit cadence (ежедневно → еженедельно → ежемесячно)</li>
+        <li>Cost optimization (heartbeat ×100-300 дешевле)</li>
+        <li>Identity layer (SOUL / AGENTS.md / TOOLS.md)</li>
+        <li>Multi-modal action (7 модальностей)</li>
+        <li>Multi-agent orchestration (Director + sub-agents)</li>
+        <li>Live observability (Langfuse + MLflow + KPI)</li>
+        <li>Self-improving evolution (Auditor agent)</li>
+        <li>Privacy + RBAC через write-zones</li>
+        <li>Reference implementation готовности к v2 стандартов</li>
+      </ul>
+      <p class="hm-tooltip-foot">Подробнее в разделах <a href="#infra">Инфраструктура</a> и <a href="#audit">Аудит</a>.</p>
+    </div>
   </div>
 </header>
 
@@ -778,6 +1299,257 @@
       </div>
     </div>
   </div>
+</section>
+
+<section class="wrap" id="cases">
+  <div class="sec-head reveal">
+    <div class="sec-num">07 — Кейсы</div>
+    <h2>Реальные<br>внедрения</h2>
+    <p class="lead">Не презентация — то что работает на проде прямо сейчас, с цифрами и стеком.</p>
+  </div>
+
+  <div class="case-card reveal">
+    <div class="case-head">
+      <h3 class="case-h">Cimo Eva / Director-Orchestrator</h3>
+      <p class="case-sub">AI-аналитик и креативная фабрика для медиабаинга $2.5M ARR</p>
+      <div class="case-badge-row">
+        <span class="case-badge">PRODUCTION</span>
+        <span class="case-badge">iGAMING</span>
+        <span class="case-badge">MEDIA BUYING</span>
+      </div>
+    </div>
+
+    <h4 class="case-sub-h">Что умеет Eva</h4>
+    <div class="case-tracks">
+      <div class="case-track">
+        <p class="case-track-h">Аналитика</p>
+        <ul>
+          <li>pipeline.py — Moloco + Scaleo API</li>
+          <li>11 табов xlsx (Summary / PnL / Buyer / Team / GEO ...)</li>
+          <li>Точность сверки: <b>99.8%</b> vs эталон</li>
+          <li>5 минут на отчёт</li>
+        </ul>
+      </div>
+      <div class="case-track">
+        <p class="case-track-h">Креативы + плейблы</p>
+        <ul>
+          <li>Cimo / Creator — фабрика креативов</li>
+          <li>HTML5 playables под формат Moloco</li>
+          <li>Slot / iGaming UX</li>
+          <li>Готовы к заливу за минуты</li>
+        </ul>
+      </div>
+    </div>
+
+    <h4 class="case-sub-h">Бизнес-контекст Cimo Group</h4>
+    <div class="case-stack-row">
+      <span class="badge">Mobile AdTech</span>
+      <span class="badge">iGaming</span>
+      <span class="badge">Media Buying</span>
+      <span class="badge">~$20k spend daily</span>
+      <span class="badge">$2.5M ARR</span>
+      <span class="badge">30+ медиабайеров</span>
+      <span class="badge">90+ advertisers</span>
+    </div>
+
+    <h4 class="case-sub-h">До / После</h4>
+    <div class="case-vs">
+      <div class="case-vs-col before">
+        <p class="case-vs-h">До</p>
+        <p class="case-vs-main">$3000<span> /мес</span></p>
+        <p class="case-vs-sub">Аналитик-человек</p>
+        <ul>
+          <li>4 часа в день</li>
+          <li>Ручная сверка Excel</li>
+          <li>Ошибки от усталости</li>
+          <li>Только в рабочее время</li>
+        </ul>
+      </div>
+      <div class="case-vs-divider">→</div>
+      <div class="case-vs-col after">
+        <p class="case-vs-h">После</p>
+        <p class="case-vs-main">$100<span> /мес</span></p>
+        <p class="case-vs-sub">Cimo Eva (AI)</p>
+        <ul>
+          <li>5 минут на отчёт</li>
+          <li>Автоматический pipeline</li>
+          <li>99.8% точность</li>
+          <li>24/7 без выходных</li>
+        </ul>
+      </div>
+      <div class="case-vs-foot">
+        Экономия $34 800 в год · −97% затрат · ×48 быстрее
+      </div>
+    </div>
+
+    <h4 class="case-sub-h">Процесс работы</h4>
+    <div class="case-flow">
+      <div class="case-flow-step">
+        <div class="case-flow-num">1</div>
+        <div class="case-flow-body">Владелец голосом: «<b>отчёт за сегодня</b>» → Telegram (@cimo_01_bot)</div>
+      </div>
+      <div class="case-flow-step">
+        <div class="case-flow-num">2</div>
+        <div class="case-flow-body">Eva инициирует <b>pipeline.py</b> на VPS</div>
+      </div>
+      <div class="case-flow-step">
+        <div class="case-flow-num">3</div>
+        <div class="case-flow-body">Параллельные API-вызовы: <b>Moloco</b> (async) + <b>Scaleo</b> /reports/statistics + рекламодатели → reconcile + mapping</div>
+      </div>
+      <div class="case-flow-step">
+        <div class="case-flow-num">4</div>
+        <div class="case-flow-body">xlsx <b>11 табов</b>: Summary · PnL · By Day · By Team · By Buyer · By Account · By Advertiser · By Offer · By GEO · Reconcile · Raw</div>
+      </div>
+      <div class="case-flow-step">
+        <div class="case-flow-num">5</div>
+        <div class="case-flow-body">Google Drive upload + Telegram preview: топ-5 байеров + total profit</div>
+      </div>
+      <div class="case-flow-foot">
+        ≈ 5 минут с момента голосового запроса до готового отчёта
+      </div>
+    </div>
+
+    <h4 class="case-sub-h">Технологический стек</h4>
+    <div class="case-stack-row">
+      <span class="badge">Moloco Ads</span>
+      <span class="badge">Scaleo</span>
+      <span class="badge">Adjust</span>
+      <span class="badge">Keitaro</span>
+      <span class="badge">Anthropic Claude</span>
+      <span class="badge">Postgres</span>
+      <span class="badge">Metabase</span>
+      <span class="badge">Langfuse</span>
+      <span class="badge">DigitalOcean</span>
+      <span class="badge">Google Drive</span>
+      <span class="badge">Telegram</span>
+      <span class="badge">Caddy</span>
+    </div>
+
+    <h4 class="case-sub-h">От диалога в Telegram — к готовому плейблу</h4>
+    <div class="case-showcase">
+      <div class="case-showcase-left">
+        <div class="case-shot-stack">
+          <div class="live-shot"><img src="images/tg-voice.png" alt="Голосовое сообщение Vladimir + Eva в Telegram" loading="lazy"></div>
+          <div class="live-shot"><img src="images/tg-msg-long.png" alt="Сообщение Eva с готовым демо-рескином" loading="lazy"></div>
+        </div>
+        <p class="case-showcase-caption">Процесс решения задачи в диалоге Telegram</p>
+      </div>
+      <div class="case-showcase-right">
+        <div class="live-shot"><img src="images/lucky-ember.jpg" alt="Lucky Ember — Royale Jackpot playable" loading="lazy"></div>
+        <p class="case-showcase-caption">Wheel-механика, локализация на 14 языков, готов к заливу в Moloco</p>
+      </div>
+    </div>
+
+    <h4 class="case-sub-h">Эволюция в продукт — Cimo PRO</h4>
+    <div class="stage-accordion">
+      <div class="stage-row done">
+        <div class="stage-head">
+          <span class="stage-tag">STAGE 0 · DONE</span>
+          <span class="stage-title">Текстовый свод</span>
+          <span class="stage-chev">›</span>
+        </div>
+        <div class="stage-detail">
+          <p>Один отчёт в текстовом формате (Markdown / xlsx). Цель — убедиться что данные из Moloco + Scaleo + Excel-эталона сходятся. Zero code, через API и ручную сборку. Точность 99.7% по spend получена ✅</p>
+        </div>
+      </div>
+      <div class="stage-row now">
+        <div class="stage-head">
+          <span class="stage-tag">STAGE 1 · NOW</span>
+          <span class="stage-title">Все отчёты в тексте</span>
+          <span class="stage-chev">›</span>
+        </div>
+        <div class="stage-detail">
+          <p>Добавляем остальные отчёты в текстовом формате — без UI и без БД. Цель: отработать структуру всех финансов / статистики / аналитики, найти где данные сходятся и где не сходятся со всеми источниками.</p>
+        </div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-head">
+          <span class="stage-tag">STAGE 2</span>
+          <span class="stage-title">MVP Postgres + Metabase</span>
+          <span class="stage-chev">›</span>
+        </div>
+        <div class="stage-detail">
+          <p>Поднимаем базу данных <b>Postgres</b> (хранит свод по Moloco / Scaleo / advertisers) + <b>Metabase</b> (BI-инструмент с готовыми дашбордами и графиками). Один отчёт (Media Buying Gross) работает в реальном времени. 1-2 байера получают свой персональный дашборд. Цель — провалидировать UX в реальной работе команды.</p>
+        </div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-head">
+          <span class="stage-tag">STAGE 3</span>
+          <span class="stage-title">Платформа + UI байеров</span>
+          <span class="stage-chev">›</span>
+        </div>
+        <div class="stage-detail">
+          <p>Полноценная финансовая + аналитическая платформа + рабочая среда для байеров. Все отчёты работают. Кабинет байера с CRUD кампаний (запуск, остановка, бюджет — без захода в Moloco-портал). Автозалив креативов. Автоправила (Stop if / Auto-start). Multi-role RBAC. Цель — заменить Excel-стек + UI Moloco.</p>
+        </div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-head">
+          <span class="stage-tag">STAGE 4</span>
+          <span class="stage-title">Personal AI-Media Buying (A-DSP)</span>
+          <span class="stage-chev">›</span>
+        </div>
+        <div class="stage-detail">
+          <p>AI-агент сам создаёт рекламные кампании, создаёт креативы (через Cimo / Creator), создаёт PWA-приложения (через Cimo / Engineer) и вставляет их в РК. Сам запускает, контролирует, оптимизирует кампании. Формирует автоправила на основе данных. <b>Полностью автоматический заработок профита</b> без байера. Это и есть AI-управляемая платформа A-DSP / B2B SaaS (Autonomous DSP) — конечное видение.</p>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="case-sub-h">Семья продуктов Cimo</h4>
+    <div class="case-tracks three">
+      <div class="case-track">
+        <p class="case-track-h">Cimo / Creator</p>
+        <ul><li>Фабрика креативов</li></ul>
+      </div>
+      <div class="case-track">
+        <p class="case-track-h">Cimo / Engineer</p>
+        <ul><li>Фабрика PWA-приложений</li></ul>
+      </div>
+      <div class="case-track">
+        <p class="case-track-h">Cimo-Pro</p>
+        <ul><li>Personal AI-Media Buying</li></ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="case02 reveal">
+    <a class="case02-video" href="https://youtube.com/shorts/AYhHtHRGe5g" target="_blank" rel="noopener" aria-label="Открыть видео на YouTube">
+      <img src="images/case02-poster.jpg" alt="Превью видео-кейса о 12 AI-агентах в маркетинге" loading="lazy">
+      <span class="case02-play" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </span>
+      <span class="case02-yt-label">Смотреть на YouTube</span>
+    </a>
+    <div class="case02-content">
+      <p class="case02-eyebrow">Кейс 02 · пример рынка · видео-разбор</p>
+      <h3>Автономный AI-департамент маркетинга</h3>
+
+      <div class="case02-transcript">
+        <p>«<b>12 AI-агентов</b>: собирают сайты, рисуют креативы, пишут тексты под рекламные кампании.</p>
+        <p>Рекламные кабинеты — <b>Telegram Ads, Я.Директ, ВК Реклама, Ozon, Авито</b> — полностью ведёт AI-департамент маркетинга:</p>
+        <ul>
+          <li><b>Performance-agent</b> режет CPL и крутит ставки</li>
+          <li><b>Креатив</b> генерит баннеры через Midjourney</li>
+          <li><b>Дизайнер</b> собирает лендинги за секунды</li>
+          <li><b>Копирайтер</b> пишет офферы под каждый сегмент</li>
+          <li><b>Qualifier</b> квалит входящих, переписывается в директе, закрывает сделки</li>
+          <li><b>CRM</b> обновляется на лету</li>
+          <li><b>Аналитика</b> пересчитывает ROMI в реальном времени</li>
+        </ul>
+        <p class="metrics">4,8 млн выручки/мес · ROMI 1200% · 24/7 без оператора»</p>
+      </div>
+
+      <p class="case02-context-h">Что это значит в контексте Alive</p>
+      <div class="case02-context">
+        <ul>
+          <li><b>Не один департамент — а весь персональный офис.</b> Маркетинг — одна из 6 системных ролей; рядом — продажи, поддержка, контент, аналитика, R&amp;D.</li>
+          <li><b>Не сборка из чужих SaaS — а свой стек.</b> Vault + Telegram-директор + sub-агенты на собственном сервере. Под полным контролем, с откатом одной командой.</li>
+          <li><b>Не просто маркетинг — а персональная инфраструктура.</b> Тот же движок крутит брифинги, ретро, заметки, домашние дела, факты о человеке.</li>
+        </ul>
+        <p class="case02-tagline">Ролик показывает, как всё больше людей начинают выстраивать подобную инфраструктуру вокруг себя.</p>
+      </div>
+    </div>
+  </div>
   <div class="layers-down" aria-hidden="true">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M7 10 L12 15 L17 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
@@ -797,7 +1569,7 @@
 
 <section class="wrap" id="arch">
   <div class="sec-head reveal">
-    <div class="sec-num">07 — Архитектура</div>
+    <div class="sec-num">08 — Архитектура</div>
     <h2>Оркестратор<br>и его агенты</h2>
     <p class="lead">Подход построен на консенсусе передовых решений индустрии: один оркестратор владеет полным контекстом, специализированные агенты работают в изолированных контекстах и возвращают только сжатую сводку.</p>
   </div>
@@ -826,7 +1598,7 @@
 
 <section class="wrap" id="infra">
   <div class="sec-head reveal">
-    <div class="sec-num">08 — Инфраструктура</div>
+    <div class="sec-num">09 — Инфраструктура</div>
     <h2>Стек по верху<br>индустрии</h2>
     <p class="lead">Каждый компонент относится к одному из трёх основных уровней. Уровень задаёт частоту аудита и порог для миграции.</p>
   </div>
@@ -861,7 +1633,7 @@
 
 <section class="wrap" id="evolution">
   <div class="sec-head reveal">
-    <div class="sec-num">09 — Эволюция</div>
+    <div class="sec-num">10 — Эволюция</div>
     <h2>Система растёт<br>вместе с рынком</h2>
     <p class="lead">Этот рост — не стихийный дрейф, а явный процесс с агентом-Auditor и расписанием.</p>
   </div>
@@ -892,8 +1664,330 @@
     </ul>
     <div class="foot">Без этих критериев Auditor генерирует шум. Бюджет миграций: 1–2 серьёзных в квартал, 3–5 мелких. Остальное отсеивается.</div>
   </div>
+</section>
+
+<section class="wrap" id="roadmap">
+  <div class="sec-head reveal">
+    <div class="sec-num">11 — Roadmap</div>
+    <h2>Куда движется<br>Alive</h2>
+    <p class="lead">Направление развития в формате Now / Next / Later. Только Now — обязательства, остальное — ориентир.</p>
+  </div>
+  <div class="roadmap-cols reveal">
+
+    <div class="rm-col now">
+      <p class="rm-col-h">NOW</p>
+      <p class="rm-col-period">Готово / в работе</p>
+      <ul class="rm-list">
+        <li class="rm-item done">
+          <div class="rm-item-head"><span class="rm-item-title">Multi-agent оркестрация (Director + sub-agents)</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Главный агент-Director владеет полным контекстом, координирует специализированных sub-agents под задачу. Каждый sub-agent работает в изолированном контексте и возвращает только сжатую сводку. Базовый паттерн всего стека. См. <a href="#arch">Архитектура</a>.</p></div>
+        </li>
+        <li class="rm-item done">
+          <div class="rm-item-head"><span class="rm-item-title">Vault — primary memory</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Файловая память на Obsidian + git с автокоммитом каждые 10 минут. Бэкап в приватный GitHub-репо. Точка истины — git, любая правка откатывается одной командой. См. <a href="#infra">Инфраструктура → Memory</a>.</p></div>
+        </li>
+        <li class="rm-item done">
+          <div class="rm-item-head"><span class="rm-item-title">Graphify — knowledge graph</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Персистентный граф знаний по всему vault. Экономия токенов до 71× — агент читает граф вместо всех файлов. Авто-пересборка на каждом коммите.</p></div>
+        </li>
+        <li class="rm-item done">
+          <div class="rm-item-head"><span class="rm-item-title">9 активных департаментов</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Everyday · Finances · Health · Family · Biom · Cimo · Content · Incubator · Another. Каждый — папка с README, materials, projects. См. <a href="#arch">Архитектура → Департаменты</a>.</p></div>
+        </li>
+        <li class="rm-item done">
+          <div class="rm-item-head"><span class="rm-item-title">Системные роли — 6 ролей</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Architect / Engineer / Intake — режимы под задачу. Auditor / Critic / Memory — персистентные суб-агенты с изолированной памятью. Основной стек, с которым работает Orchestrator. См. <a href="#arch">Архитектура → Системные роли</a>.</p></div>
+        </li>
+        <li class="rm-item done">
+          <div class="rm-item-head"><span class="rm-item-title">Identity Layer — личность и инструкции</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>IDENTITY.md / SOUL.md / USER.md / AGENTS.md / TOOLS.md / HEARTBEAT.md / MEMORY.md / CLAUDE.md — единая система инструкций и идентичности для каждого агента.</p></div>
+        </li>
+        <li class="rm-item done">
+          <div class="rm-item-head"><span class="rm-item-title">MCP-серверы (Filesystem / Notes / Drive)</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Базовый набор инструментов через открытый стандарт MCP: Filesystem (vault), Apple Notes, Google Drive (read-only). Стандарт от Anthropic → AAIF.</p></div>
+        </li>
+        <li class="rm-item done">
+          <div class="rm-item-head"><span class="rm-item-title">Cimo Eva — Director-Orchestrator</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>AI-аналитик и креативная фабрика для медиабаинга Cimo Group ($2.5M ARR). Pipeline Moloco + Scaleo, 11 табов xlsx, точность 99.8%. HTML5-плейблы под Moloco. См. <a href="#cases">Кейсы</a>.</p></div>
+        </li>
+        <li class="rm-item done">
+          <div class="rm-item-head"><span class="rm-item-title">Orchestration — 4 механизма проактивности</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Cron (точное время) · Heartbeat (приблизительная периодика) · Hooks (реакция на событие) · Standing Orders (постоянные правила в AGENTS.md). Cost-оптимизация heartbeat — в 100-300× дешевле.</p></div>
+        </li>
+        <li class="rm-item wip">
+          <div class="rm-item-head"><span class="rm-item-title">Миграция всех материалов в vault</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Перенос накопленных материалов из внешних хранилищ в структуру департаментов через manifest-first двухфазный пайплайн: Inventory → Review → Execution. Без потери истории.</p></div>
+        </li>
+        <li class="rm-item wip">
+          <div class="rm-item-head"><span class="rm-item-title">Cimo Pro — Stage 1 (все отчёты в тексте)</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Добавление всех управленческих отчётов в текстовом формате к существующему №2 Media Buying Gross. Без UI и БД — отработка структуры данных перед MVP. См. <a href="#cases">Кейсы → Stage 1</a>.</p></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rm-col">
+      <p class="rm-col-h">NEXT</p>
+      <p class="rm-col-period">В планах · 3–9 месяцев</p>
+      <ul class="rm-list">
+        <li class="rm-item todo">
+          <div class="rm-item-head"><span class="rm-item-title">Orchestrator v0 на LangGraph</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Главный supervisor-граф с durable execution. Спавн sub-агентов через middleware. Deploy на инфра-сервер с первого дня, не локально. См. <a href="#infra">Инфра → Agent Framework → LangGraph</a>.</p></div>
+        </li>
+        <li class="rm-item todo">
+          <div class="rm-item-head"><span class="rm-item-title">Observability — Langfuse + MLflow</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Логирование LLM-вызовов через Langfuse (traces, токены, стоимость). MLflow — трассировка действий агентов и KPI. На старте — облачный hobby-tier, миграция на self-host под нагрузку.</p></div>
+        </li>
+        <li class="rm-item todo">
+          <div class="rm-item-head"><span class="rm-item-title">Финансы — Lead (крипта через CCXT)</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Первый персистентный Lead в департаменте Финансы. Отслеживание балансов на биржах через CCXT (100+ бирж — Bybit / OKX и др.). P&L по сделкам, стоимость портфеля, еженедельный дайджест.</p></div>
+        </li>
+        <li class="rm-item todo">
+          <div class="rm-item-head"><span class="rm-item-title">Cimo Pro — Stage 2 (MVP)</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Postgres-хранилище свода (Moloco/Scaleo/advertisers) + Metabase BI-дашборды. Один отчёт (Media Buying Gross) в real-time. 1-2 байера получают свой персональный дашборд. См. <a href="#cases">Кейсы → Stage 2</a>.</p></div>
+        </li>
+        <li class="rm-item todo">
+          <div class="rm-item-head"><span class="rm-item-title">Verified Skills Marketplace</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Каждый сторонний скилл проходит верификацию: SBOM, sandbox-прогон, deny-list для опасных вызовов. Защита от атак через скилл-пакеты (урок OpenClaw 2026). См. Инфра → Peripheral → Skill verification.</p></div>
+        </li>
+        <li class="rm-item todo">
+          <div class="rm-item-head"><span class="rm-item-title">Voice — realtime (Vapi / OpenAI Realtime / ElevenLabs)</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Голосовое общение с агентами в реальном времени, не через voice-to-text. Низкая задержка, естественная пауза, живой диалог. См. Инфра → Channels → Voice.</p></div>
+        </li>
+        <li class="rm-item todo">
+          <div class="rm-item-head"><span class="rm-item-title">Computer Use</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>GUI-агенты — управление экраном через computer vision: курсор, клавиатура, клики. Работа в Excel, Photoshop, Figma, мессенджерах — там где нет API. См. Инфра → Action Modalities → Computer Use.</p></div>
+        </li>
+        <li class="rm-item todo">
+          <div class="rm-item-head"><span class="rm-item-title">Mini App в Telegram</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Полноценное приложение внутри Telegram — UI поверх бота для форм, дашбордов и расширенных команд без выхода из чата. См. Инфра → Channels → Mini App.</p></div>
+        </li>
+        <li class="rm-item todo">
+          <div class="rm-item-head"><span class="rm-item-title">Local models — Llama / Qwen / DeepSeek</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Гибридная архитектура облако+локаль. Приватные модели через Ollama для чувствительных данных. Снижение зависимости от облачных провайдеров. Опциональный air-gapped режим. См. <a href="#infra">Инфра → Models → Local models</a>.</p></div>
+        </li>
+        <li class="rm-item todo">
+          <div class="rm-item-head"><span class="rm-item-title">Расширение Системных ролей</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Добавление новых персистентных ролей к существующим 6: Router, SysAdmin, Prompt Engineer, Research, C-level (CFO / CPO / CMO), HR / Legal / Ops. Полная команда для всех контуров жизни.</p></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rm-col">
+      <p class="rm-col-h">LATER</p>
+      <p class="rm-col-period">Видение · 1+ год</p>
+      <ul class="rm-list">
+        <li class="rm-item vision">
+          <div class="rm-item-head"><span class="rm-item-title">Memory: Letta / LangMem / Vector DB</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Когда vault перерастёт текущий объём — переход на специализированный движок: Letta (tiered hot/warm/cold), LangMem (LangGraph-native), Vector DB (Pinecone / Qdrant / pgvector) для семантического поиска. См. Инфра → Memory.</p></div>
+        </li>
+        <li class="rm-item vision">
+          <div class="rm-item-head"><span class="rm-item-title">Leads по всем департаментам</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Когда департамент перерастает возможности подгружаемого контекста — появляется персистентный Lead (Scout / Parser / Sales / Support / Router / Content и др.). См. <a href="#arch">Архитектура → Leads</a>.</p></div>
+        </li>
+        <li class="rm-item vision">
+          <div class="rm-item-head"><span class="rm-item-title">Digital Twin — голос + видео</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Conversational слой Digital Twin с голосом и видео. Полноценное «присутствие» агента, не текстовый бот. Узнаваемый собеседник с естественным голосом и мимикой.</p></div>
+        </li>
+        <li class="rm-item vision">
+          <div class="rm-item-head"><span class="rm-item-title">Multi-Principal — несколько носителей замысла</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Поддержка нескольких владельцев в одной системе. Семья на одном vault с разделением приватности и RBAC. Общая память — только в общих контурах.</p></div>
+        </li>
+        <li class="rm-item vision">
+          <div class="rm-item-head"><span class="rm-item-title">Cimo Pro → Personal AI-Media Buying (B2B SaaS)</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>A-DSP (Autonomous DSP) — AI-агент сам создаёт кампании, креативы, PWA-приложения. Полностью автоматический заработок профита. Выход как продукт для рынка. См. <a href="#cases">Кейсы → Stage 4</a>.</p></div>
+        </li>
+        <li class="rm-item vision">
+          <div class="rm-item-head"><span class="rm-item-title">Biom — физическая инфраструктура</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Подключение к слою Biom: умный дом + смарт-агрокомплекс + системы замкнутого цикла. Регенеративная экосистема со своим энергоциклом. См. <a href="#potential">Потенциал → Biom</a>.</p></div>
+        </li>
+        <li class="rm-item vision">
+          <div class="rm-item-head"><span class="rm-item-title">Augmented Digital Twin / цифровое бессмертие</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Цифровая копия накапливает мышление, решения, стиль владельца — и продолжает его замысел в будущем. Расширение присутствия и непрерывность замысла. См. <a href="#alive">Hero</a> и <a href="#intent">Замысел</a>.</p></div>
+        </li>
+        <li class="rm-item vision">
+          <div class="rm-item-head"><span class="rm-item-title">Полная автономия внешнего контура жизни</span><span class="rm-item-chev">›</span></div>
+          <div class="rm-item-detail"><p>Операционный слой жизни (рутина, координация, исполнение в любых сферах — от быта до бизнес-проектов) автономно замыкается сам на себе. Владелец — только в режиме «носитель замысла». См. <a href="#vision">Введение</a>.</p></div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
   <div class="layers-down" aria-hidden="true">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M7 10 L12 15 L17 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</section>
+
+<section class="wrap" id="audit">
+  <div class="sec-head reveal">
+    <div class="sec-num">Аудит</div>
+    <h2>Карта поля<br>и стандарты</h2>
+    <p class="lead">«Не оптимизирует продуктивность. Возвращает время для другого измерения. Они освобождают для работы. Alive — для того, что за её пределами»</p>
+    <p class="lead">Аудит и обновление стека архитектуры и инфраструктуры по верху рынка индустрии. Меняется по мере того, как Auditor выявляет лучшие стандарты.</p>
+    <div class="hero-cta reveal" style="margin-top:24px">
+      <a href="#contact" class="hero-btn" data-i18n="btn.contact">Связаться</a>
+      <a href="#contact" class="hero-btn hero-btn-solid" data-i18n="btn.chat">Alive Chat</a>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="standards">
+  <div class="sec-head reveal">
+    <div class="sec-num">12 — Стандарты</div>
+    <h2>Открытые стандарты —<br>фундамент Alive</h2>
+    <p class="lead">На чём построена и с чем согласована.</p>
+  </div>
+  <div class="group reveal">
+    <div class="badges">
+      <span class="badge">MCP</span>
+      <span class="badge">A2A</span>
+      <span class="badge">AAIF</span>
+      <span class="badge">NIST AI RMF</span>
+      <span class="badge">Trust-by-Design</span>
+      <span class="badge">Governance-as-Code</span>
+    </div>
+    <div class="std-list">
+      <p><b>MCP</b> — Model Context Protocol (Anthropic → AAIF). Стандарт подключения инструментов и данных, 97M загрузок SDK в месяц.</p>
+      <p><b>A2A</b> — Agent-to-Agent. Протокол связи между агентами в мульти-агентных системах.</p>
+      <p><b>AAIF</b> — Agentic AI Foundation под Linux Foundation. 170+ членов: Anthropic, OpenAI, Google, Microsoft, AWS, Cloudflare.</p>
+      <p><b>NIST AI RMF</b> — государственная рамка управления AI-рисками (US NIST), направление Agent Standards Initiative.</p>
+      <p><b>Trust-by-Design</b> — доверие встроено в архитектуру с самого начала, не патчи сверху.</p>
+      <p><b>Governance-as-Code</b> — политики и правила выражены машиночитаемо, не в документах.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="carriers">
+  <div class="sec-head reveal">
+    <div class="sec-num">13 — Носители</div>
+    <h2>Соседи по смыслу<br>и замыслу</h2>
+    <p class="lead">Кто рядом — личный AI вокруг человека, носители близких идей.</p>
+  </div>
+  <div class="group reveal">
+    <div class="comp-wrap">
+      <table class="comp-table">
+        <thead>
+          <tr><th></th><th>PAI</th><th>twin.so</th><th>C(H+A)RM</th><th>Forte 2nd Brain</th><th>OpenClaw</th><th>Alive</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Цель</td><td>продуктивность</td><td>бизнес-операционка</td><td>цифровой клон</td><td>personal context</td><td>фреймворк</td><td>замысел</td></tr>
+          <tr><td>Кому</td><td>технари</td><td>SaaS-бизнес</td><td>Web3-владельцы</td><td>курс</td><td>open-source comm</td><td>носителю замысла</td></tr>
+          <tr><td>Identity</td><td>Telos+Principal</td><td>—</td><td>digital twin</td><td>profile doc</td><td>soul-файлы</td><td>Telos + Soul-стек</td></tr>
+          <tr><td>Память</td><td>файлы</td><td>workflow</td><td>профиль</td><td>vault</td><td>vault</td><td>4 слоя + Vault</td></tr>
+          <tr><td>Standards</td><td>Claude-only</td><td>closed</td><td>closed</td><td>—</td><td>MCP</td><td>MCP/A2A/AAIF</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="group reveal">
+    <div class="group-name">Культурные носители</div>
+    <p class="group-note">Эмоциональная отправка через эпохи: Memex Буша (1945) · J.A.R.V.I.S. (Iron Man) · Samantha (Her) · Primer (Diamond Age) · HAL 9000 (anti-pattern). Раньше — только в кино и книгах. Теперь — реальная архитектура в твоём vault.</p>
+  </div>
+</section>
+
+<section class="wrap" id="competitors">
+  <div class="sec-head reveal">
+    <div class="sec-num">14 — Конкуренты</div>
+    <h2>Кто решает<br>соседнюю задачу</h2>
+    <p class="lead">Computer-use агенты, мульти-агентные фреймворки, enterprise OS — для контекста.</p>
+  </div>
+  <div class="group reveal">
+    <div class="comp-wrap">
+      <table class="comp-table">
+        <thead>
+          <tr><th></th><th>OpenAI Operator</th><th>Claude CU</th><th>Manus</th><th>Multion</th><th>Alive</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Скоуп</td><td>browser</td><td>desktop</td><td>browser+code</td><td>browser</td><td>7 модальностей</td></tr>
+          <tr><td>Память</td><td>session</td><td>session</td><td>task-scope</td><td>session</td><td>многослойная</td></tr>
+          <tr><td>Identity</td><td>нет</td><td>нет</td><td>нет</td><td>нет</td><td>Telos+Soul</td></tr>
+          <tr><td>Автономия</td><td>task-by-task</td><td>task-by-task</td><td>да</td><td>task-by-task</td><td>24/7 office</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="group reveal">
+    <div class="group-name">Multi-agent фреймворки</div>
+    <p class="group-note">Соседи по архитектуре — Claude Agent SDK · LangGraph · AutoGen · CrewAI · MetaGPT · Magentic-One. Alive выстроена на Claude Agent SDK и LangGraph под капотом.</p>
+  </div>
+  <div class="group reveal">
+    <div class="group-name">Enterprise OS</div>
+    <p class="group-note">Enterprise-аналоги — Salesforce Agentforce · ServiceNow Now Assist · Microsoft Copilot Studio · Sierra · Magma. Alive — тот же принцип, но для одного человека вокруг его Telos, а не для организации.</p>
+  </div>
+  <div class="layers-down" aria-hidden="true">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M7 10 L12 15 L17 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</section>
+
+<section class="wrap" id="faq">
+  <div class="sec-head reveal">
+    <div class="sec-num">FAQ</div>
+    <h2>Частые<br>вопросы</h2>
+    <p class="lead">Снимаем типовые сомнения перед контактом.</p>
+  </div>
+  <div class="stack">
+    <div class="layer-card reveal">
+      <div class="lc-head">
+        <div><h4>Это не очередной wrapper над GPT?</h4></div>
+        <span class="lc-chev">›</span>
+      </div>
+      <div class="lc-detail">
+        <p>Архитектура, а не один скрипт. Telos + Soul + Memory + Skills + Orchestrator — это полноценная система. Любая LLM меняется на любую другую через MCP-протокол, ничего не ломается.</p>
+      </div>
+    </div>
+    <div class="layer-card reveal">
+      <div class="lc-head">
+        <div><h4>Что с приватностью? Где хранятся данные?</h4></div>
+        <span class="lc-chev">›</span>
+      </div>
+      <div class="lc-detail">
+        <p>Vault на собственном сервере владельца. Файлы локальные, в Obsidian + git. Облако используется только для inference LLM, и то опционально — есть local-first путь через Ollama (модели крутятся прямо на машине, ничего не уходит наружу).</p>
+      </div>
+    </div>
+    <div class="layer-card reveal">
+      <div class="lc-head">
+        <div><h4>Что если LLM подорожают или их выключат?</h4></div>
+        <span class="lc-chev">›</span>
+      </div>
+      <div class="lc-detail">
+        <p>Стандарты MCP / A2A открыты. Любая модель подключается по одному и тому же протоколу. Через сутки можно мигрировать с Claude на GPT, на Gemini, на local-модель — система продолжит работать.</p>
+      </div>
+    </div>
+    <div class="layer-card reveal">
+      <div class="lc-head">
+        <div><h4>Сколько стоит развернуть?</h4></div>
+        <span class="lc-chev">›</span>
+      </div>
+      <div class="lc-detail">
+        <p>Open architecture — сам стек бесплатный. Реальные расходы: VPS (~$15-30/мес) + LLM-вызовы по факту использования (~$50-500/мес в зависимости от интенсивности). Local-first снижает расходы в разы.</p>
+      </div>
+    </div>
+    <div class="layer-card reveal">
+      <div class="lc-head">
+        <div><h4>Кто владелец vault и что в случае «увольнения» агента?</h4></div>
+        <span class="lc-chev">›</span>
+      </div>
+      <div class="lc-detail">
+        <p>Владелец vault — всегда ты. Это твои файлы в Obsidian + git, никто не имеет к ним прямого доступа. Если агент «уволится» (заменишь на нового или сменишь модель) — vault остаётся, скиллы и память переносятся.</p>
+      </div>
+    </div>
+    <div class="layer-card reveal">
+      <div class="lc-head">
+        <div><h4>Можно ли мигрировать между моделями (Claude → GPT → local)?</h4></div>
+        <span class="lc-chev">›</span>
+      </div>
+      <div class="lc-detail">
+        <p>Да, это базовый принцип архитектуры. Через MCP всё абстрагировано — провайдер модели меняется в конфиге одной строкой. Skills и Identity Layer (SOUL, AGENTS.md) остаются неизменными.</p>
+      </div>
+    </div>
+    <div class="layer-card reveal">
+      <div class="lc-head">
+        <div><h4>Что делать, когда я в отпуске?</h4></div>
+        <span class="lc-chev">›</span>
+      </div>
+      <div class="lc-detail">
+        <p>Система продолжает работать без тебя — см. раздел «04 Модель» → таб «Без владельца». Имитирует тебя для типового, эскалирует важное в очередь, продолжает проекты по согласованным направлениям. Возвращение — пять минут синхронизации.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -926,6 +2020,7 @@
   <p class="footer-slogan">Расширение присутствия и непрерывность замысла</p>
   <p class="footer-meta">© 01.04.2026 Alive. Все права защищены.</p>
   <p class="footer-policy"><a href="#" class="footer-link">Политика конфиденциальности</a> · <a href="#" class="footer-link">Пользовательское соглашение</a></p>
+  <p class="footer-stack">Built on open shoulders · Claude Agent SDK · MCP · A2A · AAIF · Obsidian · n8n · Langfuse · MLflow · Letta · Caddy · Docker · Tailscale</p>
 </footer>
 
 <script>
@@ -1167,7 +2262,8 @@ const INFRA={
         ["landing-page-generator","Лендинги с продающим копирайтингом и структурой."],
         ["pdf-to-markdown","PDF → markdown с сохранением структуры."],
         ["prompt-maker","Написание структурированных промптов по шаблонам."],
-        ["Marketplace","ClawHub / Anthropic Skills / community-репо — готовые скиллы под задачи."]
+        ["Marketplace","ClawHub / Anthropic Skills / community-репо — готовые скиллы под задачи."],
+        ["Skill verification","Каждый сторонний скилл проходит верификацию перед установкой: SBOM, sandbox-прогон, deny-list для опасных вызовов, проверка repo provenance."]
       ]},
       {n:"Внешние сервисы и данные",items:[
         ["Google Workspace","Drive, Docs, Calendar, Gmail."],
@@ -1431,11 +2527,95 @@ document.querySelectorAll('.layer-card').forEach(c=>c.addEventListener('click',e
 })();
 
 (function(){
+  document.querySelectorAll('.stage-head').forEach(function(h){
+    h.addEventListener('click',function(){
+      h.parentElement.classList.toggle('open');
+    });
+  });
+  document.querySelectorAll('.rm-item-head').forEach(function(h){
+    h.addEventListener('click',function(){
+      h.parentElement.classList.toggle('open');
+    });
+  });
+})();
+
+(function(){
+  var burger = document.querySelector('.nav-burger');
+  var links = document.querySelector('.nav-links');
+  if(!burger || !links) return;
+  function isMobile(){ return window.innerWidth <= 780; }
+  function closeMenu(){
+    links.classList.remove('open');
+    burger.classList.remove('active');
+    burger.setAttribute('aria-expanded','false');
+    document.querySelectorAll('.nav-group.open-mobile').forEach(function(g){g.classList.remove('open-mobile');});
+  }
+  burger.addEventListener('click', function(){
+    var open = links.classList.toggle('open');
+    burger.classList.toggle('active', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.querySelectorAll('.nav-group > a').forEach(function(a){
+    a.addEventListener('click', function(e){
+      if(!isMobile()) return;
+      var group = a.parentElement;
+      if(group.querySelector('.nav-dropdown')){
+        e.preventDefault();
+        document.querySelectorAll('.nav-group.open-mobile').forEach(function(g){
+          if(g !== group) g.classList.remove('open-mobile');
+        });
+        group.classList.toggle('open-mobile');
+      }
+    });
+  });
+  document.querySelectorAll('.nav-dropdown a, .nav-links > a:not(.brand)').forEach(function(a){
+    a.addEventListener('click', function(){
+      if(isMobile()) setTimeout(closeMenu, 80);
+    });
+  });
+  document.addEventListener('click', function(e){
+    if(!isMobile()) return;
+    var nav = document.querySelector('nav');
+    if(nav && !nav.contains(e.target)) closeMenu();
+  });
+  window.addEventListener('resize', function(){
+    if(!isMobile()) closeMenu();
+  });
+})();
+
+(function(){
+  var hm = document.querySelector('.hero-metric');
+  if(!hm) return;
+  var info = hm.querySelector('.hm-info');
+  var tip = hm.querySelector('.hm-tooltip');
+  if(!info || !tip) return;
+  var closeTimer = null;
+  function open(){ if(closeTimer){clearTimeout(closeTimer);closeTimer=null;} hm.classList.add('open'); }
+  function scheduleClose(){ closeTimer = setTimeout(function(){ hm.classList.remove('open'); }, 180); }
+  info.addEventListener('mouseenter', open);
+  info.addEventListener('mouseleave', scheduleClose);
+  tip.addEventListener('mouseenter', open);
+  tip.addEventListener('mouseleave', scheduleClose);
+  info.addEventListener('click', function(e){
+    e.stopPropagation();
+    hm.classList.toggle('open');
+  });
+  document.addEventListener('click', function(e){
+    if(!hm.contains(e.target)) hm.classList.remove('open');
+  });
+})();
+
+(function(){
   var I18N = {
     ru: {
       'nav.intro': 'Введение',
       'nav.demo': 'Демонстрация',
       'nav.concept': 'Концепция',
+      'nav.audit': 'Аудит',
+      'nav.standards': 'Стандарты',
+      'nav.carriers': 'Носители',
+      'nav.competitors': 'Конкуренты',
+      'nav.faq': 'FAQ',
       'nav.contact': 'Контакты',
       'nav.vision': 'Видение',
       'nav.owner': 'Владелец',
@@ -1444,9 +2624,11 @@ document.querySelectorAll('.layer-card').forEach(c=>c.addEventListener('click',e
       'nav.model': 'Модель',
       'nav.interfaces': 'Интерфейсы',
       'nav.processes': 'Процессы',
+      'nav.cases': 'Кейсы',
       'nav.architecture': 'Архитектура',
       'nav.infrastructure': 'Инфраструктура',
       'nav.evolution': 'Эволюция',
+      'nav.roadmap': 'Roadmap',
       'hero.eyebrow': 'Персональная AI-инфраструктура · Карта стека',
       'hero.sub': 'Автономный мультиагентный AI-офис: живая, самосовершенствующаяся операционная система, выстроенная вокруг <span class="en">Principal&rsquo;s Telos</span>, расширяющая его до Augmented Digital Twin ради цифрового бессмертия и построенная по высшим архитектурным стандартам AI-индустрии. Система, которая забирает на себя операционную рутину и освобождает тебя для источника замысла.',
       'btn.contact': 'Связаться',
@@ -1457,6 +2639,11 @@ document.querySelectorAll('.layer-card').forEach(c=>c.addEventListener('click',e
       'nav.intro': 'Introduction',
       'nav.demo': 'Demonstration',
       'nav.concept': 'Concept',
+      'nav.audit': 'Audit',
+      'nav.standards': 'Standards',
+      'nav.carriers': 'Carriers',
+      'nav.competitors': 'Competitors',
+      'nav.faq': 'FAQ',
       'nav.contact': 'Contacts',
       'nav.vision': 'Vision',
       'nav.owner': 'Owner',
@@ -1465,9 +2652,11 @@ document.querySelectorAll('.layer-card').forEach(c=>c.addEventListener('click',e
       'nav.model': 'Model',
       'nav.interfaces': 'Interfaces',
       'nav.processes': 'Processes',
+      'nav.cases': 'Cases',
       'nav.architecture': 'Architecture',
       'nav.infrastructure': 'Infrastructure',
       'nav.evolution': 'Evolution',
+      'nav.roadmap': 'Roadmap',
       'hero.eyebrow': 'Personal AI infrastructure · Stack map',
       'hero.sub': 'Autonomous multi-agent AI office: a live, self-improving operating system built around the <span class="en">Principal&rsquo;s Telos</span>, extending him into an Augmented Digital Twin for digital immortality, and engineered to the highest AI-industry architectural standards. The system that takes the operational routine upon itself and frees you for the source of the vision.',
       'btn.contact': 'Get in Touch',
