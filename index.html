@@ -245,15 +245,34 @@
     margin:16px 0;padding:22px 26px;
     background:var(--bg-warm);border:1px solid var(--line);
     border-left:3px solid var(--accent);border-radius:10px;
+    transition:background .2s ease, border-color .2s ease;
   }
+  .result-scenario:hover{background:#fff;border-color:var(--line-strong, var(--line))}
   .result-scenario-q{
     font-family:var(--serif);font-style:italic;font-size:17px;
-    line-height:1.4;color:var(--ink);margin:0 0 14px;
+    line-height:1.4;color:var(--ink);margin:0;
+    cursor:pointer;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+    user-select:none;
+  }
+  .result-scenario-chev{
+    font-family:var(--mono);font-style:normal;font-size:20px;
+    color:var(--ink-faint);transition:transform .25s ease, color .2s ease;
+    flex-shrink:0;line-height:1.2;
+  }
+  .result-scenario:hover .result-scenario-chev{color:var(--ink)}
+  .result-scenario.open .result-scenario-chev{
+    transform:rotate(90deg);color:var(--accent-deep);
   }
   .result-scenario-body{
-    font-size:14.5px;line-height:1.7;color:var(--ink-soft);margin:0;
+    font-size:14.5px;line-height:1.7;color:var(--ink-soft);
+    max-height:0;overflow:hidden;margin:0;
+    transition:max-height .4s ease, margin-top .25s ease;
   }
   .result-scenario-body strong{color:var(--ink);font-weight:500}
+  .result-scenario.open .result-scenario-body{
+    max-height:1400px;margin-top:14px;
+  }
   .result-cta-line{
     text-align:center;margin:36px 0 0;font-family:var(--mono);font-size:13px;
   }
@@ -1127,12 +1146,12 @@
   <h3 class="result-section-h reveal">Как это выглядит на практике</h3>
 
   <div class="result-scenario reveal">
-    <p class="result-scenario-q">Вы говорите: «Хочу стать популярным блогером».</p>
+    <p class="result-scenario-q"><span>Вы говорите: «Хочу быть популярным блогером»</span><span class="result-scenario-chev" aria-hidden="true">›</span></p>
     <p class="result-scenario-body">Система собирает под вас команду агентов и запускает работу — формируется полноценный департамент с собственным контент-заводом. <strong>Агент-Двойник</strong> обучается на вашем голосе и образе и производит ролики и фотографии от вашего лица. <strong>Агент-Сценарист</strong> пишет сценарии, тестирует форматы и темы, отбирает то, что находит отклик у аудитории. <strong>Агент-Издатель</strong> публикует материалы в нужных социальных сетях, в нужное время и с учётом специфики каждой площадки. <strong>Агент-Оператор</strong> отвечает в комментариях и в личных сообщениях в вашей манере, разбирает входящие обращения и ведёт диалоги с подписчиками. <strong>Агент-Аналитик</strong> отслеживает охваты, удержание и конверсии, подсказывая остальным, что усилить. <strong>Агент-Продюсер</strong> занимается продвижением и коллаборациями. Все они работают как слаженная редакция, в которой вы — единственный источник смысла. Аудитория растёт до тех пор, пока не достигнет той точки, ради которой вы всё это начали.</p>
   </div>
 
   <div class="result-scenario reveal">
-    <p class="result-scenario-q">Вы говорите: «Хочу зарабатывать миллион на маркетинге».</p>
+    <p class="result-scenario-q"><span>Вы говорите: «Хочу зарабатывать миллионы на маркетинге»</span><span class="result-scenario-chev" aria-hidden="true">›</span></p>
     <p class="result-scenario-body">Система разворачивает автономный AI-департамент маркетинга. Двенадцать агентов собирают сайты, создают креативы и пишут тексты для рекламных кампаний. Рекламные кабинеты — Telegram Ads, Яндекс Директ, ВК Реклама, Ozon, Авито — полностью ведутся департаментом. <strong>Агент-Перформанс</strong> снижает стоимость лида и управляет ставками. <strong>Агент-Креатор</strong> генерирует баннеры через Midjourney. <strong>Агент-Дизайнер</strong> собирает лендинги за секунды. <strong>Агент-Копирайтер</strong> пишет офферы под каждый сегмент аудитории. <strong>Агент-Квалификатор</strong> обрабатывает входящие заявки, ведёт переписку в директе и закрывает сделки. CRM обновляется в режиме реального времени. <strong>Агент-Аналитик</strong> непрерывно пересчитывает ROMI. Департамент работает до тех пор, пока не выйдет на тот показатель, ради которого вы его запустили.</p>
   </div>
 
@@ -2611,6 +2630,11 @@ document.querySelectorAll('.layer-card').forEach(c=>c.addEventListener('click',e
   document.querySelectorAll('.rm-item-head').forEach(function(h){
     h.addEventListener('click',function(){
       h.parentElement.classList.toggle('open');
+    });
+  });
+  document.querySelectorAll('.result-scenario-q').forEach(function(q){
+    q.addEventListener('click',function(){
+      q.parentElement.classList.toggle('open');
     });
   });
 })();
