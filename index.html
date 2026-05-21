@@ -210,7 +210,11 @@
   }
   .hm-tooltip-foot a{color:var(--accent-deep);text-decoration:none;border-bottom:1px solid var(--accent)}
   @media (max-width:680px){
-    .hm-tooltip{width:280px;left:auto;right:0}
+    .hm-tooltip{
+      left:0;right:auto;
+      width:calc(100vw - 64px);max-width:340px;
+      padding:14px 16px;
+    }
   }
 
   .sec-head{margin-bottom:28px}
