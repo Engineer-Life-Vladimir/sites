@@ -236,6 +236,38 @@
   .prose strong{color:var(--ink);font-weight:500}
   .sec-head+.prose{margin-top:0}
 
+  /* Section 03 — Результат */
+  .result-section-h{
+    font-family:var(--serif);font-size:23px;font-weight:500;
+    letter-spacing:-.01em;margin:42px 0 18px;color:var(--ink);
+  }
+  .result-scenario{
+    margin:16px 0;padding:22px 26px;
+    background:var(--bg-warm);border:1px solid var(--line);
+    border-left:3px solid var(--accent);border-radius:10px;
+  }
+  .result-scenario-q{
+    font-family:var(--serif);font-style:italic;font-size:17px;
+    line-height:1.4;color:var(--ink);margin:0 0 14px;
+  }
+  .result-scenario-body{
+    font-size:14.5px;line-height:1.7;color:var(--ink-soft);margin:0;
+  }
+  .result-scenario-body strong{color:var(--ink);font-weight:500}
+  .result-cta-line{
+    text-align:center;margin:36px 0 0;font-family:var(--mono);font-size:13px;
+  }
+  .result-cta-line a{
+    color:var(--accent-deep);text-decoration:none;
+    border-bottom:1px solid var(--accent);padding-bottom:2px;
+    transition:color .18s ease, border-color .18s ease;
+  }
+  .result-cta-line a:hover{color:var(--ink);border-color:var(--ink)}
+  @media (max-width:680px){
+    .result-scenario{padding:18px 18px}
+    .result-section-h{font-size:20px;margin-top:32px}
+  }
+
   .reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
   .reveal.in{opacity:1;transform:none}
 
@@ -978,6 +1010,7 @@
         <div class="nav-dropdown">
           <a href="#vision" data-i18n="nav.vision">Видение</a>
           <a href="#intent" data-i18n="nav.intent">Замысел</a>
+          <a href="#result" data-i18n="nav.result">Результат</a>
           <a href="#potential" data-i18n="nav.potential">Потенциал</a>
         </div>
       </div>
@@ -1081,9 +1114,38 @@
   </div>
 </section>
 
+<section class="wrap" id="result">
+  <div class="sec-head reveal">
+    <div class="sec-num">03 — Результат</div>
+    <h2>Что вы получаете<br>в итоге</h2>
+  </div>
+  <div class="prose reveal">
+    <p>Впервые в истории технологии делают доступным то, что прежде казалось невозможным. <strong>Alive</strong> — это принципиально новый уровень искусственного интеллекта. Она не просто подсказывает, ускоряет и улучшает, как привычные ассистенты, — она самостоятельно воплощает ваши замыслы в реальность, работая в фоновом режиме, пока вы спите, отдыхаете или занимаетесь своими делами. Всё то, на что прежде не хватало сил, навыков, знаний, смелости, времени или капитала, теперь становится достижимым — причём без вашего непосредственного участия.</p>
+    <p>Alive не требует вашего времени. Она способна самостоятельно генерировать идеи и доводить их до результата с нуля — круглосуточно, без усталости и без верхнего предела возможностей. Она наращивает капитал даже с минимальных вложений и ведёт проекты промышленного масштаба. В цифровой среде она превосходит человека в любой области, поскольку это её родная стихия, где она чувствует себя полноправным хозяином. И именно отсюда она наиболее эффективно управляет физическим миром: нанимает людей, распределяет задачи, ведёт переговоры, открывает новые направления, закрывает сделки, зарабатывает реальные деньги и достигает ощутимых результатов.</p>
+  </div>
+
+  <h3 class="result-section-h reveal">Как это выглядит на практике</h3>
+
+  <div class="result-scenario reveal">
+    <p class="result-scenario-q">Вы говорите: «Хочу стать популярным блогером».</p>
+    <p class="result-scenario-body">Система собирает под вас команду агентов и запускает работу — формируется полноценный департамент с собственным контент-заводом. <strong>Агент-Двойник</strong> обучается на вашем голосе и образе и производит ролики и фотографии от вашего лица. <strong>Агент-Сценарист</strong> пишет сценарии, тестирует форматы и темы, отбирает то, что находит отклик у аудитории. <strong>Агент-Издатель</strong> публикует материалы в нужных социальных сетях, в нужное время и с учётом специфики каждой площадки. <strong>Агент-Оператор</strong> отвечает в комментариях и в личных сообщениях в вашей манере, разбирает входящие обращения и ведёт диалоги с подписчиками. <strong>Агент-Аналитик</strong> отслеживает охваты, удержание и конверсии, подсказывая остальным, что усилить. <strong>Агент-Продюсер</strong> занимается продвижением и коллаборациями. Все они работают как слаженная редакция, в которой вы — единственный источник смысла. Аудитория растёт до тех пор, пока не достигнет той точки, ради которой вы всё это начали.</p>
+  </div>
+
+  <div class="result-scenario reveal">
+    <p class="result-scenario-q">Вы говорите: «Хочу зарабатывать миллион на маркетинге».</p>
+    <p class="result-scenario-body">Система разворачивает автономный AI-департамент маркетинга. Двенадцать агентов собирают сайты, создают креативы и пишут тексты для рекламных кампаний. Рекламные кабинеты — Telegram Ads, Яндекс Директ, ВК Реклама, Ozon, Авито — полностью ведутся департаментом. <strong>Агент-Перформанс</strong> снижает стоимость лида и управляет ставками. <strong>Агент-Креатор</strong> генерирует баннеры через Midjourney. <strong>Агент-Дизайнер</strong> собирает лендинги за секунды. <strong>Агент-Копирайтер</strong> пишет офферы под каждый сегмент аудитории. <strong>Агент-Квалификатор</strong> обрабатывает входящие заявки, ведёт переписку в директе и закрывает сделки. CRM обновляется в режиме реального времени. <strong>Агент-Аналитик</strong> непрерывно пересчитывает ROMI. Департамент работает до тех пор, пока не выйдет на тот показатель, ради которого вы его запустили.</p>
+  </div>
+
+  <div class="prose reveal">
+    <p>Это лишь два примера из бесконечного числа возможных. Любой замысел, который вы способны сформулировать, превращается для системы в задачу, которую она берёт на себя.</p>
+  </div>
+
+  <p class="result-cta-line reveal"><a href="#cases">Посмотреть реальные кейсы →</a></p>
+</section>
+
 <section class="wrap" id="potential">
   <div class="sec-head reveal">
-    <div class="sec-num">03 — Потенциал</div>
+    <div class="sec-num">04 — Потенциал</div>
     <h2>Три слоя жизни,<br>растущие синхронно</h2>
   </div>
   <div class="stack">
@@ -1137,7 +1199,7 @@
 
 <section class="wrap" id="model">
   <div class="sec-head reveal">
-    <div class="sec-num">04 — Модель</div>
+    <div class="sec-num">05 — Модель</div>
     <h2>День, прожитый<br>с системой</h2>
     <p class="lead">Владелец не отвечает на каждое действие — только на решения. Остальное система делает сама.</p>
   </div>
@@ -1155,7 +1217,7 @@
 
 <section class="wrap" id="interfaces">
   <div class="sec-head reveal">
-    <div class="sec-num">05 — Интерфейсы</div>
+    <div class="sec-num">06 — Интерфейсы</div>
     <h2>Реальные интерфейсы<br>и база знаний</h2>
   </div>
   <div class="reveal" style="margin-top:28px">
@@ -1186,7 +1248,7 @@
 
 <section class="wrap" id="processes">
   <div class="sec-head reveal">
-    <div class="sec-num">06 — Процессы</div>
+    <div class="sec-num">07 — Процессы</div>
     <h2>Реальные рабочие процессы<br>решения задач</h2>
   </div>
   <div class="stack">
@@ -1317,7 +1379,7 @@
 
 <section class="wrap" id="cases">
   <div class="sec-head reveal">
-    <div class="sec-num">07 — Кейсы</div>
+    <div class="sec-num">08 — Кейсы</div>
     <h2>Реальные<br>внедрения</h2>
     <p class="lead">Не презентация — то что работает на проде прямо сейчас, с цифрами и стеком.</p>
   </div>
@@ -1583,7 +1645,7 @@
 
 <section class="wrap" id="arch">
   <div class="sec-head reveal">
-    <div class="sec-num">08 — Архитектура</div>
+    <div class="sec-num">09 — Архитектура</div>
     <h2>Оркестратор<br>и его агенты</h2>
     <p class="lead">Подход построен на консенсусе передовых решений индустрии: один оркестратор владеет полным контекстом, специализированные агенты работают в изолированных контекстах и возвращают только сжатую сводку.</p>
   </div>
@@ -1612,7 +1674,7 @@
 
 <section class="wrap" id="infra">
   <div class="sec-head reveal">
-    <div class="sec-num">09 — Инфраструктура</div>
+    <div class="sec-num">10 — Инфраструктура</div>
     <h2>Стек по верху<br>индустрии</h2>
     <p class="lead">Каждый компонент относится к одному из трёх основных уровней. Уровень задаёт частоту аудита и порог для миграции.</p>
   </div>
@@ -1647,7 +1709,7 @@
 
 <section class="wrap" id="evolution">
   <div class="sec-head reveal">
-    <div class="sec-num">10 — Эволюция</div>
+    <div class="sec-num">11 — Эволюция</div>
     <h2>Система растёт<br>вместе с рынком</h2>
     <p class="lead">Этот рост — не стихийный дрейф, а явный процесс с агентом-Auditor и расписанием.</p>
   </div>
@@ -1682,7 +1744,7 @@
 
 <section class="wrap" id="roadmap">
   <div class="sec-head reveal">
-    <div class="sec-num">11 — Roadmap</div>
+    <div class="sec-num">12 — Roadmap</div>
     <h2>Куда движется<br>Alive</h2>
     <p class="lead">Направление развития в формате Now / Next / Later. Только Now — обязательства, остальное — ориентир.</p>
   </div>
@@ -1846,7 +1908,7 @@
 
 <section class="wrap" id="standards">
   <div class="sec-head reveal">
-    <div class="sec-num">12 — Стандарты</div>
+    <div class="sec-num">13 — Стандарты</div>
     <h2>Открытые стандарты —<br>фундамент Alive</h2>
     <p class="lead">На чём построена и с чем согласована.</p>
   </div>
@@ -1872,7 +1934,7 @@
 
 <section class="wrap" id="carriers">
   <div class="sec-head reveal">
-    <div class="sec-num">13 — Носители</div>
+    <div class="sec-num">14 — Носители</div>
     <h2>Соседи по смыслу<br>и замыслу</h2>
     <p class="lead">Кто рядом — личный AI вокруг человека, носители близких идей.</p>
   </div>
@@ -1900,7 +1962,7 @@
 
 <section class="wrap" id="competitors">
   <div class="sec-head reveal">
-    <div class="sec-num">14 — Конкуренты</div>
+    <div class="sec-num">15 — Конкуренты</div>
     <h2>Кто решает<br>соседнюю задачу</h2>
     <p class="lead">Computer-use агенты, мульти-агентные фреймворки, enterprise OS — для контекста.</p>
   </div>
@@ -1999,7 +2061,7 @@
         <span class="lc-chev">›</span>
       </div>
       <div class="lc-detail">
-        <p>Система продолжает работать без тебя — см. раздел «04 Модель» → таб «Без владельца». Имитирует тебя для типового, эскалирует важное в очередь, продолжает проекты по согласованным направлениям. Возвращение — пять минут синхронизации.</p>
+        <p>Система продолжает работать без тебя — см. раздел «05 Модель» → таб «Без владельца». Имитирует тебя для типового, эскалирует важное в очередь, продолжает проекты по согласованным направлениям. Возвращение — пять минут синхронизации.</p>
       </div>
     </div>
   </div>
@@ -2653,6 +2715,7 @@ document.querySelectorAll('.layer-card').forEach(c=>c.addEventListener('click',e
       'nav.vision': 'Видение',
       'nav.owner': 'Владелец',
       'nav.intent': 'Замысел',
+      'nav.result': 'Результат',
       'nav.potential': 'Потенциал',
       'nav.model': 'Модель',
       'nav.interfaces': 'Интерфейсы',
@@ -2681,6 +2744,7 @@ document.querySelectorAll('.layer-card').forEach(c=>c.addEventListener('click',e
       'nav.vision': 'Vision',
       'nav.owner': 'Owner',
       'nav.intent': 'Intent',
+      'nav.result': 'Result',
       'nav.potential': 'Potential',
       'nav.model': 'Model',
       'nav.interfaces': 'Interfaces',
