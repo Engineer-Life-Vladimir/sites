@@ -23,10 +23,10 @@
 <meta name="twitter:description" content="Автономный мультиагентный AI-офис: живая, самосовершенствующаяся операционная система вокруг Principal's Telos.">
 
 <meta name="theme-color" content="#2c2c2a">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIyIiBmaWxsPSIjMmMyYzJhIi8+PHBhdGggZD0iTTUwIDIyIEw3NCA3MiBMMjYgNzIgWiIgc3Ryb2tlPSIjZmFmOWY2IiBzdHJva2Utd2lkdGg9IjciIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSI3NCIgY3k9IjY0IiByPSI5IiBmaWxsPSIjNGE3YzY0Ii8+PC9zdmc+">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230a0a0b'/><path fill-rule='evenodd' d='M14.6 6.5L7 25.5h3.4l1.7-4.4h7.8l1.7 4.4H25L17.4 6.5h-2.8zm-1.4 12L16 11l2.8 7.5h-5.6z' fill='%23f5f5f7'/><circle cx='25.5' cy='25.5' r='2.8' fill='%234a7c64'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Spline+Sans:wght@400;500&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#faf9f6;
@@ -45,9 +45,9 @@
     --amber-wash:#f1ebdd;
     --r:7px;
     --r-lg:9px;
-    --serif:'Fraunces',Georgia,serif;
-    --sans:'Spline Sans',-apple-system,sans-serif;
-    --mono:'Spline Sans Mono',ui-monospace,monospace;
+    --serif:'Cormorant Garamond', Georgia, serif;
+    --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono:'Spline Sans Mono', 'SF Mono', monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -84,7 +84,7 @@
   .nav-burger{display:none}
   .brand{font-family:var(--serif);font-size:19px;font-weight:500;letter-spacing:-.01em;text-decoration:none;color:var(--ink)}
   .brand .dot{color:var(--accent)}
-  .nav-links{display:flex;gap:2px;flex-wrap:wrap}
+  .nav-links{display:flex;gap:2px;flex-wrap:wrap;align-items:center}
   .nav-links a{
     font-size:12px;color:var(--ink-faint);text-decoration:none;
     padding:5px 9px;border-radius:6px;transition:all .18s ease;font-family:var(--mono);
@@ -2441,21 +2441,36 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{
   io.observe(el);
 });
 
-const navA=document.querySelectorAll('.nav-links a');
-const secs=[...navA].map(a=>{
-  const href=a.getAttribute('href');
-  if(!href||href.charAt(0)!=='#')return null;
-  try{return document.querySelector(href);}catch(e){return null;}
-});
-const navIo=new IntersectionObserver((es)=>{
-  es.forEach(e=>{
-    if(e.isIntersecting){
-      const id='#'+e.target.id;
-      navA.forEach(a=>a.classList.toggle('active',a.getAttribute('href')===id));
-    }
+(function(){
+  const groups = {
+    'alive':'#alive','vision':'#alive','intent':'#alive','result':'#alive','potential':'#alive',
+    'live':'#live','model':'#live','interfaces':'#live','processes':'#live','cases':'#live',
+    'live2':'#live2','arch':'#live2','infra':'#live2','evolution':'#live2','roadmap':'#live2',
+    'audit':'#audit','standards':'#audit','carriers':'#audit','competitors':'#audit',
+    'faq':'#faq','contact':'#contact'
+  };
+  const links = document.querySelectorAll('.nav-links a[href^="#"]');
+  function setActive(id){
+    const group = groups[id];
+    if(!group) return;
+    links.forEach(a => {
+      const h = a.getAttribute('href');
+      a.classList.toggle('active', h === '#'+id || h === group);
+    });
+  }
+  const targets = Object.keys(groups).map(id => document.getElementById(id)).filter(Boolean);
+  const navIo = new IntersectionObserver((es) => {
+    es.forEach(e => { if(e.isIntersecting) setActive(e.target.id); });
+  }, {rootMargin:'-45% 0px -50% 0px'});
+  targets.forEach(t => navIo.observe(t));
+  setActive('alive');
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', () => {
+      const id = a.getAttribute('href').slice(1);
+      if(groups[id]) setActive(id);
+    });
   });
-},{rootMargin:'-45% 0px -50% 0px'});
-secs.forEach(s=>{if(s)navIo.observe(s);});
+})();
 
 document.querySelectorAll('.layer-card').forEach(c=>c.addEventListener('click',e=>{
   if(e.target.closest('.lc-btn'))return;
