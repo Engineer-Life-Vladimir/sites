@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alive — Независимый аудит и оценка системы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f1e9; --bg2:#ebe6da; --card:#fbf9f4; --ink:#1b1a17; --ink2:#3a382f;
+    --muted:#6e6a5d; --faint:#9a9484; --line:#ddd6c6; --line2:#cfc7b3;
+    --alive:#1f6f5c; --alive2:#2a8d74; --top:#b9802f; --accent:#b23a2e;
+    --ahead:#2e7d5b; --behind:#bf8a2a; --far:#c0432f; --pot:#c98a2e;
+    --disp:'Bricolage Grotesque',sans-serif; --body:'Spectral',Georgia,serif; --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+    background-image:radial-gradient(1100px 500px at 85% -10%, rgba(31,111,92,.07), transparent 60%);}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 26px;position:relative;z-index:1}
+  .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:50;background:linear-gradient(90deg,var(--alive),var(--alive2),var(--top));transition:width .12s linear}
+
+  .r{opacity:0;transform:translateY(22px);transition:opacity .85s cubic-bezier(.2,.7,.2,1),transform .85s cubic-bezier(.2,.7,.2,1)}
+  .r.in{opacity:1;transform:none}
+  .r-d1{transition-delay:.08s}.r-d2{transition-delay:.16s}.r-d3{transition-delay:.24s}.r-d4{transition-delay:.32s}
+  @media(prefers-reduced-motion:reduce){.r{opacity:1;transform:none;transition:none}*{animation:none!important}.bar .fill,.prow .pfill{transition:none!important}}
+
+  header{padding:64px 0 36px;border-bottom:2px solid var(--ink)}
+  .toprow{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:30px}
+  .badge{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--card);background:var(--accent);padding:6px 12px;border-radius:2px;font-weight:500;box-shadow:0 0 0 0 rgba(178,58,46,.4);animation:pulse 3.2s ease-out infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(178,58,46,.35)}70%{box-shadow:0 0 0 9px rgba(178,58,46,0)}100%{box-shadow:0 0 0 0 rgba(178,58,46,0)}}
+  .docref{font-family:var(--mono);font-size:10.5px;color:var(--faint);text-align:right;line-height:1.8}
+  h1{font-family:var(--disp);font-weight:800;font-size:clamp(36px,5.6vw,66px);line-height:1.02;letter-spacing:-.02em}
+  h1 em{font-style:normal;color:var(--accent)}
+  .lede{font-family:var(--body);font-size:clamp(18px,2.3vw,23px);color:var(--ink2);margin-top:18px;max-width:800px;line-height:1.45}
+  .hl100{color:var(--alive);font-weight:600;background:rgba(31,111,92,.1);border-radius:5px;padding:1px 8px;white-space:nowrap}
+  .meta{display:flex;flex-wrap:wrap;gap:0 34px;margin-top:26px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .meta b{color:var(--ink)}
+
+  .hero{padding:46px 0;border-bottom:1px solid var(--line)}
+  .twoscore{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  @media(max-width:860px){.twoscore{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){.twoscore{grid-template-columns:1fr}}
+  .sc{background:var(--card);padding:24px 22px;transition:background .3s}
+  .sc:hover{background:#fff}
+  .sc .lab{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+  .sc .v{font-family:var(--disp);font-weight:800;font-size:54px;line-height:1;margin-top:8px;font-variant-numeric:tabular-nums}
+  .sc .d{font-family:var(--mono);font-size:10.5px;color:var(--faint);margin-top:8px;line-height:1.5}
+  .sc.fact .v{color:var(--alive)} .sc.pot .v{color:var(--pot)} .sc.concept .v{color:var(--accent)} .sc.tp .v{color:var(--ink)}
+
+  .scale-wrap{margin-top:30px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:30px 30px 44px}
+  .scale-wrap h3{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:60px}
+  .scale{position:relative;height:14px;background:linear-gradient(90deg,#e7ddc8,#dfe6d6);border-radius:8px;margin:0 8px 10px}
+  .tick{position:absolute;top:50%;transform:translate(-50%,-50%);width:3px;height:30px;background:var(--ink);border-radius:2px;opacity:0;transition:opacity .5s,left 1.1s cubic-bezier(.2,.7,.2,1);left:0}
+  .scale.in .tick{opacity:1}
+  .scale.in .tick.al{left:54%}.scale.in .tick.po{left:64%}.scale.in .tick.tp{left:95%}.scale.in .tick.cn{left:92%}
+  .tick .flag{position:absolute;left:50%;transform:translateX(-50%);bottom:38px;white-space:nowrap;text-align:center;font-family:var(--mono)}
+  .tick .flag .fn{font-size:10px;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+  .tick .flag .fv{font-family:var(--disp);font-weight:800;font-size:26px;line-height:1;margin-top:2px;font-variant-numeric:tabular-nums}
+  .tick.al{background:var(--alive)} .tick.al .fv{color:var(--alive)}
+  .tick.po{background:var(--pot);height:24px} .tick.po .fv{color:var(--pot);font-size:20px}
+  .tick.po .flag{bottom:auto;top:32px}
+  .tick.tp{background:var(--ink)} .tick.tp .fv{color:var(--ink)}
+  .tick.cn{background:var(--accent);height:24px} .tick.cn .fv{color:var(--accent);font-size:20px}
+  .tick.cn .flag{bottom:auto;top:32px}
+  .scaleaxis{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--faint);margin:0 8px}
+
+  .headline{margin-top:32px;font-family:var(--body);font-size:clamp(17px,2vw,20px);line-height:1.6;color:var(--ink2);border-left:3px solid var(--alive);padding:4px 0 4px 22px}
+  .headline b{color:var(--ink);font-weight:600}
+  .disclaimer{margin-top:18px;font-family:var(--body);font-size:15px;color:var(--ink2);background:var(--bg2);border:1px solid var(--line2);border-radius:9px;padding:16px 20px;line-height:1.55}
+  .disclaimer b{color:var(--ink);font-weight:600}
+
+  section{padding:54px 0;border-bottom:1px solid var(--line)}
+  .sh{display:flex;align-items:baseline;gap:16px;margin-bottom:14px}
+  .sh .n{font-family:var(--mono);font-size:13px;color:var(--accent)}
+  .sh h2{font-family:var(--disp);font-weight:700;font-size:clamp(24px,3.3vw,37px);letter-spacing:-.01em}
+  .sdesc{color:var(--muted);font-size:15px;max-width:860px;margin-bottom:30px}
+
+  .soloband{background:linear-gradient(120deg,#23433a,#1b3b32);color:#eef3ef;border-radius:12px;padding:34px 36px;position:relative;overflow:hidden}
+  .soloband::after{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(127,211,184,.22),transparent 70%);pointer-events:none}
+  .soloband .sb-h{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#7fd3b8;margin-bottom:16px}
+  .soloband .sb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:22px}
+  @media(max-width:680px){.soloband .sb-grid{grid-template-columns:1fr;gap:16px}}
+  .soloband .sb-n{font-family:var(--disp);font-weight:800;font-size:clamp(28px,4.5vw,42px);line-height:1;color:#fff;font-variant-numeric:tabular-nums}
+  .soloband .sb-l{font-family:var(--mono);font-size:11px;color:#a9c4ba;margin-top:8px;line-height:1.5}
+  .soloband p{font-family:var(--body);font-size:clamp(16px,2vw,19px);line-height:1.6;color:#dfeae4}
+  .soloband p b{color:#7fd3b8;font-weight:600}
+
+  .method{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:24px 26px}
+  .method .mt{font-family:var(--disp);font-weight:700;font-size:17px;margin-bottom:14px}
+  .method .rg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+  @media(max-width:680px){.method .rg{grid-template-columns:1fr 1fr}}
+  .method .rc{border:1px solid var(--line2);border-radius:7px;padding:12px 14px;background:var(--bg)}
+  .method .rc .rn{font-family:var(--disp);font-weight:800;font-size:15px;color:var(--ink)}
+  .method .rc .rl{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px;line-height:1.45}
+  .method p{font-size:14px;color:var(--ink2);line-height:1.55}
+  .method p b{color:var(--ink);font-weight:600}
+
+  /* tops — three leagues */
+  .groups{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+  @media(max-width:760px){.groups{grid-template-columns:1fr}}
+  .grp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0;overflow:hidden;transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s;position:relative}
+  .grp:hover{transform:translateY(-5px);box-shadow:0 18px 40px -22px rgba(27,26,23,.4)}
+  .grp .gtop{padding:20px 22px 16px;border-bottom:1px solid var(--line);position:relative}
+  .grp .gtop::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gc)}
+  .grp .gnum{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--gc);font-weight:700}
+  .grp .gt{font-family:var(--disp);font-weight:800;font-size:18px;margin-top:7px;letter-spacing:-.01em;line-height:1.15}
+  .grp .gs{font-family:var(--mono);font-size:10px;letter-spacing:.02em;color:var(--faint);margin-top:7px;text-transform:uppercase}
+  .grp ul{list-style:none;padding:8px 22px 18px}
+  .grp li{padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px;line-height:1.45;color:var(--muted)}
+  .grp li:last-child{border-bottom:none}
+  .grp li b{display:block;font-family:var(--disp);font-weight:700;color:var(--ink);font-size:14px;margin-bottom:2px;letter-spacing:-.01em}
+  /* key benchmark spotlight */
+  .keytop{background:linear-gradient(120deg,#fdf6ec,#f8ede0);border:1px solid var(--line2);border-left:4px solid var(--accent);border-radius:11px;padding:28px 30px;position:relative;overflow:hidden}
+  .keytop .kt-tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:20px;padding:4px 11px;margin-bottom:14px}
+  .keytop .kt-h{font-family:var(--disp);font-weight:800;font-size:clamp(20px,2.6vw,26px);line-height:1.1;margin-bottom:6px}
+  .keytop .kt-h em{font-style:normal;color:var(--accent)}
+  .keytop .kt-sub{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:16px}
+  .keytop .kt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 26px;margin-top:4px}
+  @media(max-width:680px){.keytop .kt-grid{grid-template-columns:1fr}}
+  .keytop .kt-row{display:flex;gap:11px;align-items:flex-start;font-size:14px;line-height:1.45;color:var(--ink2)}
+  .keytop .kt-row .ck{color:var(--alive);font-weight:800;flex-shrink:0;font-family:var(--disp)}
+  .keytop .kt-row b{color:var(--ink);font-weight:600}
+  .keytop .kt-foot{margin-top:18px;padding-top:16px;border-top:1px solid var(--line2);font-size:14.5px;line-height:1.5;color:var(--ink2)}
+  .keytop .kt-foot b{color:var(--ink);font-weight:600}
+
+  /* M5 feature list */
+  .feat{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:6px 26px}
+  .feat .fi{display:flex;gap:18px;align-items:flex-start;padding:20px 0;border-bottom:1px solid var(--line)}
+  .feat .fi:last-child{border-bottom:none}
+  .feat .fic{font-family:var(--disp);font-weight:800;font-size:15px;color:var(--card);background:var(--alive);min-width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .feat .ft{font-size:15px;color:var(--ink2);line-height:1.5}
+  .feat .ft b{color:var(--ink);font-weight:600}
+
+  /* projection ladder */
+  .proj{display:flex;flex-direction:column;gap:10px}
+  .prow{display:grid;grid-template-columns:1fr 54px;align-items:center;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:9px;padding:14px 18px;transition:border-color .3s,box-shadow .3s}
+  .prow:hover{border-color:var(--line2);box-shadow:0 8px 22px -18px rgba(27,26,23,.4)}
+  .prow .pleft{display:flex;flex-direction:column;gap:9px}
+  .prow .plabel{font-size:14.5px;color:var(--ink2);line-height:1.35}
+  .prow .plabel b{color:var(--ink);font-weight:600}
+  .prow .ptrack{height:10px;background:var(--bg2);border-radius:6px;overflow:hidden}
+  .prow .pfill{height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,var(--pot),var(--alive2));transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+  .proj.in .pfill{width:var(--w)}
+  .prow.cur .pfill{background:linear-gradient(90deg,var(--alive),var(--alive2))}
+  .prow.tp .pfill{background:repeating-linear-gradient(45deg,var(--top),var(--top) 7px,#caa05a 7px,#caa05a 14px)}
+  .prow .pscore{font-family:var(--disp);font-weight:800;font-size:28px;text-align:right;color:var(--pot);font-variant-numeric:tabular-nums}
+  .prow.cur .pscore{color:var(--alive)}
+  .prow.tp .pscore{color:#9a6e1c}
+
+  .cmp{display:flex;flex-direction:column;gap:18px}
+  .crow{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:18px 22px;transition:box-shadow .3s,border-color .3s}
+  .crow:hover{box-shadow:0 10px 26px -20px rgba(27,26,23,.4);border-color:var(--line2)}
+  .crow .chead{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+  .crow .carea{font-family:var(--disp);font-weight:700;font-size:18px}
+  .vtag{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-weight:500}
+  .vtag.ahead{background:rgba(46,125,91,.14);color:var(--ahead)}
+  .vtag.behind{background:rgba(191,138,42,.16);color:#9a6e1c}
+  .vtag.far{background:rgba(192,67,47,.13);color:var(--far)}
+  .bar{display:grid;grid-template-columns:74px 1fr 40px;align-items:center;gap:12px;margin:6px 0}
+  .bar .bl{font-family:var(--mono);font-size:10px;color:var(--muted)}
+  .bar .track{height:12px;background:var(--bg2);border-radius:7px;overflow:hidden;position:relative}
+  .bar .fill{height:100%;width:0;border-radius:7px;transition:width 1.25s cubic-bezier(.2,.7,.2,1)}
+  .crow.in .bar .fill{width:var(--w)}
+  .crow.in .bar.p .fill{transition-delay:.1s} .crow.in .bar.t .fill{transition-delay:.2s}
+  .bar.f .fill{background:linear-gradient(90deg,var(--alive),var(--alive2))}
+  .bar.p .fill{background:linear-gradient(90deg,#d8a64e,var(--pot))}
+  .bar.t .fill{background:repeating-linear-gradient(45deg,var(--top),var(--top) 7px,#caa05a 7px,#caa05a 14px);opacity:.8}
+  .bar .bv{font-family:var(--disp);font-weight:800;font-size:15px;text-align:right;font-variant-numeric:tabular-nums}
+  .bar.f .bv{color:var(--alive)} .bar.p .bv{color:var(--pot)} .bar.t .bv{color:#9a6e1c}
+  .cnote{font-size:13.5px;color:var(--muted);line-height:1.5;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+  .cnote b{color:var(--ink)}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:24px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .legend i{width:18px;height:10px;border-radius:3px;display:inline-block}
+  .lg-f{background:linear-gradient(90deg,var(--alive),var(--alive2))}
+  .lg-p{background:linear-gradient(90deg,#d8a64e,var(--pot))}
+  .lg-t{background:repeating-linear-gradient(45deg,var(--top),var(--top) 6px,#caa05a 6px,#caa05a 12px)}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--card);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  @media(max-width:760px){.cols{grid-template-columns:1fr}}
+  .col{padding:26px 28px}
+  .col:first-child{border-right:1px solid var(--line)}
+  @media(max-width:760px){.col:first-child{border-right:none;border-bottom:1px solid var(--line)}}
+  .col .ch{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px}
+  .col.now .ch{color:var(--alive)} .col.plan .ch{color:var(--behind)}
+  .col ul{list-style:none}
+  .col li{position:relative;padding-left:22px;margin-bottom:14px;font-size:14.5px;line-height:1.5;color:var(--ink2)}
+  .col li:last-child{margin-bottom:0}
+  .col li b{color:var(--ink);font-weight:600}
+  .col.now li::before{content:"●";position:absolute;left:0;color:var(--alive);font-size:11px;top:2px}
+  .col.plan li::before{content:"○";position:absolute;left:0;color:var(--behind);font-size:11px;top:2px}
+
+  .adv{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:760px){.adv{grid-template-columns:1fr}}
+  .ac{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:22px 24px;border-left:3px solid var(--alive);transition:transform .3s,box-shadow .3s}
+  .ac:hover{transform:translateY(-3px);box-shadow:0 12px 26px -20px rgba(31,111,92,.5)}
+  .ac .at{font-family:var(--disp);font-weight:700;font-size:17px;margin-bottom:7px}
+  .ac .ad{font-size:14.5px;color:var(--ink2);line-height:1.5}
+
+  .path{position:relative}
+  .pgrouplabel{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:6px 0 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .pgrouplabel .pg-band{font-family:var(--disp);font-weight:800;font-size:13px;color:var(--ink);background:var(--bg2);border:1px solid var(--line2);border-radius:20px;padding:3px 11px}
+  .pi{position:relative;padding:0 0 26px 54px;border-left:2px solid var(--line2);margin-left:16px}
+  .pi:last-child{border-left-color:transparent;padding-bottom:0}
+  .pi .dot{position:absolute;left:-15px;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--card);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent);transition:transform .4s}
+  .pi:hover .dot{transform:scale(1.12)}
+  .pi.win .dot{border-color:var(--alive);color:var(--alive)}
+  .pi.gap .dot{border-color:var(--accent);background:var(--accent);color:#fff}
+  .pi .pt{font-family:var(--disp);font-size:18px;font-weight:700;line-height:1.3;margin-bottom:6px}
+  .pi .pt .gapflag{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:20px;padding:2px 8px;margin-left:8px;vertical-align:middle;font-weight:500}
+  .pi .pbody{font-size:14px;color:var(--ink2);line-height:1.5}
+  .pi .pm{margin-top:7px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .pi .pm b{color:var(--ink)}
+
+  .concl{background:var(--ink);color:#f4f1e9;border-radius:11px;padding:40px 40px}
+  .concl .ch{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#3fae8e;margin-bottom:18px}
+  .concl p{font-family:var(--body);font-size:clamp(17px,2vw,21px);line-height:1.62}
+  .concl p b{color:#7fd3b8;font-weight:600}
+  .concl .big-thought{margin-top:24px;padding-top:24px;border-top:1px solid rgba(244,241,233,.16);font-family:var(--disp);font-weight:700;font-size:clamp(19px,2.3vw,25px);line-height:1.34;color:#f4f1e9}
+  .concl .big-thought em{font-style:normal;color:#7fd3b8}
+  .concl .sig{margin-top:24px;font-family:var(--mono);font-size:11px;color:#9a9484;letter-spacing:.05em}
+  footer{padding:42px 0 64px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--faint);line-height:1.9}
+
+  /* leaderboard — все на одной шкале */
+  .lb{display:flex;flex-direction:column;gap:7px;margin-top:8px}
+  .lbrow{display:grid;grid-template-columns:210px 1fr 46px;align-items:center;gap:14px;padding:6px 0}
+  @media(max-width:680px){.lbrow{grid-template-columns:118px 1fr 36px;gap:9px}}
+  .lbrow .lbn{font-family:var(--disp);font-weight:700;font-size:14px;color:var(--ink2);line-height:1.15}
+  .lbrow .lbn small{display:block;font-family:var(--mono);font-weight:400;font-size:10px;color:var(--faint);margin-top:3px;letter-spacing:.01em}
+  .lbrow .lbtrack{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden}
+  .lbrow .lbfill{height:100%;width:0;border-radius:7px;background:repeating-linear-gradient(45deg,var(--top),var(--top) 7px,#caa05a 7px,#caa05a 14px);opacity:.7;animation:grow 1.3s .2s cubic-bezier(.2,.7,.2,1) forwards}
+  .lbrow .lbv{font-family:var(--disp);font-weight:800;font-size:16px;text-align:right;color:#9a6e1c;font-variant-numeric:tabular-nums}
+  .lbrow.me{background:rgba(31,111,92,.07);border-radius:8px;padding:8px 12px;margin:2px -12px}
+  .lbrow.me .lbn{color:var(--alive)}
+  .lbrow.me .lbfill{background:linear-gradient(90deg,var(--alive),var(--alive2));opacity:1}
+  .lbrow.me .lbv{color:var(--alive)}
+  .lbcap{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin:8px 0 14px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .lbcap span{font-weight:400;font-size:10px;letter-spacing:.04em;color:var(--faint)}
+
+  /* инвентарь — сворачивающийся список состава */
+  .inv{display:flex;flex-direction:column;gap:10px}
+  .inv details{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;transition:box-shadow .3s}
+  .inv details[open]{box-shadow:0 10px 28px -22px rgba(27,26,23,.45)}
+  .inv summary{list-style:none;cursor:pointer;padding:16px 20px;display:flex;align-items:center;gap:12px;font-family:var(--disp);font-weight:700;font-size:16px;color:var(--ink)}
+  .inv summary::-webkit-details-marker{display:none}
+  .inv summary .cnt{font-family:var(--mono);font-size:10.5px;font-weight:400;color:var(--muted);letter-spacing:.02em}
+  .inv summary::after{content:"+";font-family:var(--mono);color:var(--accent);font-size:20px;margin-left:auto;line-height:1;transition:transform .2s}
+  .inv details[open] summary::after{content:"–"}
+  .inv .invbody{padding:2px 20px 16px}
+  .inv .ii{display:flex;gap:12px;align-items:baseline;padding:9px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.45}
+  .inv .ii:first-child{border-top:none}
+  .inv .ii .nm{font-weight:600;color:var(--ink)}
+  .inv .ii .ds{color:var(--muted)}
+  .inv .st{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:20px;flex-shrink:0;font-weight:600;white-space:nowrap}
+  .inv .st.on{background:rgba(46,125,91,.14);color:var(--ahead)}
+  .inv .st.pl{background:rgba(191,138,42,.16);color:#9a6e1c}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="wrap">
+
+  <header>
+    <div class="toprow r">
+      <span class="badge">Независимый AI-аудит · сравнение с верхом рынка ИИ 2026</span>
+      <div class="docref">ДАННЫЕ СВЕРЕНЫ ПО VAULT<br>Источники — в конце материала</div>
+    </div>
+    <h1 class="r r-d1">Оценка проекта <em>Alive</em> в сравнении с лидерами рынка</h1>
+    <p class="lede r r-d2">Независимый аудит персональной AI-инфраструктуры в прямом сравнении с флагманами индустрии <span class="hl100">по 100-балльной шкале</span></p>
+    <div class="meta r r-d3">
+      <span>Предмет&nbsp; <b>ИИ-агенты · архитектура · инфраструктура</b></span>
+      <span>Дата&nbsp; <b>17.06.2026</b></span>
+      <span>Метод&nbsp; <b>мультиагентный AI-аудит → критик → синтез + сверка с источниками</b></span>
+    </div>
+    <div class="disclaimer r r-d4"><b>Как проведён аудит.</b> Оценку выполнил независимый AI-аудит: несколько проверяющих агентов оценили систему по областям, отдельный критик отработал на завышения, результат сведён в синтез. Все утверждения о других продуктах сверены по открытым источникам (ссылки в конце). Баллы — заключение аудита по сопоставлению с верхом рынка.</div>
+  </header>
+
+  <div class="hero">
+    <div class="twoscore r">
+      <div class="sc fact"><div class="lab">Работает сейчас</div><div class="v" data-count="54">0</div><div class="d">фактическое состояние, /100</div></div>
+      <div class="sc pot"><div class="lab">Текущий потенциал</div><div class="v" data-count="64">0</div><div class="d">готовое к запуску, /100</div></div>
+      <div class="sc concept"><div class="lab">План проекта</div><div class="v" data-count="92">0</div><div class="d">архитектура, /100</div></div>
+      <div class="sc tp"><div class="lab">Верх рынка</div><div class="v" data-count="95">0</div><div class="d">ориентир класса</div></div>
+    </div>
+
+    <div class="scale-wrap r">
+      <h3>Где Alive на шкале 0–100</h3>
+      <div class="scale" id="scale">
+        <div class="tick al"><div class="flag"><div class="fn">сейчас</div><div class="fv">54</div></div></div>
+        <div class="tick po"><div class="flag"><div class="fn">потенциал</div><div class="fv">64</div></div></div>
+        <div class="tick tp"><div class="flag"><div class="fn">верх рынка</div><div class="fv">95</div></div></div>
+        <div class="tick cn"><div class="flag"><div class="fn">план</div><div class="fv">92</div></div></div>
+      </div>
+      <div class="scaleaxis"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+    </div>
+
+    <p class="headline r"><b>План проекта — 92.</b> Цельный, проработанный проект персональной AI-инфраструктуры на стандартах верха рынка; ближайший открытый аналог по проекту — PAI 5.0. <b>Работает сейчас — 54.</b> Это <b>первый этап</b>: живое ядро (2 агента, самовосстановление, единая память, голос) уже функционирует, проект в активной разработке — это текущая стадия, а не конечный продукт. <b>Текущий потенциал — 64</b>: то, что выходит в строй за недели — слои спроектированы, инструменты развёрнуты, железо на руках.</p>
+  </div>
+
+  <section>
+    <div class="sh r"><span class="n">01</span><h2>В каких условиях собрана система</h2></div>
+    <p class="sdesc r">Рамка проекта — её масштаб задаёт контекст для всех оценок ниже.</p>
+    <div class="soloband r">
+      <div class="sb-h">Рамка проекта</div>
+      <div class="sb-grid">
+        <div><div class="sb-n" data-count="1">0</div><div class="sb-l">человек — проект построен лично, без команды разработки</div></div>
+        <div><div class="sb-n" data-count="2" data-suffix="&nbsp;мес">0</div><div class="sb-l">с нуля до работающего ядра на своём сервере, с агентами и автоматизацией</div></div>
+        <div><div class="sb-n" data-count="92" data-suffix="/100">0</div><div class="sb-l">план проекта — цельный и проработанный, на стандартах верха рынка; ближайший открытый аналог — PAI 5.0</div></div>
+      </div>
+      <p>Alive — персональная AI-инфраструктура: мультиагентный офис на собственном сервере, единая память по сферам жизни и бизнеса, независимость от облака. Система построена <b>одним человеком, не профессиональным разработчиком, за ~2 месяца</b> — на той же базе и в той же рамке, что лидеры рынка. Ближайший открытый аналог по проекту — PAI 5.0; отличие Alive в том, что он выстроен под одного владельца и его сферы, а не публично сообществом. Важно: сейчас оценивается <b>первый этап развития</b> — проект в активной разработке, не конечный продукт.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sh r"><span class="n">02</span><h2>С кем идёт сравнение</h2></div>
+    <p class="sdesc r">Флагманы индустрии собраны из лидеров трёх лиг — у каждого своя сильная сторона. Ключевой эталон для Alive — выделен ниже.</p>
+    <div class="groups">
+      <div class="grp r" style="--gc:var(--accent)">
+        <div class="gtop"><div class="gnum">ЛИГА 01</div><div class="gt">Бизнес-агенты</div><div class="gs">Надёжность · готовый продукт</div></div>
+        <ul>
+          <li><b>Lindy</b>ИИ-сотрудники простыми словами, 3000–5000+ интеграций (по разным обзорам), агенты общаются между собой. Один из лидеров ниши.</li>
+          <li><b>Devin</b>ИИ-программист; пилот в Goldman Sachs рядом с инженерами.</li>
+          <li><b>Limitless</b>Носимый рекордер — помнит встречи и разговоры.</li>
+          <li><b>Notion AI</b>Умная база знаний.</li>
+        </ul>
+      </div>
+      <div class="grp r r-d1" style="--gc:var(--top)">
+        <div class="gtop"><div class="gnum">ЛИГА 02</div><div class="gt">Конструкторы агентов</div><div class="gs">Как агенты делят работу</div></div>
+        <ul>
+          <li><b>Anthropic</b>Эталон «главный агент + помощники» (orchestrator–worker).</li>
+          <li><b>Claude Agent SDK</b>На нём же стоят Ruby и Jessy.</li>
+          <li><b>LangGraph · Microsoft</b>Для сложных процессов и большого бизнеса.</li>
+        </ul>
+      </div>
+      <div class="grp r r-d2" style="--gc:var(--alive)">
+        <div class="gtop"><div class="gnum">ЛИГА 03 · ЛИГА ALIVE</div><div class="gt">Частные системы</div><div class="gs">Приватность · владение данными</div></div>
+        <ul>
+          <li><b>Ollama · Open WebUI</b>Локальные модели на своём железе.</li>
+          <li><b>Khoj</b>«Второй мозг» с памятью.</li>
+          <li><b>Zep · mem0 · Letta</b>Эталоны памяти; Langfuse — эталон контроля.</li>
+          <li><b>PAI 5.0</b>Та же рамка, что у Alive — см. ниже.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="keytop r">
+      <span class="kt-tag">Ключевой эталон ниши</span>
+      <div class="kt-h"><em>PAI 5.0</em> — Personal AI Infrastructure (Daniel Miessler)</div>
+      <div class="kt-sub">Open-source «Life Operating System» · ~16 000 звёзд на GitHub · релиз конец апреля / май 2026</div>
+      <div class="kt-grid">
+        <div class="kt-row"><span class="ck">✓</span><div><b>Та же рамка:</b> персональная AI-инфраструктура вокруг Telos владельца — один-в-один проект Alive.</div></div>
+        <div class="kt-row"><span class="ck">✓</span><div><b>Те же компоненты:</b> Telos, слоистая память, оркестрация агентов, Digital Assistant.</div></div>
+        <div class="kt-row"><span class="ck">✓</span><div><b>Тот же стек:</b> Claude Code как runtime, Bun как toolchain, всё в файлах — как у Alive.</div></div>
+        <div class="kt-row"><span class="ck">✓</span><div><b>Тот же принцип:</b> own data, own context, own control — суверенность данных.</div></div>
+      </div>
+      <div class="kt-foot">Совпадение не случайно: Alive и самый известный соло-проект ниши независимо пришли к одной архитектуре. Это подтверждает, что <b>проект Alive стоит на верном фундаменте, а не выдуман</b>. Отличие — PAI развивается публично сообществом, Alive выстроен под конкретного владельца и его сферы.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sh r"><span class="n">03</span><h2>Все игроки на одной шкале</h2></div>
+    <p class="sdesc r">Все по одной 100-балльной шкале, но на <b>двух осях</b> — одним числом честно не сравнить: коммерческий продукт и персональная рамка сильны в разном. Ось A — зрелость как работающего решения; ось B — проработка и архитектура плана. Alive показан и по плану (<b>92</b>), и по факту (<b>54</b> — первый этап), чтобы было видно реальное положение, а не только проект.</p>
+
+    <div class="lbcap r" style="color:var(--top)">A · Уровень как работающего решения <span>зрелость продукта</span></div>
+    <div class="lb r">
+      <div class="lbrow"><div class="lbn">Anthropic / Claude Agent SDK<small>эталон-архитектура · на ней же Alive</small></div><div class="lbtrack"><div class="lbfill" style="--w:95%"></div></div><div class="lbv">95</div></div>
+      <div class="lbrow"><div class="lbn">Lindy<small>бизнес-агенты, готовый продукт</small></div><div class="lbtrack"><div class="lbfill" style="--w:92%"></div></div><div class="lbv">92</div></div>
+      <div class="lbrow"><div class="lbn">Devin<small>автономный инженер (Goldman Sachs)</small></div><div class="lbtrack"><div class="lbfill" style="--w:90%"></div></div><div class="lbv">90</div></div>
+      <div class="lbrow"><div class="lbn">LangGraph / Microsoft<small>фреймворки оркестрации</small></div><div class="lbtrack"><div class="lbfill" style="--w:90%"></div></div><div class="lbv">90</div></div>
+      <div class="lbrow"><div class="lbn">Notion AI<small>база знаний с ИИ</small></div><div class="lbtrack"><div class="lbfill" style="--w:88%"></div></div><div class="lbv">88</div></div>
+      <div class="lbrow"><div class="lbn">Zep / mem0 / Letta<small>память агентов</small></div><div class="lbtrack"><div class="lbfill" style="--w:88%"></div></div><div class="lbv">88</div></div>
+      <div class="lbrow"><div class="lbn">Limitless<small>носимая память</small></div><div class="lbtrack"><div class="lbfill" style="--w:85%"></div></div><div class="lbv">85</div></div>
+      <div class="lbrow"><div class="lbn">Ollama / Open WebUI<small>локальные модели</small></div><div class="lbtrack"><div class="lbfill" style="--w:85%"></div></div><div class="lbv">85</div></div>
+      <div class="lbrow"><div class="lbn">PAI 5.0<small>open-source рамка · DIY, не из коробки</small></div><div class="lbtrack"><div class="lbfill" style="--w:85%"></div></div><div class="lbv">85</div></div>
+      <div class="lbrow"><div class="lbn">Khoj<small>второй мозг с памятью</small></div><div class="lbtrack"><div class="lbfill" style="--w:80%"></div></div><div class="lbv">80</div></div>
+      <div class="lbrow me"><div class="lbn">Alive · по факту<small>живая система · первый этап развития</small></div><div class="lbtrack"><div class="lbfill" style="--w:54%"></div></div><div class="lbv">54</div></div>
+    </div>
+
+    <div class="lbcap r" style="color:var(--alive);margin-top:32px">B · План проекта <span>проработка и архитектура</span></div>
+    <div class="lb r">
+      <div class="lbrow me"><div class="lbn">Alive · план<small>Telos + 3 слоя жизни — проработанный проект</small></div><div class="lbtrack"><div class="lbfill" style="--w:92%"></div></div><div class="lbv">92</div></div>
+      <div class="lbrow"><div class="lbn">PAI 5.0<small>концепт-лидер ниши</small></div><div class="lbtrack"><div class="lbfill" style="--w:90%"></div></div><div class="lbv">90</div></div>
+      <div class="lbrow"><div class="lbn">Anthropic<small>канон мультиагентной архитектуры</small></div><div class="lbtrack"><div class="lbfill" style="--w:90%"></div></div><div class="lbv">90</div></div>
+      <div class="lbrow"><div class="lbn">Devin<small>идея автономного инженера</small></div><div class="lbtrack"><div class="lbfill" style="--w:85%"></div></div><div class="lbv">85</div></div>
+      <div class="lbrow"><div class="lbn">Lindy<small>ИИ-сотрудники без кода</small></div><div class="lbtrack"><div class="lbfill" style="--w:85%"></div></div><div class="lbv">85</div></div>
+      <div class="lbrow"><div class="lbn">Zep / mem0 / Letta<small>модели памяти агентов</small></div><div class="lbtrack"><div class="lbfill" style="--w:85%"></div></div><div class="lbv">85</div></div>
+      <div class="lbrow"><div class="lbn">Limitless<small>идея «памяти жизни»</small></div><div class="lbtrack"><div class="lbfill" style="--w:84%"></div></div><div class="lbv">84</div></div>
+      <div class="lbrow"><div class="lbn">LangGraph / Microsoft<small>оркестрация процессов</small></div><div class="lbtrack"><div class="lbfill" style="--w:84%"></div></div><div class="lbv">84</div></div>
+      <div class="lbrow"><div class="lbn">Khoj<small>открытый «второй мозг»</small></div><div class="lbtrack"><div class="lbfill" style="--w:82%"></div></div><div class="lbv">82</div></div>
+      <div class="lbrow"><div class="lbn">Notion AI<small>знания в рабочем контуре</small></div><div class="lbtrack"><div class="lbfill" style="--w:80%"></div></div><div class="lbv">80</div></div>
+      <div class="lbrow"><div class="lbn">Ollama / Open WebUI<small>инструмент, не концепция</small></div><div class="lbtrack"><div class="lbfill" style="--w:78%"></div></div><div class="lbv">78</div></div>
+      <div class="lbrow me" style="opacity:.75"><div class="lbn">Alive · по факту<small>↑ план 92, но факт пока 54 · первый этап</small></div><div class="lbtrack"><div class="lbfill" style="--w:54%"></div></div><div class="lbv">54</div></div>
+    </div>
+
+    <p class="sdesc r" style="margin-top:22px;margin-bottom:0"><b>Вывод двух осей:</b> по плану Alive наверху, вровень с лидерами (92); по факту, как работающая система — пока внизу (54, первый этап). Разрыв с топами не в проекте, а в исполнении — это нормально для текущей стадии. Оценки — заключение независимого аудита.</p>
+  </section>
+
+  <section>
+    <div class="sh r"><span class="n">04</span><h2>Оценка по областям</h2></div>
+    <p class="sdesc r">9 областей системы. Зелёная — работает сейчас, оранжевая — фактический потенциал, штриховка — верх рынка.</p>
+    <div class="legend r">
+      <span><i class="lg-f"></i> Сейчас</span>
+      <span><i class="lg-p"></i> Текущий потенциал</span>
+      <span><i class="lg-t"></i> Верх рынка</span>
+    </div>
+    <div class="cmp">
+
+      <div class="crow r"><div class="chead"><span class="carea">Концепция и архитектура</span><span class="vtag ahead">сильно</span></div>
+        <div class="bar f"><span class="bl">Сейчас</span><div class="track"><div class="fill" style="--w:82%"></div></div><span class="bv">82</span></div>
+        <div class="bar p"><span class="bl">Потенциал</span><div class="track"><div class="fill" style="--w:84%"></div></div><span class="bv">84</span></div>
+        <div class="bar t"><span class="bl">Верх</span><div class="track"><div class="fill" style="--w:95%"></div></div><span class="bv">95</span></div>
+        <div class="cnote">Master-plan, foundation, RBAC, ритуалы, маркеры зрелости [Скелет/Рост/Видение] — цельная архитектурная база уровня верха ниши. Часть структуры опережает реализацию: ролей описано больше, чем развёрнуто.</div>
+      </div>
+
+      <div class="crow r"><div class="chead"><span class="carea">Документация и порядок</span><span class="vtag ahead">сильно</span></div>
+        <div class="bar f"><span class="bl">Сейчас</span><div class="track"><div class="fill" style="--w:78%"></div></div><span class="bv">78</span></div>
+        <div class="bar p"><span class="bl">Потенциал</span><div class="track"><div class="fill" style="--w:80%"></div></div><span class="bv">80</span></div>
+        <div class="bar t"><span class="bl">Верх</span><div class="track"><div class="fill" style="--w:95%"></div></div><span class="bv">95</span></div>
+        <div class="cnote">311 заметок, единый формат метаданных, журнал решений ведётся, прошлый аудит закрыт. Часть инфраструктурной документации устарела (~40%), есть дрейф рабочих файлов и vault.</div>
+      </div>
+
+      <div class="crow r"><div class="chead"><span class="carea">Ядро агентов (что реально работает)</span><span class="vtag far">главный разрыв</span></div>
+        <div class="bar f"><span class="bl">Сейчас</span><div class="track"><div class="fill" style="--w:48%"></div></div><span class="bv">48</span></div>
+        <div class="bar p"><span class="bl">Потенциал</span><div class="track"><div class="fill" style="--w:66%"></div></div><span class="bv">66</span></div>
+        <div class="bar t"><span class="bl">Верх</span><div class="track"><div class="fill" style="--w:95%"></div></div><span class="bv">95</span></div>
+        <div class="cnote">Координатор Ruby и исполнитель Jessy развёрнуты, но рабочий цикл команды ещё не замкнут: лог применённых правок пуст, сквозной тест двух агентов не пройден. Агенты работают по отдельности; цикл «задание → исполнение → ретро» спроектирован и готов к запуску.</div>
+      </div>
+
+      <div class="crow r"><div class="chead"><span class="carea">Память</span><span class="vtag behind">середина</span></div>
+        <div class="bar f"><span class="bl">Сейчас</span><div class="track"><div class="fill" style="--w:50%"></div></div><span class="bv">50</span></div>
+        <div class="bar p"><span class="bl">Потенциал</span><div class="track"><div class="fill" style="--w:60%"></div></div><span class="bv">60</span></div>
+        <div class="bar t"><span class="bl">Верх</span><div class="track"><div class="fill" style="--w:90%"></div></div><span class="bv">90</span></div>
+        <div class="cnote">Файлы + git + 9 доменов — сильная основа. Поиск по смыслу пока не подключён (только по словам); ежедневная запись наблюдений ведётся нерегулярно. Слой готов под движок семантической памяти.</div>
+      </div>
+
+      <div class="crow r"><div class="chead"><span class="carea">Надёжность и восстановление</span><span class="vtag behind">середина</span></div>
+        <div class="bar f"><span class="bl">Сейчас</span><div class="track"><div class="fill" style="--w:55%"></div></div><span class="bv">55</span></div>
+        <div class="bar p"><span class="bl">Потенциал</span><div class="track"><div class="fill" style="--w:64%"></div></div><span class="bv">64</span></div>
+        <div class="bar t"><span class="bl">Верх</span><div class="track"><div class="fill" style="--w:92%"></div></div><span class="bv">92</span></div>
+        <div class="cnote">Сторож-демон поднимает сервис после сбоя и шлёт алерт. Резервирование (второй узел), полный бэкап и расширенный мониторинг — в плане укрепления. M5 Max даёт готовый второй узел.</div>
+      </div>
+
+      <div class="crow r"><div class="chead"><span class="carea">Наблюдаемость и контроль</span><span class="vtag far">развёрнуто, не запущено</span></div>
+        <div class="bar f"><span class="bl">Сейчас</span><div class="track"><div class="fill" style="--w:35%"></div></div><span class="bv">35</span></div>
+        <div class="bar p"><span class="bl">Потенциал</span><div class="track"><div class="fill" style="--w:58%"></div></div><span class="bv">58</span></div>
+        <div class="bar t"><span class="bl">Верх</span><div class="track"><div class="fill" style="--w:90%"></div></div><span class="bv">90</span></div>
+        <div class="cnote">Langfuse развёрнут на сервере, управление доступом по зонам и алерты сторожа работают. Регулярный сбор метрик качества пока не запущен — контроль системы цифрами ещё не ведётся.</div>
+      </div>
+
+      <div class="crow r"><div class="chead"><span class="carea">Каналы и интерфейсы</span><span class="vtag behind">рабочее</span></div>
+        <div class="bar f"><span class="bl">Сейчас</span><div class="track"><div class="fill" style="--w:65%"></div></div><span class="bv">65</span></div>
+        <div class="bar p"><span class="bl">Потенциал</span><div class="track"><div class="fill" style="--w:70%"></div></div><span class="bv">70</span></div>
+        <div class="bar t"><span class="bl">Верх</span><div class="track"><div class="fill" style="--w:92%"></div></div><span class="bv">92</span></div>
+        <div class="cnote">2 Telegram-бота с голосовыми (распознавание Whisper + озвучка), VS Code, веб-чат, n8n — рабочий мульти-канал. Нет единого интерфейса и realtime-голоса; часть n8n-сценариев в доработке.</div>
+      </div>
+
+      <div class="crow r"><div class="chead"><span class="carea">Локальные модели / суверенность</span><span class="vtag far">в процессе</span></div>
+        <div class="bar f"><span class="bl">Сейчас</span><div class="track"><div class="fill" style="--w:42%"></div></div><span class="bv">42</span></div>
+        <div class="bar p"><span class="bl">Потенциал</span><div class="track"><div class="fill" style="--w:60%"></div></div><span class="bv">60</span></div>
+        <div class="bar t"><span class="bl">Верх</span><div class="track"><div class="fill" style="--w:90%"></div></div><span class="bv">90</span></div>
+        <div class="cnote">Mac M5 Max 128 ГБ уже на руках, миграция идёт. Облачные модели меняются под задачу. Но локальный контур пока не работает в постоянном режиме — процесс начат, не завершён.</div>
+      </div>
+
+      <div class="crow r"><div class="chead"><span class="carea">Безопасность</span><span class="vtag behind">в укреплении</span></div>
+        <div class="bar f"><span class="bl">Сейчас</span><div class="track"><div class="fill" style="--w:40%"></div></div><span class="bv">40</span></div>
+        <div class="bar p"><span class="bl">Потенциал</span><div class="track"><div class="fill" style="--w:58%"></div></div><span class="bv">58</span></div>
+        <div class="bar t"><span class="bl">Верх</span><div class="track"><div class="fill" style="--w:92%"></div></div><span class="bv">92</span></div>
+        <div class="cnote">Периметр выстроен: файрвол, fail2ban, hardening, доступ по SSH-ключу. Зрелость управления секретами и ключевой гигиены — в плане усиления; это сдерживает балл. Базовый щит на месте.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sh r"><span class="n">05</span><h2>Что уже работает и что готово к запуску</h2></div>
+    <p class="sdesc r">Слева — проверено по vault, работает по факту. Справа — спроектировано / развёрнуто / железо на руках, остаётся запустить.</p>
+    <div class="cols r">
+      <div class="col now"><div class="ch">Работает сейчас</div><ul>
+        <li><b>2 живых агента:</b> координатор Ruby и исполнитель Jessy развёрнуты на сервере, отвечают в Telegram.</li>
+        <li><b>Сам себя чинит:</b> сторож-демон поднимает исполнителя после сбоя и шлёт алерт (протухший вход — сигнал владельцу).</li>
+        <li><b>Память в файлах:</b> 311 заметок, 9 операционных сфер + мета-домен, синхронизация Mac ↔ GitHub ↔ 2 клона на сервере.</li>
+        <li><b>Мульти-канал с голосом:</b> 2 Telegram-бота (Whisper + озвучка), VS Code, веб-чат; права по зонам записи.</li>
+        <li><b>Автоматизация:</b> n8n (7 сценариев, часть активна), MCP-подключения, веб-доступ с сертификатом.</li>
+        <li><b>Публичный контур:</b> сайт-манифест проекта с интерактивным конструктором персональной AI-системы.</li>
+      </ul></div>
+      <div class="col plan"><div class="ch">Готово к запуску · осталось включить</div><ul>
+        <li><b>Цикл агентов:</b> связка «задание → исполнение → ретро» — спроектирована, нужен первый запуск и сквозной тест.</li>
+        <li><b>Проверяющие роли</b> (Аудитор / Критик / Память / Приёмка) — спроектированы, ждут развёртывания.</li>
+        <li><b>Умный поиск по смыслу</b> за уже готовым слоем памяти.</li>
+        <li><b>Контроль качества:</b> Langfuse развёрнут — нужны ключи + сбор метрик в ежедневный цикл.</li>
+        <li><b>Локальные модели:</b> M5 Max на руках — завершить миграцию, поднять приватный контур.</li>
+        <li><b>Резерв:</b> M5 Max как второй узел + полный бэкап системы.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sh r"><span class="n">06</span><h2>Где Alive структурно сильнее флагманов</h2></div>
+    <p class="sdesc r">Это не вопрос баллов — это другая постановка задачи. Здесь у проекта врождённое преимущество, вытекающее из самого его устройства, а не из размера команды.</p>
+    <div class="adv">
+      <div class="ac r"><div class="at">Все данные — у тебя</div><div class="ad">Вся система в обычных файлах на диске под версионным контролем, откат одной командой. У облачных флагманов данные владельца лежат в их инфраструктуре.</div></div>
+      <div class="ac r r-d1"><div class="at">Заточено под твой проект</div><div class="ad">Система построена вокруг конкретного владельца и его задач. Массовые помощники оптимизированы под усреднённого пользователя и так глубоко не персонализируются.</div></div>
+      <div class="ac r"><div class="at">Память — это весь твой контур</div><div class="ad">9 сфер жизни и бизнеса в одном месте, а не приставка-память поверх чужого продукта.</div></div>
+      <div class="ac r r-d1"><div class="at">Приватность на своём железе</div><div class="ad">Секретное можно обрабатывать полностью офлайн на M5 Max — у облачных сервисов данные всегда уходят на их сторону.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sh r"><span class="n">07</span><h2>Дорога 54 → 95: что нужно сделать</h2></div>
+    <p class="sdesc r">По этапам, от самого важного. Отмеченные пункты — ключевые узлы роста.</p>
+    <div class="path">
+
+      <div class="pgrouplabel r">Этап A · запуск готового <span class="pg-band">→ 66 · 4–8 недель</span></div>
+      <div class="pi r"><div class="dot">1</div><div class="pt">Замкнуть цикл агентов</div><div class="pbody">Ruby ставит задачу → Jessy применяет → лог правок наполняется → еженедельное ретро. Ключевой узел всей системы.</div><div class="pm">Закрывает главный разрыв: <b>ядро агентов 48 → 66</b></div></div>
+      <div class="pi r"><div class="dot">2</div><div class="pt">Сквозной тест двух агентов в Telegram</div><div class="pbody">Сквозной диалог Ruby + Jessy в одном канале — подтверждает работу команды как единого контура, а не двух отдельных ботов.</div><div class="pm">Усилие: <b>дни</b></div></div>
+      <div class="pi r"><div class="dot">3</div><div class="pt">Включить контроль качества (Langfuse)</div><div class="pbody">Создать ключи, настроить сбор, снять исходную точку. Контейнер уже работает — нужна активация и привычка смотреть.</div><div class="pm">Наблюдаемость <b>35 → 58</b></div></div>
+      <div class="pi r"><div class="dot">4</div><div class="pt">Завершить миграцию на M5 Max</div><div class="pbody">Поднять первую локальную модель в постоянный контур. Железо на руках, перенос идёт.</div><div class="pm">Локальные модели <b>42 → 60</b></div></div>
+
+      <div class="pgrouplabel r" style="margin-top:10px">Этап B · достройка слоёв <span class="pg-band">→ 80 · 2–4 месяца</span></div>
+      <div class="pi r"><div class="dot">5</div><div class="pt">Семантический поиск по памяти</div><div class="pbody">Движок (mem0 / Zep) за готовым слоем — поиск по смыслу вместо слов. Файлы остаются источником истины.</div><div class="pm">Память <b>50 → 70+</b></div></div>
+      <div class="pi r"><div class="dot">6</div><div class="pt">Развернуть Аудитора и Критика</div><div class="pbody">Постоянные проверяющие роли, желательно на не-Claude модели (перекрёстная проверка). Спроектированы, ждут запуска.</div><div class="pm">Ядро агентов <b>66 → 78</b></div></div>
+      <div class="pi r"><div class="dot">7</div><div class="pt">Мониторинг живости второго агента</div><div class="pbody">Heartbeat и алерты для Jessy — сейчас следят только за Ruby. Чинит сломанные n8n-потоки заодно.</div><div class="pm">Надёжность <b>55 → 68</b></div></div>
+      <div class="pi r"><div class="dot">8</div><div class="pt">Запустить ритм аудита по расписанию<span class="gapflag" style="color:var(--pot);border-color:var(--pot)">спланировано</span></div><div class="pbody">Аудит по cadence (ежедневно/еженедельно/ежемесячно) — задача поставлена, на сервере ещё не активирован. Запуск замыкает «самосверку с рынком» из миссии.</div><div class="pm">Закрывает обещание миссии</div></div>
+
+      <div class="pgrouplabel r" style="margin-top:10px;color:var(--alive)">Этап C · надёжность и суверенность <span class="pg-band">→ 90 · месяцы</span></div>
+      <div class="pi r"><div class="dot">9</div><div class="pt">Усилить безопасность и управление доступом</div><div class="pbody">Менеджер секретов, плановая ротация ключей, ужесточение прав агентов. Поднимает зрелость безопасности и снимает потолок системы.</div><div class="pm">Безопасность <b>40 → 75+</b> · разблокирует потолок</div></div>
+      <div class="pi win r"><div class="dot">10</div><div class="pt">Второй узел + полный бэкап</div><div class="pbody">M5 Max как резерв сервера + проверенный бэкап всей системы. Снимает единственную точку отказа.</div><div class="pm">Надёжность <b>68 → 85</b></div></div>
+      <div class="pi win r"><div class="dot">11</div><div class="pt">Проверенное восстановление после сбоя<span class="gapflag">не протестировано</span></div><div class="pbody">Сценарий «сервер недоступен → подъём за час» — проверить на деле, а не только в runbook. Runbook есть, теста пока нет.</div><div class="pm">Доказывает реальную живучесть</div></div>
+      <div class="pi win r"><div class="dot">12</div><div class="pt">Офлайн-контур для секретного</div><div class="pbody">Финансы и личное — целиком на своём железе, без облака. Облачные сервисы такого по своей модели не дают.</div><div class="pm">Суверенность <b>60 → 85</b></div></div>
+
+      <div class="pgrouplabel r" style="margin-top:10px;color:var(--alive)">Этап D · эталон класса <span class="pg-band">→ 95 · долгий горизонт</span></div>
+      <div class="pi win r"><div class="dot">13</div><div class="pt">Двойник под твой стиль</div><div class="pbody">Дообучение локальной модели на твоих заметках и решениях. Приватный путь к настоящему Цифровому двойнику.</div><div class="pm">Преимущество: глубокая персонализация</div></div>
+      <div class="pi win r"><div class="dot">14</div><div class="pt">Замкнутый автономный цикл<span class="gapflag" style="color:var(--alive);border-color:var(--alive)">ядро видения</span></div><div class="pbody">Система сама ведёт рутину домена без постоянного участия владельца — внешний контур замыкается сам. Это центральная цель видения (master-plan §1.2); на горизонте, ещё не реализована.</div><div class="pm">Превращает Alive в то, чем задумана</div></div>
+      <div class="pi r"><div class="dot">15</div><div class="pt">Доказательство метриками<span class="gapflag" style="color:var(--pot);border-color:var(--pot)">нужна история</span></div><div class="pbody">3 месяца истории Langfuse, показывающей, что система реально снимает нагрузку (% авто-классификации, % откатов). Инструмент в планах; накопить историю — отдельный шаг.</div><div class="pm">Делает высокую оценку доказанной, а не заявленной</div></div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sh r"><span class="n">08</span><h2>Что даёт Mac M5 Max 128 ГБ</h2></div>
+    <p class="sdesc r">Машина уже на руках, миграция идёт. Локальный контур открывает то, чего облако не даёт по своей природе.</p>
+    <div class="feat r">
+      <div class="fi"><div class="fic">1</div><div class="ft"><b>Свои модели локально, без интернета</b> — независимость от облака на деле, а не на словах.</div></div>
+      <div class="fi"><div class="fic">2</div><div class="ft"><b>Секретное офлайн</b> — финансы и личное обрабатываются на своём железе, без отправки наружу.</div></div>
+      <div class="fi"><div class="fic">3</div><div class="ft"><b>Второй узел = резерв</b> на случай падения сервера — снимает главную уязвимость одного сервера.</div></div>
+      <div class="fi"><div class="fic">4</div><div class="ft"><b>Дообучение модели под твой стиль</b> — путь к настоящему Цифровому двойнику на чувствительных данных.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sh r"><span class="n">09</span><h2>Как вырастет оценка при внедрении планов</h2></div>
+    <p class="sdesc r">Прогноз общей оценки по мере запуска уже спроектированных слоёв. Каждый шаг закрывает конкретный разрыв.</p>
+    <div class="proj r" id="proj">
+      <div class="prow cur"><div class="pleft"><div class="plabel"><b>Сейчас</b> — развёрнуто ядро, верхние слои готовы к запуску</div><div class="ptrack"><div class="pfill" style="--w:54%"></div></div></div><div class="pscore">54</div></div>
+      <div class="prow"><div class="pleft"><div class="plabel"><b>+ Цикл агентов + сквозной тест</b></div><div class="ptrack"><div class="pfill" style="--w:62%"></div></div></div><div class="pscore">62</div></div>
+      <div class="prow"><div class="pleft"><div class="plabel"><b>+ Контроль качества (Langfuse) + завершение миграции на M5 Max</b></div><div class="ptrack"><div class="pfill" style="--w:68%"></div></div></div><div class="pscore">68</div></div>
+      <div class="prow"><div class="pleft"><div class="plabel"><b>+ Семантический поиск памяти + проверяющие роли</b></div><div class="ptrack"><div class="pfill" style="--w:76%"></div></div></div><div class="pscore">76</div></div>
+      <div class="prow"><div class="pleft"><div class="plabel"><b>+ Второй узел / резерв + усиление безопасности + ритм аудита</b></div><div class="ptrack"><div class="pfill" style="--w:85%"></div></div></div><div class="pscore">85</div></div>
+      <div class="prow tp"><div class="pleft"><div class="plabel"><b>+ Офлайн-контур, двойник, автономный цикл, история метрик</b> — эталон ниши</div><div class="ptrack"><div class="pfill" style="--w:95%"></div></div></div><div class="pscore">95</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sh r"><span class="n">10</span><h2>Полный состав системы</h2></div>
+    <p class="sdesc r">Что реально работает и что в планах — свёрнутым списком, для тех, кому интересно заглянуть глубже. Разверни любой блок. <b style="color:var(--ahead)">● работает</b> · <b style="color:#9a6e1c">○ в планах</b></p>
+    <div class="inv r">
+
+      <details><summary>🤖 Агенты <span class="cnt">2 в строю · роли в плане</span></summary><div class="invbody">
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Ruby — координатор.</span> <span class="ds">Принимает задачи, раскладывает на шаги, отвечает в Telegram.</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Jessy — инженер.</span> <span class="ds">Исполнитель: пишет код, правит систему и инфраструктуру.</span></div></div>
+        <div class="ii"><span class="st pl">в планах</span><div><span class="nm">Аудитор · Критик · Память · Приёмка.</span> <span class="ds">Проверяющие системные роли — спроектированы, ждут запуска.</span></div></div>
+        <div class="ii"><span class="st pl">в планах</span><div><span class="nm">Лиды доменов + эфемерные роли.</span> <span class="ds">Агенты под отдельные сферы и разовые задачи.</span></div></div>
+      </div></details>
+
+      <details><summary>🧠 Память и знания <span class="cnt">311 заметок · 9 сфер</span></summary><div class="invbody">
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Vault (файлы + git).</span> <span class="ds">Единый источник истины: 311 заметок по 9 сферам жизни и бизнеса.</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Авто-память агентов.</span> <span class="ds">Копят факты и решения между сессиями.</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Синхронизация Mac ↔ GitHub ↔ сервер.</span> <span class="ds">Двусторонняя, каждые 10 минут.</span></div></div>
+        <div class="ii"><span class="st pl">в планах</span><div><span class="nm">Смысловой поиск памяти.</span> <span class="ds">Поиск по смыслу вместо слов (mem0 / Zep).</span></div></div>
+      </div></details>
+
+      <details><summary>🛠 Инфраструктура и хостинг <span class="cnt">сервер + M5 Max</span></summary><div class="invbody">
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Сервер в облаке.</span> <span class="ds">Держит агентов и сервисы 24/7.</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Mac M5 Max 128 ГБ.</span> <span class="ds">Узел под локальные модели и резерв (миграция идёт).</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Docker + Caddy (HTTPS).</span> <span class="ds">Контейнеры сервисов + защищённый доступ.</span></div></div>
+        <div class="ii"><span class="st pl">в планах</span><div><span class="nm">Второй узел + полный бэкап.</span> <span class="ds">Резерв на случай падения сервера.</span></div></div>
+      </div></details>
+
+      <details><summary>⚙️ Сервисы <span class="cnt">4</span></summary><div class="invbody">
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">n8n — автоматизация.</span> <span class="ds">7 сценариев: напоминания, отчёты, вебхуки.</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Open WebUI — веб-чат.</span> <span class="ds">Доступ к моделям через браузер.</span></div></div>
+        <div class="ii"><span class="st pl">в планах</span><div><span class="nm">Langfuse — контроль качества.</span> <span class="ds">Развёрнут; сбор метрик агентов — осталось включить.</span></div></div>
+        <div class="ii"><span class="st pl">в планах</span><div><span class="nm">Ollama — локальные модели.</span> <span class="ds">Свой приватный «мозг» на M5 Max.</span></div></div>
+      </div></details>
+
+      <details><summary>🔌 Протоколы и модели <span class="cnt">стандарты + мозги</span></summary><div class="invbody">
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">MCP — подключение инструментов.</span> <span class="ds">Открытый стандарт связи агентов с данными.</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Облачные модели.</span> <span class="ds">Claude (Opus/Sonnet/Haiku), gpt-5.5, OpenRouter — сменный мозг под задачу.</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">RBAC по зонам записи.</span> <span class="ds">Кто из агентов что может менять — прописано.</span></div></div>
+        <div class="ii"><span class="st pl">в планах</span><div><span class="nm">A2A + локальные модели.</span> <span class="ds">Прямая связь между агентами; Llama/Qwen/DeepSeek локально.</span></div></div>
+      </div></details>
+
+      <details><summary>🧩 Навыки (skills) <span class="cnt">4 набора</span></summary><div class="invbody">
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Superpowers.</span> <span class="ds">Методология «исследуй → план → сделай → проверь» как навык.</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Graphify.</span> <span class="ds">Граф связей по базе знаний.</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Obsidian-навыки.</span> <span class="ds">Работа с форматом заметок vault.</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Свои навыки рабочих папок.</span> <span class="ds">Поиск и запись в vault, чтение общей памяти.</span></div></div>
+      </div></details>
+
+      <details><summary>📜 Скрипты и автоматика <span class="cnt">самовосстановление</span></summary><div class="invbody">
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Сторож-демон (watchdog).</span> <span class="ds">Поднимает агента после сбоя, шлёт алерт в Telegram.</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Авто-синхронизация vault.</span> <span class="ds">Коммит и синк каждые 10 минут.</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Напоминание об обновлениях + бэкап-конфиги.</span> <span class="ds">Следит за версиями, сохраняет конфиг перед правкой.</span></div></div>
+      </div></details>
+
+      <details><summary>💬 Каналы <span class="cnt">3 рабочих</span></summary><div class="invbody">
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Telegram (2 бота, с голосом).</span> <span class="ds">Управление с любого устройства; голосовые — распознавание + озвучка.</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">VS Code на Mac.</span> <span class="ds">Крупная работа за компом.</span></div></div>
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Веб-чат.</span> <span class="ds">Доступ через браузер.</span></div></div>
+        <div class="ii"><span class="st pl">в планах</span><div><span class="nm">Голос realtime + единый интерфейс.</span> <span class="ds">Разговор как с человеком, все каналы в одном.</span></div></div>
+      </div></details>
+
+      <details><summary>🌐 Публичное <span class="cnt">сайт-манифест</span></summary><div class="invbody">
+        <div class="ii"><span class="st on">работает</span><div><span class="nm">Сайт-манифест + конструктор.</span> <span class="ds">Презентация проекта и интерактивная сборка персональной AI-системы.</span></div></div>
+      </div></details>
+
+    </div>
+  </section>
+
+  <section style="border-bottom:none">
+    <div class="sh r"><span class="n">11</span><h2>Итог</h2></div>
+    <div class="concl r">
+      <div class="ch">Заключение · план 92 · факт 54 (1-й этап) · потенциал 64</div>
+      <p>План проекта Alive — <b>92</b>: цельный, проработанный проект персональной AI-инфраструктуры на стандартах верха рынка, вровень с лидером ниши PAI 5.0 (~90). Фактическое состояние — <b>54</b> — это <b>первый этап развития</b>: живое ядро работает, часть верхних слоёв спроектирована или развёрнута, но ещё не в постоянной работе; проект в активной разработке, а не конечный продукт. Основной вес держат ядро агентов, наблюдаемость и безопасность. Документация — на уровне верха ниши. С учётом готового к запуску — <b>потенциал 64</b>, и путь до 80 — преимущественно запуск, а не переделка.</p>
+      <div class="big-thought">Цель Alive — не догнать всех, а быть <em>личной и независимой ИИ-системой под свой проект.</em> В этой нише прямых соперников нет. Сила проекта — в плане и фундаменте; ближайший рост — в запуске уже готовых слоёв и в структурных преимуществах: владение данными, приватность на своём железе, глубокая персонализация.</div>
+      <div class="sig">Независимый AI-аудит · 17.06.2026 · оценка по 9 областям · персональная AI-инфраструктура Alive</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sh r"><span class="n">12</span><h2>Источники и методология</h2></div>
+    <p class="sdesc r">Все внешние утверждения о других продуктах сверены по открытым источникам. Оценку провёл независимый AI-аудит: несколько проверяющих агентов → критик → синтез; баллы — заключение аудита.</p>
+    <div class="method r">
+      <div class="mt">Внешние источники</div>
+      <p style="line-height:2">
+        <b>PAI 5.0 (Daniel Miessler)</b> — <a style="color:var(--alive)" href="https://github.com/danielmiessler/Personal_AI_Infrastructure" target="_blank" rel="noopener">github.com/danielmiessler/Personal_AI_Infrastructure</a> (~16k звёзд) · <a style="color:var(--alive)" href="https://danielmiessler.com/blog/announcing-pai-5-life-operating-system" target="_blank" rel="noopener">анонс PAI 5.0</a><br>
+        <b>Lindy — интеграции</b> — <a style="color:var(--alive)" href="https://www.lindy.ai/integrations" target="_blank" rel="noopener">lindy.ai/integrations</a><br>
+        <b>Devin в Goldman Sachs</b> — <a style="color:var(--alive)" href="https://www.cnbc.com/2025/07/11/goldman-sachs-autonomous-coder-pilot-marks-major-ai-milestone.html" target="_blank" rel="noopener">CNBC, 2025</a><br>
+        <b>Anthropic — паттерн «оркестратор + помощники»</b> — <a style="color:var(--alive)" href="https://www.anthropic.com/research/building-effective-agents" target="_blank" rel="noopener">Building Effective Agents</a> · <a style="color:var(--alive)" href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" rel="noopener">Multi-Agent Research System</a>
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    ALIVE · НЕЗАВИСИМЫЙ AI-АУДИТ · СРАВНЕНИЕ С ВЕРХОМ РЫНКА ИИ 2026 · 17.06.2026<br>
+    План 92 · Работает сейчас 54 (1-й этап) · Текущий потенциал 64 · Верх рынка ≈95 · источники указаны в материале
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var pb = document.getElementById('progress');
+  function onScroll(){var h=document.documentElement;var max=h.scrollHeight-h.clientHeight;pb.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  function countUp(el){
+    var target=parseFloat(el.getAttribute('data-count'));
+    var suffix=el.getAttribute('data-suffix')||'';
+    if(reduce){el.innerHTML=target+suffix;return;}
+    var dur=1100,start=null;
+    function step(ts){if(!start)start=ts;var p=Math.min((ts-start)/dur,1);var e=1-Math.pow(1-p,3);el.innerHTML=Math.round(target*e)+(p>=1?suffix:'');if(p<1)requestAnimationFrame(step);}
+    requestAnimationFrame(step);
+  }
+  var counted=new WeakSet();
+  function doCount(el){if(!counted.has(el)){counted.add(el);countUp(el);}}
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        if(e.target.hasAttribute('data-count')){doCount(e.target);}
+        else if(e.target.querySelectorAll){e.target.querySelectorAll('[data-count]').forEach(doCount);}
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.18,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.r, .scale, .proj, [data-count]').forEach(function(el){io.observe(el);});
+})();
+</script>
+</body>
+</html>
