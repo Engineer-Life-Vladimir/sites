@@ -126,7 +126,11 @@ h3{font-size:13.5px;font-weight:600;letter-spacing:.01em;margin:0 0 .5rem;color:
   line-height:1;cursor:pointer;transition:.18s}
 #lb .x:hover{border-color:var(--acc);color:var(--acc)}
 #lb .hintx{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);font-family:var(--mono);
-  font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+  background:rgba(10,10,11,.8);padding:.35rem .7rem;border-radius:100px;white-space:nowrap}
+#lb img{cursor:zoom-in}
+#lb .box.zoom{align-items:flex-start;justify-content:flex-start;overflow:auto}
+#lb .box.zoom img{max-width:none;max-height:none;width:auto;height:auto;cursor:zoom-out}
 
 /* пояснения к терминам */
 .term{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:help;
@@ -161,6 +165,9 @@ footer a:hover{color:var(--acc)}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:6px}
 
 @media (max-width:620px){
+  #lb .box{align-items:flex-start;overflow:auto;padding:3rem .5rem 3.4rem}
+  #lb img{max-width:100%;width:100%;max-height:none}
+  #lb .hintx{font-size:9.5px;letter-spacing:.1em}
   .nums{grid-template-columns:1fr}
   .shots{grid-template-columns:1fr 1fr}
   summary{grid-template-columns:1.8rem 1fr 1.2rem;padding:.9rem 1rem}
@@ -460,7 +467,7 @@ footer a:hover{color:var(--acc)}
 <dialog id="lb">
   <div class="box"><img alt=""></div>
   <button type="button" class="x" aria-label="Закрыть">&times;</button>
-  <div class="hintx">клик по фону или Esc — закрыть</div>
+  <div class="hintx">нажми на снимок — крупнее · Esc — закрыть</div>
 </dialog>
 
 <script>
@@ -472,6 +479,10 @@ footer a:hover{color:var(--acc)}
   function close(){ lb.close(); }
   lb.querySelector('.x').addEventListener('click',close);
   lb.addEventListener('click',function(e){ if(e.target===lb||e.target.classList.contains('box')) close(); });
+  lb.querySelector('img').addEventListener('click',function(e){
+    e.stopPropagation(); lb.querySelector('.box').classList.toggle('zoom');
+  });
+  lb.addEventListener('close',function(){ lb.querySelector('.box').classList.remove('zoom'); });
   lb.addEventListener('close',function(){ img.removeAttribute('src'); });
 })();
 </script>
