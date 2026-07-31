@@ -51,6 +51,22 @@ h1 em{font-style:normal;color:var(--acc)}
 
 details{border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-bottom:.55rem;overflow:hidden}
 details[open]{background:var(--panel-2);border-color:var(--line-2)}
+
+/* три опоры — несущие блоки: зелёная полоса слева и яркий номер */
+details.pillar{box-shadow:inset 2px 0 0 var(--acc)}
+details.pillar summary{padding-left:1.4rem}
+details.pillar .inner{padding-left:1.4rem}
+
+/* рамка — вступление и практика: тише, без полосы, номер серый */
+details.frame{background:transparent}
+details.frame[open]{background:var(--panel)}
+details.frame .no{color:var(--ink-3)}
+details.frame .ttl{font-weight:500;color:var(--ink-2)}
+details.frame[open] .ttl{color:var(--ink)}
+
+.group{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-3);margin:1.8rem 0 .75rem;display:flex;align-items:center;gap:.85rem}
+.group::after{content:"";flex:1;height:1px;background:var(--line)}
 summary{
   list-style:none;cursor:pointer;padding:1rem 1.15rem;
   display:grid;grid-template-columns:2.2rem 1fr 1.4rem;align-items:baseline;gap:.2rem .5rem;
@@ -114,7 +130,7 @@ footer a:hover{color:var(--acc)}
 
 
   <!-- 00 -->
-  <details>
+  <details class="frame">
     <summary>
       <span class="no">00</span>
       <span class="ttl">Общее видение</span>
@@ -147,8 +163,10 @@ footer a:hover{color:var(--acc)}
     </div>
   </details>
 
+  <div class="group">Три опоры</div>
+
   <!-- 01 -->
-  <details>
+  <details class="pillar">
     <summary>
       <span class="no">01</span>
       <span class="ttl">Технологический мост</span>
@@ -187,7 +205,7 @@ footer a:hover{color:var(--acc)}
   </details>
 
   <!-- 02 -->
-  <details>
+  <details class="pillar">
     <summary>
       <span class="no">02</span>
       <span class="ttl">Трансформация внешняя</span>
@@ -259,7 +277,7 @@ footer a:hover{color:var(--acc)}
   </details>
 
   <!-- 03 -->
-  <details>
+  <details class="pillar">
     <summary>
       <span class="no">03</span>
       <span class="ttl">Трансформация внутренняя</span>
@@ -295,13 +313,15 @@ footer a:hover{color:var(--acc)}
     </div>
   </details>
 
+  <div class="group">Проверка на практике</div>
+
   <!-- 04 -->
-  <details>
+  <details class="frame">
     <summary>
       <span class="no">04</span>
       <span class="ttl">Тестовый полигон</span>
       <span class="sign">+</span>
-      <span class="hint">Ресурс для первых двух опор и полигон технологии</span>
+      <span class="hint">Ресурс для первых двух опор и полигон технологии — Cimo</span>
     </summary>
     <div class="inner">
       <div class="sub">
