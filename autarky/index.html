@@ -101,7 +101,8 @@ h3{font-size:13.5px;font-weight:600;letter-spacing:.01em;margin:0 0 .5rem;color:
 
 /* кейс-отчёт: пруфы работы */
 .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-top:.9rem}
-.shot{display:block;text-decoration:none;border:1px solid var(--line-2);border-radius:10px;
+.shot{display:block;text-align:left;padding:0;font:inherit;cursor:pointer;
+  border:1px solid var(--line-2);border-radius:10px;
   overflow:hidden;background:var(--panel);transition:border-color .2s}
 .shot:hover{border-color:var(--acc)}
 .shot img{width:100%;height:132px;object-fit:cover;object-position:top left;display:block;
@@ -111,6 +112,20 @@ h3{font-size:13.5px;font-weight:600;letter-spacing:.01em;margin:0 0 .5rem;color:
 .vid{border:1px solid var(--line-2);border-radius:10px;overflow:hidden;background:#000;margin-top:.9rem}
 .vid video{width:100%;display:block}
 .cap{font-size:11.5px;color:var(--ink-3);margin-top:.5rem}
+
+/* просмотр скрина во весь экран */
+#lb{border:0;padding:0;background:transparent;max-width:100vw;max-height:100vh;
+  width:100%;height:100%;overflow:hidden}
+#lb::backdrop{background:rgba(6,7,8,.92)}
+#lb .box{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:3.2rem 1.2rem}
+#lb img{max-width:min(1200px,94vw);max-height:88vh;width:auto;height:auto;object-fit:contain;
+  border-radius:10px;border:1px solid var(--line-2)}
+#lb .x{position:fixed;top:1rem;right:1.1rem;width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--line-2);background:var(--panel);color:var(--ink-2);font-size:19px;
+  line-height:1;cursor:pointer;transition:.18s}
+#lb .x:hover{border-color:var(--acc);color:var(--acc)}
+#lb .hintx{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);font-family:var(--mono);
+  font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
 
 .go{display:flex;flex-wrap:wrap;gap:.4rem}
 .go a{text-decoration:none;font-family:var(--mono);font-size:11px;border:1px solid var(--line-2);
@@ -374,13 +389,13 @@ footer a:hover{color:var(--acc)}
       <div class="sub">
         <h3>Как это выглядит в работе</h3>
         <div class="shots">
-          <a class="shot" href="media/creative-playable.jpg" target="_blank" rel="noopener"><img src="media/creative-playable.jpg" alt="Отчёт агента о пересборке playable-креатива" loading="lazy"><span>Пересборка playable: семь слоёв перегенерированы и собраны обратно</span></a>
-          <a class="shot" href="media/campaign-brief.jpg" target="_blank" rel="noopener"><img src="media/campaign-brief.jpg" alt="Проверка брифа и рекламного кабинета перед сборкой кампании" loading="lazy"><span>Бриф и сверка кабинета до сборки кампании</span></a>
-          <a class="shot" href="media/campaign-launch.jpg" target="_blank" rel="noopener"><img src="media/campaign-launch.jpg" alt="Карточка собранной кампании и подтверждение запуска" loading="lazy"><span>Карточка кампании и включение по команде</span></a>
-          <a class="shot" href="media/campaign-data.jpg" target="_blank" rel="noopener"><img src="media/campaign-data.jpg" alt="Первые данные по запущенной кампании" loading="lazy"><span>Первые данные: клики, установки, регистрации, стоимость установки</span></a>
-          <a class="shot" href="media/campaign-watchdog.jpg" target="_blank" rel="noopener"><img src="media/campaign-watchdog.jpg" alt="Автоматический контроль модерации и первых кликов" loading="lazy"><span>Сторож кампании: контроль модерации и первых кликов</span></a>
-          <a class="shot" href="media/network-kayzen.jpg" target="_blank" rel="noopener"><img src="media/network-kayzen.jpg" alt="Сборка связки в новой рекламной сети через API" loading="lazy"><span>Новая сеть: связка собрана через API, модерация пройдена</span></a>
-          <a class="shot" href="media/report-month.jpg" target="_blank" rel="noopener"><img src="media/report-month.jpg" alt="Месячный отчёт по кампаниям с расходом, доходом и ROI" loading="lazy"><span>Месячный отчёт: расход, доход, прибыль и ROI по кампаниям</span></a>
+          <button type="button" class="shot" data-full="media/creative-playable.jpg"><img src="media/creative-playable.jpg" alt="Отчёт агента о пересборке playable-креатива" loading="lazy"><span>Пересборка playable: семь слоёв перегенерированы и собраны обратно</span></button>
+          <button type="button" class="shot" data-full="media/campaign-brief.jpg"><img src="media/campaign-brief.jpg" alt="Проверка брифа и рекламного кабинета перед сборкой кампании" loading="lazy"><span>Бриф и сверка кабинета до сборки кампании</span></button>
+          <button type="button" class="shot" data-full="media/campaign-launch.jpg"><img src="media/campaign-launch.jpg" alt="Карточка собранной кампании и подтверждение запуска" loading="lazy"><span>Карточка кампании и включение по команде</span></button>
+          <button type="button" class="shot" data-full="media/campaign-data.jpg"><img src="media/campaign-data.jpg" alt="Первые данные по запущенной кампании" loading="lazy"><span>Первые данные: клики, установки, регистрации, стоимость установки</span></button>
+          <button type="button" class="shot" data-full="media/campaign-watchdog.jpg"><img src="media/campaign-watchdog.jpg" alt="Автоматический контроль модерации и первых кликов" loading="lazy"><span>Сторож кампании: контроль модерации и первых кликов</span></button>
+          <button type="button" class="shot" data-full="media/network-kayzen.jpg"><img src="media/network-kayzen.jpg" alt="Сборка связки в новой рекламной сети через API" loading="lazy"><span>Новая сеть: связка собрана через API, модерация пройдена</span></button>
+          <button type="button" class="shot" data-full="media/report-month.jpg"><img src="media/report-month.jpg" alt="Месячный отчёт по кампаниям с расходом, доходом и ROI" loading="lazy"><span>Месячный отчёт: расход, доход, прибыль и ROI по кампаниям</span></button>
         </div>
       </div>
       <div class="sub">
@@ -410,16 +425,29 @@ footer a:hover{color:var(--acc)}
   </details>
 
   <footer>
-    <div class="fl">
-      <a href="https://cimo-ai.site/alive/" target="_blank" rel="noopener">Alive</a>
-      <a href="https://cimo-ai.site/biom/" target="_blank" rel="noopener">Biom</a>
-      <a href="https://cimo-ai.site/alive-builder/" target="_blank" rel="noopener">Конструктор</a>
-      <a href="https://cimo-ai.site/alive-audit/" target="_blank" rel="noopener">AI-аудит</a>
-      <a href="https://platform.cimo-ai.site" target="_blank" rel="noopener">Cimo-Platform</a>
-    </div>
+    <span>Аутентичная автаркия</span>
     <span>2026</span>
   </footer>
 
 </main>
+
+<dialog id="lb">
+  <div class="box"><img alt=""></div>
+  <button type="button" class="x" aria-label="Закрыть">&times;</button>
+  <div class="hintx">клик по фону или Esc — закрыть</div>
+</dialog>
+
+<script>
+(function(){
+  var lb=document.getElementById('lb'), img=lb.querySelector('img');
+  document.querySelectorAll('.shot').forEach(function(b){
+    b.addEventListener('click',function(){ img.src=b.dataset.full; lb.showModal(); });
+  });
+  function close(){ lb.close(); }
+  lb.querySelector('.x').addEventListener('click',close);
+  lb.addEventListener('click',function(e){ if(e.target===lb||e.target.classList.contains('box')) close(); });
+  lb.addEventListener('close',function(){ img.removeAttribute('src'); });
+})();
+</script>
 </body>
 </html>
