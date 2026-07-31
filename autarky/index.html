@@ -3,622 +3,387 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Аутентичная автаркия — концепция</title>
-<meta name="description" content="Постматериальная модель бытия через синхронную трансформацию внешней среды и внутреннего мира. Три опоры: технологический мост (Alive), внешняя трансформация (Biom), внутренняя трансформация.">
+<title>Аутентичная автаркия</title>
+<meta name="description" content="Постматериальная модель бытия через синхронную трансформацию внешней среды и внутреннего мира. Три опоры: технологический мост, внешняя трансформация, внутренняя трансформация.">
 <link rel="canonical" href="https://cimo-ai.site/autarky/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Аутентичная автаркия">
 <meta property="og:description" content="Технологии — мост, по которому мы возвращаемся домой.">
-<meta property="og:image" content="https://cimo-ai.site/biom/images/module-4-sunset.jpg">
 <meta property="og:url" content="https://cimo-ai.site/autarky/">
-<meta name="theme-color" content="#07131a">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2307131a'/%3E%3Ccircle cx='16' cy='19' r='7.5' fill='none' stroke='%23e0b877' stroke-width='1.6'/%3E%3Cpath d='M4 19h24' stroke='%234a7c64' stroke-width='1.6'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#0e0f10">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e0f10'/%3E%3Cpath d='M7 20h18' stroke='%2300c07a' stroke-width='2'/%3E%3Cpath d='M11 24V16M21 24V16' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --night:#07131a;
-  --on-night:#e9e5d9;
-  --on-night-soft:#9dafad;
-  --on-night-faint:#869997;
+  --bg:#0e0f10;
+  --bg-2:#141618;
+  --line:#232629;
+  --line-2:#2e3236;
+  --ink:#f2f3f2;
+  --ink-2:#a4aaa8;
+  --ink-3:#71787a;
+  --acc:#3ad39a;
+  --acc-dim:#1e8f66;
 
-  --paper:#f2ece0;
-  --paper-warm:#e8dfcb;
-  --surface:#fbf8f1;
-  --ink:#1d2420;
-  --ink-soft:#57605a;
-  --ink-faint:#8b9089;
-  --line:rgba(29,36,32,.13);
-  --line-soft:rgba(29,36,32,.07);
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono','SF Mono',ui-monospace,monospace;
 
-  --moss:#4a7c64;
-  --moss-deep:#35604c;
-  --gold:#b3822f;
-  --gold-lit:#e0b877;
-
-  --serif:'Cormorant Garamond', Georgia, serif;
-  --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --mono:'Spline Sans Mono', 'SF Mono', monospace;
-
-  --wrap:1180px;
-  --prose:44rem;
+  --wrap:1120px;
+  --pad:2rem;
 }
 
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{
-  margin:0;
-  background:var(--night);
-  color:var(--on-night);
-  font-family:var(--sans);
-  font-weight:300;
-  font-size:17px;
-  line-height:1.7;
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--sans);font-size:15px;line-height:1.62;font-weight:400;
+  letter-spacing:-.006em;-webkit-font-smoothing:antialiased;
+  font-feature-settings:'ss01','cv05';
 }
-img{max-width:100%;display:block}
 a{color:inherit}
+p{margin:0 0 .85em}
+p:last-child{margin-bottom:0}
 
-/* ——— небо: холст на всю высоту окна, живёт под контентом ——— */
-#sky{position:fixed;inset:0;width:100%;height:100%;z-index:-2;display:block}
-#grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.32;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
-  mix-blend-mode:overlay}
+.wrap{width:min(100% - 2.5rem,var(--wrap));margin-inline:auto}
 
-.wrap{width:min(100% - 2.5rem, var(--wrap));margin-inline:auto}
-.prose{max-width:var(--prose)}
-
-/* ——— типографика ——— */
-h1,h2,h3{font-family:var(--serif);font-weight:300;margin:0;letter-spacing:-.01em}
-h1{font-size:clamp(2.7rem,min(9.2vw,12.4vh),7.6rem);line-height:.95}
-h2{font-size:clamp(2.1rem,4.6vw,3.6rem);line-height:1.06}
-h3{font-size:clamp(1.35rem,2.1vw,1.8rem);line-height:1.25}
-p{margin:0 0 1.15em}
-em{font-style:italic}
-.eyebrow{
-  font-family:var(--mono);font-size:.7rem;font-weight:500;
-  letter-spacing:.26em;text-transform:uppercase;
+/* ——— шапка ——— */
+.top{
+  position:sticky;top:0;z-index:10;background:rgba(14,15,16,.82);
+  backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line);
 }
-.lead{font-size:clamp(1.12rem,1.7vw,1.32rem);line-height:1.62}
-.sub{color:var(--on-night-soft)}
-.paper .sub{color:var(--ink-soft)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:52px;gap:1rem}
+.brand{font-weight:500;font-size:14px;letter-spacing:-.01em;white-space:nowrap}
+.brand span{color:var(--acc)}
+.nav{display:flex;gap:1.35rem;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.nav a{text-decoration:none;transition:color .2s}
+.nav a:hover{color:var(--ink)}
 
-/* ——— секции ——— */
-section{position:relative}
-.sec{padding-block:clamp(5rem,11vh,9rem)}
-.sec--tight{padding-block:clamp(3.5rem,7vh,6rem)}
-
-/* светлый лист, который поднимается над небом со второй опоры */
-.paper{
-  background:var(--paper);
-  color:var(--ink);
-  border-radius:34px 34px 0 0;
-  box-shadow:0 -40px 90px rgba(4,10,14,.45);
-  position:relative;
+/* ——— заголовочный блок ——— */
+.head{padding:clamp(3.5rem,9vw,6rem) 0 clamp(2.5rem,5vw,3.5rem)}
+h1{
+  font-size:clamp(2.1rem,5.2vw,3.4rem);line-height:1.04;font-weight:600;
+  letter-spacing:-.035em;margin:0 0 1.5rem;max-width:16ch;
 }
-.paper::before{
-  content:"";position:absolute;left:0;right:0;top:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(224,184,119,.55),transparent);
+h1 em{font-style:normal;color:var(--acc)}
+.head-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(1.6rem,4vw,3.5rem);align-items:start}
+.head-grid p{color:var(--ink-2);font-size:15.5px}
+.head-grid .muted{color:var(--ink-3);font-size:14px}
+
+/* ——— секции: метка слева, содержимое справа ——— */
+.sec{border-top:1px solid var(--line);padding:clamp(2.2rem,4vw,3.2rem) 0;scroll-margin-top:52px}
+.sec-grid{display:grid;grid-template-columns:180px 1fr;gap:clamp(1.4rem,4vw,3rem);align-items:start}
+.tag{position:sticky;top:76px}
+.tag .n{font-family:var(--mono);font-size:11px;color:var(--acc);display:block;margin-bottom:.45rem}
+.tag h2{font-size:17px;font-weight:600;letter-spacing:-.02em;margin:0 0 .35rem;line-height:1.25}
+.tag .sub{font-size:12.5px;color:var(--ink-3);line-height:1.45}
+
+h3{font-size:14px;font-weight:600;letter-spacing:-.01em;margin:0 0 .5rem}
+.body>*+*{margin-top:1.6rem}
+.lede{font-size:17px;line-height:1.55;letter-spacing:-.015em;font-weight:500;max-width:34ch}
+.txt{color:var(--ink-2)}
+.cols{columns:2;column-gap:2.6rem}
+.cols>p{break-inside:avoid}
+
+/* ——— блоки данных ——— */
+.rows{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:auto 1fr;gap:1.1rem;padding:.75rem 0;border-bottom:1px solid var(--line)}
+.row .k{font-family:var(--mono);font-size:11px;color:var(--ink-3);padding-top:.22rem;min-width:1.6rem}
+.row b{font-weight:500;display:block}
+.row span{color:var(--ink-2)}
+
+.chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.chip{border:1px solid var(--line-2);border-radius:6px;padding:.3rem .6rem;font-size:12.5px;color:var(--ink-2)}
+
+.flow{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;font-size:13px;color:var(--ink-2)}
+.flow i{font-style:normal;color:var(--acc-dim)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem 2.4rem}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.num{border-left:2px solid var(--acc-dim);padding-left:.85rem}
+.num b{display:block;font-size:22px;font-weight:600;letter-spacing:-.03em;line-height:1.1}
+.num span{font-size:12.5px;color:var(--ink-3)}
+
+.card{background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:1.2rem 1.3rem}
+.card h3{margin-bottom:.6rem}
+
+.links{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.4rem}
+.links a{
+  text-decoration:none;font-family:var(--mono);font-size:11.5px;
+  border:1px solid var(--line-2);border-radius:6px;padding:.42rem .75rem;
+  color:var(--ink-2);transition:.2s;
 }
+.links a:hover{border-color:var(--acc-dim);color:var(--acc)}
+.links a::after{content:"↗";margin-left:.4rem;color:var(--ink-3);font-size:10px}
 
-/* ——— hero ——— */
-.hero{
-  min-height:100svh;display:flex;flex-direction:column;justify-content:center;
-  padding-block:clamp(4.5rem,10vh,7.5rem) 2.4rem;
+/* ——— финал и подвал ——— */
+.end{border-top:1px solid var(--line);padding:clamp(2.6rem,5vw,4rem) 0}
+.end .lede{max-width:44ch;font-size:19px}
+footer{border-top:1px solid var(--line);padding:1.6rem 0 2.4rem;
+  display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center}
+footer .nav{flex-wrap:wrap}
+footer .c{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+
+@media (max-width:860px){
+  .head-grid,.grid2,.grid3{grid-template-columns:1fr}
+  .cols{columns:1}
+  .sec-grid{grid-template-columns:1fr;gap:1.1rem}
+  .tag{position:static;display:flex;align-items:baseline;gap:.7rem;flex-wrap:wrap}
+  .tag .n{margin:0}
+  .tag h2{margin:0}
+  .nav{gap:.9rem}
 }
-.hero .eyebrow{color:var(--on-night-faint);margin-bottom:clamp(1.1rem,3vh,2.2rem)}
-.hero h1{margin-bottom:clamp(.3em,2.4vh,.5em)}
-.hero h1 .it{font-style:italic;color:var(--gold-lit)}
-.hero-lead{max-width:40rem;color:var(--on-night-soft);font-size:clamp(1.05rem,1.5vw,1.22rem)}
-.hero-lead strong{font-weight:400;color:var(--on-night)}
-.hero-foot{
-  margin-top:auto;padding-top:clamp(1.6rem,4vh,3.4rem);display:flex;gap:1.6rem 2rem;
-  align-items:flex-end;justify-content:space-between;flex-wrap:wrap;
-}
-.hero-note{max-width:26rem;font-size:.9rem;color:var(--on-night-faint);line-height:1.62}
-.scrollhint{display:flex;align-items:center;gap:.8rem;font-family:var(--mono);
-  font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--on-night-faint)}
-.scrollhint i{display:block;width:54px;height:1px;background:currentColor;position:relative;overflow:hidden}
-.scrollhint i::after{content:"";position:absolute;inset:0;background:var(--gold-lit);
-  transform:translateX(-100%);animation:sweep 3.4s cubic-bezier(.4,0,.2,1) infinite}
-@keyframes sweep{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
-
-/* ——— формула ——— */
-.formula{display:grid;gap:1px;background:rgba(157,175,173,.22);
-  grid-template-columns:repeat(4,1fr);border:1px solid rgba(157,175,173,.22);margin-top:3rem}
-.formula div{background:var(--night);padding:1.6rem 1.4rem}
-.formula .n{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;color:var(--gold);display:block;margin-bottom:.7rem}
-.formula p{margin:0;font-size:.98rem;line-height:1.5;color:var(--on-night-soft)}
-
-/* ——— карта опор ——— */
-.map{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem;margin-top:3.4rem}
-.map a{
-  text-decoration:none;display:block;padding:1.5rem 1.4rem 1.7rem;
-  border:1px solid rgba(157,175,173,.22);border-radius:14px;
-  transition:border-color .4s ease, transform .4s ease, background .4s ease;
-}
-.map a:hover,.map a:focus-visible{border-color:rgba(224,184,119,.6);transform:translateY(-3px);background:rgba(224,184,119,.04)}
-.map .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;color:var(--gold);text-transform:uppercase}
-.map h3{margin:.9rem 0 .4rem;font-size:1.5rem}
-.map p{margin:0;font-size:.92rem;color:var(--on-night-faint);line-height:1.55}
-
-/* ——— общие мелочи ——— */
-.rule{height:1px;background:var(--line);border:0;margin:0}
-.night .rule{background:rgba(157,175,173,.2)}
-.kicker{display:flex;align-items:baseline;gap:1.2rem;margin-bottom:2.6rem;flex-wrap:wrap}
-.kicker .num{font-family:var(--mono);font-size:.72rem;letter-spacing:.24em;color:var(--gold)}
-.paper .kicker .num{color:var(--gold)}
-
-/* появление */
-.r{opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.22,.6,.25,1),transform .9s cubic-bezier(.22,.6,.25,1)}
-.r.in{opacity:1;transform:none}
-
-:focus-visible{outline:2px solid var(--gold-lit);outline-offset:3px;border-radius:3px}
-
-/* ——— опоры ——— */
-.canon{font-size:clamp(1.02rem,1.35vw,1.16rem);line-height:1.66}
-.canon b{font-weight:500}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,4.5vw,4.5rem);align-items:start}
-.facts{list-style:none;padding:0;margin:0}
-.facts li{padding:1.05rem 0;border-top:1px solid var(--line);font-size:.97rem;line-height:1.6}
-.facts li:last-child{border-bottom:1px solid var(--line)}
-.night .facts li{border-color:rgba(157,175,173,.2)}
-.facts b{font-weight:500;display:block;margin-bottom:.15rem}
-.facts span{color:var(--ink-soft)}
-.night .facts span{color:var(--on-night-soft)}
-
-.btnrow{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:2.6rem}
-.btn{display:inline-flex;align-items:center;gap:.55rem;padding:.8rem 1.25rem;border-radius:100px;
-  border:1px solid currentColor;text-decoration:none;font-family:var(--mono);font-size:.7rem;
-  letter-spacing:.14em;text-transform:uppercase;transition:color .35s,background .35s,border-color .35s}
-.night .btn{color:var(--on-night-soft)}
-.night .btn:hover,.night .btn:focus-visible{color:var(--gold-lit)}
-.paper .btn{color:var(--moss-deep)}
-.paper .btn:hover,.paper .btn:focus-visible{background:var(--moss-deep);color:var(--surface)}
-.btn em{font-style:normal;font-size:.6rem;opacity:.55;letter-spacing:.08em;text-transform:none}
-
-.figure{margin:clamp(2.4rem,5vw,4rem) 0 0}
-.figure img{width:100%;height:auto;border-radius:16px}
-.figure figcaption{margin-top:.85rem;font-family:var(--mono);font-size:.66rem;letter-spacing:.15em;
-  text-transform:uppercase;color:var(--ink-faint)}
-.bleed{width:min(100% - 2.5rem,1440px);margin-inline:auto}
-
-.spheres{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
-  border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:2.8rem}
-.spheres div{background:var(--paper);padding:1.5rem 1.3rem}
-.spheres b{display:block;font-weight:500;font-size:.94rem;margin-bottom:.4rem}
-.spheres p{margin:0;font-size:.87rem;line-height:1.55;color:var(--ink-soft)}
-
-.ladder{list-style:none;padding:0;margin:2.8rem 0 0;counter-reset:l}
-.ladder li{counter-increment:l;display:grid;grid-template-columns:3rem 1fr;gap:1.4rem;
-  padding:1.5rem 0;border-top:1px solid var(--line)}
-.ladder li:last-child{border-bottom:1px solid var(--line)}
-.ladder li::before{content:counter(l,decimal-leading-zero);font-family:var(--mono);font-size:.76rem;
-  color:var(--gold);padding-top:.4rem}
-.ladder b{display:block;font-weight:500;margin-bottom:.2rem}
-.ladder p{margin:0;color:var(--ink-soft);font-size:.95rem;line-height:1.6}
-
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin-top:2.8rem}
-.stats div{border-top:2px solid var(--gold);padding-top:1rem}
-.stats .v{font-family:var(--serif);font-size:clamp(2rem,3.4vw,2.9rem);line-height:1;display:block}
-.stats .l{font-size:.88rem;color:var(--ink-soft);margin-top:.55rem;display:block;line-height:1.5}
-
-.panel{background:var(--night);color:var(--on-night);border-radius:22px;
-  padding:clamp(1.8rem,4vw,3.4rem);margin-top:2.8rem}
-.panel .canon{color:var(--on-night-soft)}
-.panel .btn{color:var(--on-night-soft);border-color:rgba(157,175,173,.35)}
-.panel .btn:hover{color:var(--gold-lit);border-color:var(--gold-lit);background:none}
-
-.quiet{max-width:34rem;margin-inline:auto;text-align:center}
-.quiet h2{margin-bottom:1.6rem}
-
-footer{padding:3.8rem 0 3.4rem;border-top:1px solid var(--line)}
-.flinks{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.93rem}
-.flinks a{color:var(--ink-soft);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px}
-.flinks a:hover{color:var(--moss-deep);border-color:currentColor}
-.fnote{margin-top:1.7rem;font-family:var(--mono);font-size:.66rem;letter-spacing:.15em;
-  text-transform:uppercase;color:var(--ink-faint)}
-
-@media (max-width:960px){
-  .two{grid-template-columns:1fr}
-  .spheres{grid-template-columns:repeat(2,1fr)}
-}
-@media (max-width:620px){
-  .spheres{grid-template-columns:1fr}
-  .stats{grid-template-columns:1fr}
-  .ladder li{grid-template-columns:2.2rem 1fr;gap:1rem}
-}
-
-@media (max-width:900px){
-  .formula{grid-template-columns:repeat(2,1fr)}
-  .map{grid-template-columns:repeat(2,1fr)}
-}
-@media (max-width:560px){
-  body{font-size:16px}
-  .formula{grid-template-columns:1fr}
-  .map{grid-template-columns:1fr}
-  .paper{border-radius:24px 24px 0 0}
-}
-@media (prefers-reduced-motion:reduce){
-  .r{opacity:1;transform:none;transition:none}
-  .scrollhint i::after{animation:none;transform:translateX(0);opacity:.4}
-  *{scroll-behavior:auto!important}
+@media (max-width:760px){
+  .top .nav{display:none}
+  footer{flex-direction:column;align-items:flex-start;gap:.9rem}
+  footer .nav{display:flex}
 }
 </style>
 </head>
 <body>
-<canvas id="sky" aria-hidden="true"></canvas>
-<div id="grain" aria-hidden="true"></div>
 
-<!-- ═══ ОБЛОЖКА ═══ -->
-<header class="hero wrap night">
-  <div class="eyebrow">Концепция</div>
-  <h1>Аутентичная<br><span class="it">автаркия</span></h1>
-  <div class="hero-lead">
-    <p>Создание концепции, участвующей в беспрерывном процессе эволюции общественного сознания и качества жизни, направленной на формирование <strong>постматериальной модели бытия</strong> в постиндустриальный период — через синхронную трансформацию внешней среды и внутреннего мира.</p>
+<div class="top">
+  <div class="wrap">
+    <div class="brand">Аутентичная <span>автаркия</span></div>
+    <nav class="nav">
+      <a href="#kratko">Коротко</a>
+      <a href="#most">01 Мост</a>
+      <a href="#vnesh">02 Внешняя</a>
+      <a href="#vnutr">03 Внутренняя</a>
+      <a href="#motor">04 Мотор</a>
+    </nav>
   </div>
-  <div class="hero-foot">
-    <p class="hero-note">Целостная экосистема, где внешние условия поддерживают внутренний рост, а внутренняя трансформация формирует новое осознанное качество жизни. Первостепенная ценность — не в авторстве и не в личной выгоде, а в каждом, кто осмелился принять участие и внести свой вклад в неизбежную реальность будущего.</p>
-    <div class="scrollhint"><i></i><span>из ночи в день</span></div>
+</div>
+
+<header class="head wrap">
+  <h1>Постматериальная модель <em>бытия</em></h1>
+  <div class="head-grid">
+    <p>Создание концепции, участвующей в беспрерывном процессе эволюции общественного сознания и качества жизни, направленной на формирование постматериальной модели бытия в постиндустриальный период — через синхронную трансформацию внешней среды и внутреннего мира.</p>
+    <p class="muted">Целостная экосистема, где внешние условия поддерживают внутренний рост, а внутренняя трансформация формирует новое осознанное качество жизни. Первостепенная ценность — не в авторстве и не в личной выгоде, а в каждом, кто осмелился принять участие и внести свой вклад в неизбежную реальность будущего.</p>
   </div>
 </header>
 
-<!-- ═══ КОРОТКО ═══ -->
-<section class="sec night" id="korotko">
-  <div class="wrap">
-    <div class="kicker r"><span class="num">Коротко</span></div>
-    <div class="prose r">
-      <h2>Вернуть человеку роль носителя&nbsp;замысла, сняв с него всё остальное силой технологий.</h2>
-      <p class="lead sub" style="margin-top:1.6rem">Веками цивилизация покупала прогресс ценой биоритма, экологии и душевного покоя. Сегодня технологии дозрели до точки, где могут перестать быть надзирателем и стать невидимым помощником.</p>
+<!-- КОРОТКО -->
+<section class="sec" id="kratko">
+  <div class="wrap sec-grid">
+    <div class="tag">
+      <span class="n">00</span>
+      <h2>Коротко</h2>
+      <p class="sub">Идея, формула, состав</p>
     </div>
-
-    <div class="formula r">
-      <div><span class="n">01</span><p>Снять операционку</p></div>
-      <div><span class="n">02</span><p>Обеспечить материальную устойчивость</p></div>
-      <div><span class="n">03</span><p>Освободить ресурс на главное</p></div>
-      <div><span class="n">04</span><p>Сохранить и продолжить замысел во времени</p></div>
-    </div>
-
-    <div class="map r">
-      <a href="#most">
-        <span class="k">Опора I</span>
-        <h3>Технологический мост</h3>
-        <p>Цифровой контур. Воплощение — Alive.</p>
-      </a>
-      <a href="#vneshnyaya">
-        <span class="k">Опора II</span>
-        <h3>Трансформация внешняя</h3>
-        <p>Физический контур. Воплощение — Biom.</p>
-      </a>
-      <a href="#vnutrennyaya">
-        <span class="k">Опора III</span>
-        <h3>Трансформация внутренняя</h3>
-        <p>Внутренний контур. Программа практик и знаний.</p>
-      </a>
-      <a href="#motor">
-        <span class="k">Мотор</span>
-        <h3>Cimo</h3>
-        <p>Действующий бизнес: ресурс и полигон.</p>
-      </a>
+    <div class="body">
+      <p class="lede">Вернуть человеку роль носителя замысла, сняв с него всё остальное силой технологий.</p>
+      <p class="txt">Веками цивилизация покупала прогресс ценой биоритма, экологии и душевного покоя. Сегодня технологии дозрели до точки, где могут перестать быть надзирателем и стать невидимым помощником.</p>
+      <div class="flow">
+        <span>Снять операционку</span><i>→</i>
+        <span>обеспечить материальную устойчивость</span><i>→</i>
+        <span>освободить ресурс на главное</span><i>→</i>
+        <span>сохранить и продолжить замысел во времени</span>
+      </div>
+      <div class="rows">
+        <div class="row"><span class="k">01</span><div><b>Технологический мост</b><span>Цифровой контур. Воплощение — Alive.</span></div></div>
+        <div class="row"><span class="k">02</span><div><b>Трансформация внешняя</b><span>Физический контур. Воплощение — Biom.</span></div></div>
+        <div class="row"><span class="k">03</span><div><b>Трансформация внутренняя</b><span>Внутренний контур. Программа практик и знаний.</span></div></div>
+        <div class="row"><span class="k">04</span><div><b>Мотор — Cimo</b><span>Действующий бизнес: ресурс для первых двух опор и полигон.</span></div></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ I. ТЕХНОЛОГИЧЕСКИЙ МОСТ ═══ -->
-<section class="sec night" id="most">
-  <div class="wrap">
-    <div class="kicker r"><span class="num">Опора I</span><span class="eyebrow sub">Цифровой контур</span></div>
-    <h2 class="r">Технологический мост</h2>
-
-    <div class="two" style="margin-top:2.8rem">
-      <div class="r">
-        <p class="canon sub"><b>Персональная AI-инфраструктура.</b> Самосовершенствующаяся система, выстроенная вокруг Telos (личного замысла жизни) владельца. Автономный мультиагентный AI-офис, принимающий на себя внешний операционный контур жизни: повседневные и профессиональные задачи, координацию процессов, создание устойчивых источников дохода и работу над приумножением личного капитала. Главная цель системы — перевести человека из роли «оператора системы» в роль «носителя замысла». В центре — цифровой двойник (Digital Twin), развивающееся цифровое продолжение личности, накапливающее мышление, принципы, решения и индивидуальный стиль владельца; со временем он становится механизмом преемственности и формой цифрового бессмертия, способной сохранять и продолжать замысел во времени.</p>
-      </div>
-      <div class="r">
-        <p class="canon sub"><b>Собственно мост.</b> Он позволяет постепенно выйти из операционной рутины и высвободить время, внимание и энергию для главного — внутреннего и внешнего развития, снимая груз бытовых задач и тревогу о материальном благополучии. Система возвращает человека к целостной жизни: к личностному и духовному росту, творчеству и естественному образу жизни в гармонии с собой и окружающим миром. Её основная задача — силой технологий обеспечить базовую устойчивость человека и освободить его ресурс для Holistic Living. Это не отказ от цивилизации, а высшая форма владения самым сложным (DeepTech), позволяющая вернуться к самому настоящему — к естественности, целостности и свободе.</p>
-      </div>
+<!-- I -->
+<section class="sec" id="most">
+  <div class="wrap sec-grid">
+    <div class="tag">
+      <span class="n">01</span>
+      <h2>Технологический мост</h2>
+      <p class="sub">Цифровой контур · Alive</p>
     </div>
+    <div class="body">
+      <div class="cols txt">
+        <p><b>Персональная AI-инфраструктура.</b> Самосовершенствующаяся система, выстроенная вокруг Telos (личного замысла жизни) владельца. Автономный мультиагентный AI-офис, принимающий на себя внешний операционный контур жизни: повседневные и профессиональные задачи, координацию процессов, создание устойчивых источников дохода и работу над приумножением личного капитала. Главная цель системы — перевести человека из роли «оператора системы» в роль «носителя замысла». В центре — цифровой двойник (Digital Twin), развивающееся цифровое продолжение личности, накапливающее мышление, принципы, решения и индивидуальный стиль владельца; со временем он становится механизмом преемственности и формой цифрового бессмертия, способной сохранять и продолжать замысел во времени.</p>
+        <p><b>Собственно мост.</b> Он позволяет постепенно выйти из операционной рутины и высвободить время, внимание и энергию для главного — внутреннего и внешнего развития, снимая груз бытовых задач и тревогу о материальном благополучии. Система возвращает человека к целостной жизни: к личностному и духовному росту, творчеству и естественному образу жизни в гармонии с собой и окружающим миром. Её основная задача — силой технологий обеспечить базовую устойчивость человека и освободить его ресурс для Holistic Living. Это не отказ от цивилизации, а высшая форма владения самым сложным (DeepTech), позволяющая вернуться к самому настоящему — к естественности, целостности и свободе.</p>
+      </div>
 
-    <div class="two" style="margin-top:clamp(3rem,6vw,5rem)">
-      <div class="r">
-        <div class="eyebrow sub" style="margin-bottom:1.4rem">Воплощение — Alive</div>
+      <div>
         <h3>На чём держится</h3>
-        <ul class="facts" style="margin-top:1.6rem">
-          <li><b>Замысел владельца в центре</b><span>Каждое решение системы проверяется вопросом «ведёт ли это к жизни, которую он проектирует».</span></li>
-          <li><b>Файловая память как единственная точка истины</b><span>Любая правка откатывается одной командой, смена модели или фреймворка не уничтожает накопленный контекст.</span></li>
-          <li><b>Мозг сменный</b><span>Система не привязана ни к одному поставщику ИИ; приватное считается локально.</span></li>
-          <li><b>Безопасность встроена в архитектуру</b><span>Не пришита сверху: у каждого агента своя зона прав, бюджет и рубильник.</span></li>
-          <li><b>Непрерывная сверка с верхом индустрии</b><span>Встроенный аудит по расписанию.</span></li>
-        </ul>
-      </div>
-      <div class="r">
-        <h3>Куда растёт</h3>
-        <p class="sub" style="margin-top:1.4rem">Двойник обретает голос, видео и видимый анимированный образ — не окно с чатом, а полноэкранная среда уровня темы устройства. Образ видит владельца через камеру, имеет полный доступ к устройству и инструментам и способен заменить его как пользователя. За образом — навигируемая система, где видно всё устройство: где что, как работает, как решается запрос по шагам. Внешний контур жизни замыкается сам на себе.</p>
-        <h3 style="margin-top:2.6rem">Как продукт</h3>
-        <p class="sub" style="margin-top:1.4rem">Сначала лучшая система для себя — потом «развернуть Alive у себя» для других. Не наоборот. Витрина — сам реальный командный центр на живых данных, а не бутафорская презентация.</p>
-        <div class="btnrow">
-          <a class="btn" href="/alive/">Манифест Alive</a>
-          <a class="btn" href="/alive-builder/">Конструктор</a>
-          <a class="btn" href="/alive-audit/">AI-аудит</a>
+        <div class="rows">
+          <div class="row"><span class="k">—</span><div><b>Замысел владельца в центре</b><span>Каждое решение проверяется вопросом «ведёт ли это к жизни, которую он проектирует».</span></div></div>
+          <div class="row"><span class="k">—</span><div><b>Файловая память как точка истины</b><span>Любая правка откатывается одной командой; смена модели не уничтожает контекст.</span></div></div>
+          <div class="row"><span class="k">—</span><div><b>Мозг сменный</b><span>Нет привязки к поставщику ИИ; приватное считается локально.</span></div></div>
+          <div class="row"><span class="k">—</span><div><b>Безопасность в архитектуре</b><span>У каждого агента своя зона прав, бюджет и рубильник.</span></div></div>
+          <div class="row"><span class="k">—</span><div><b>Сверка с верхом индустрии</b><span>Встроенный аудит по расписанию.</span></div></div>
         </div>
+      </div>
+
+      <div class="grid2">
+        <div><h3>Куда растёт</h3><p class="txt">Двойник обретает голос, видео и видимый анимированный образ — не окно с чатом, а полноэкранная среда уровня темы устройства. Образ видит владельца через камеру, имеет полный доступ к устройству и инструментам и способен заменить его как пользователя. За образом — навигируемая система: видно всё устройство и как решается запрос по шагам. Внешний контур замыкается сам на себе.</p></div>
+        <div><h3>Как продукт</h3><p class="txt">Сначала лучшая система для себя — потом «развернуть Alive у себя» для других. Не наоборот. Витрина — сам реальный командный центр на живых данных, а не бутафорская презентация.</p></div>
+      </div>
+
+      <div class="links">
+        <a href="../alive/">Манифест Alive</a>
+        <a href="../alive-builder/">Конструктор</a>
+        <a href="../alive-audit/">AI-аудит</a>
       </div>
     </div>
   </div>
 </section>
 
-<div class="paper">
-
-<!-- ═══ II. ТРАНСФОРМАЦИЯ ВНЕШНЯЯ ═══ -->
-<section class="sec" id="vneshnyaya">
-  <div class="wrap">
-    <div class="kicker r"><span class="num">Опора II</span><span class="eyebrow sub">Физический контур</span></div>
-    <h2 class="r">Трансформация внешняя</h2>
-    <p class="lead sub prose r" style="margin-top:1.8rem">Архитектурно-инженерная база и интеграция по-настоящему полноценного, здорового и самодостаточного образа жизни — реализуемого через автономные эко-агромодули, агротуристические кластеры, децентрализованные экопоселения.</p>
-
-    <div class="two r" style="margin-top:clamp(2.4rem,5vw,3.6rem)">
-      <p class="canon"><b>Регенеративная экосистема.</b> Автономные эко-агромодули на основе принципов биомиметики: умный дом с интегрированным и автоматизированным смарт-агрокомплексом, оснащённым передовыми агротехнологиями и системами замкнутого цикла — обеспечивающими устойчивость, независимость, пассивный доход и всё необходимое для комфортного проживания и смарт-фермерства. Новый уровень качества жизни, доступный каждому.</p>
-      <p class="canon"><b>Рекреационная среда.</b> Децентрализованные экопоселения на базе иммерсивных агротуристических кластеров, состоящих из эко-агромодулей — место, где преобладает естественный и осознанный формат жизни, а технологии гармонично сочетаются с природой, разумным потреблением и созидательными процессами бытия. На основе идеологии и практик, направленных на личностное саморазвитие, благосостояние и достижение любых поставленных целей, здоровое предпринимательство и визионерство, любимое дело и творчество, современные агротехнологии и альтернативные источники энергии, биохакинг и другое.</p>
+<!-- II -->
+<section class="sec" id="vnesh">
+  <div class="wrap sec-grid">
+    <div class="tag">
+      <span class="n">02</span>
+      <h2>Трансформация внешняя</h2>
+      <p class="sub">Физический контур · Biom</p>
     </div>
-  </div>
+    <div class="body">
+      <p class="lede">Архитектурно-инженерная база полноценного, здорового и самодостаточного образа жизни — через автономные эко-агромодули, агротуристические кластеры, децентрализованные экопоселения.</p>
 
-  <figure class="figure bleed r">
-    <img src="/biom/images/module-4-sunset.jpg" alt="Автономный эко-агромодуль в поле на закате: барнхаус с солнечными панелями, панорамное остекление, дикое разнотравье" loading="lazy" width="1280" height="716">
-    <figcaption>Автономный эко-агромодуль — базовая единица концепции</figcaption>
-  </figure>
+      <div class="cols txt">
+        <p><b>Регенеративная экосистема.</b> Автономные эко-агромодули на основе принципов биомиметики: умный дом с интегрированным и автоматизированным смарт-агрокомплексом, оснащённым передовыми агротехнологиями и системами замкнутого цикла — обеспечивающими устойчивость, независимость, пассивный доход и всё необходимое для комфортного проживания и смарт-фермерства. Новый уровень качества жизни, доступный каждому.</p>
+        <p><b>Рекреационная среда.</b> Децентрализованные экопоселения на базе иммерсивных агротуристических кластеров — место, где преобладает естественный и осознанный формат жизни, а технологии гармонично сочетаются с природой, разумным потреблением и созидательными процессами бытия. На основе идеологии и практик, направленных на личностное саморазвитие, благосостояние и достижение любых целей, здоровое предпринимательство и визионерство, любимое дело и творчество, современные агротехнологии и альтернативные источники энергии, биохакинг и другое.</p>
+      </div>
 
-  <div class="wrap" style="margin-top:clamp(3.5rem,7vw,5.5rem)">
-    <div class="eyebrow sub r" style="margin-bottom:1.4rem">Воплощение — Biom</div>
-    <h3 class="r">Не умный дом, а комплекс «жильё + еда + энергия + вода + работа» как самодостаточная среда</h3>
+      <div>
+        <h3>Holistic Living — семь технологических сфер</h3>
+        <div class="chips">
+          <span class="chip">ИИ и вычисления — управление процессами</span>
+          <span class="chip">Блокчейн и финтех — ресурсы без посредников</span>
+          <span class="chip">Агротех и робототехника — чистая еда</span>
+          <span class="chip">Биотех и здоровье — потенциал организма</span>
+          <span class="chip">Чистые технологии — восстановление среды</span>
+          <span class="chip">Распределённое производство — вещи на месте</span>
+          <span class="chip">Образование и когнитивные технологии — смысл</span>
+        </div>
+      </div>
 
-    <p class="sub prose r" style="margin-top:2.4rem">Целостная жизнь (Holistic Living) собирается из семи технологических сфер — вместе они закрывают базовые потребности: автономию, безопасность, еду, здоровье, время и развитие.</p>
-
-    <div class="spheres r">
-      <div><b>ИИ и вычисления</b><p>Управление процессами, освобождение времени от рутины.</p></div>
-      <div><b>Блокчейн и финтех</b><p>Контроль над своими данными и ресурсами без посредников.</p></div>
-      <div><b>Агротех и робототехника</b><p>Чистая натуральная еда, автоматизация физического труда.</p></div>
-      <div><b>Биотех и здоровье</b><p>Восстановление природного потенциала организма, долголетие.</p></div>
-      <div><b>Чистые технологии</b><p>Восстановление естественной среды обитания.</p></div>
-      <div><b>Распределённое производство</b><p>Локальный выпуск вещей: 3D-печать, ЧПУ, персональные фабрики.</p></div>
-      <div><b>Образование и когнитивные технологии</b><p>Переобучение и смысл, когда рутину забрали машины.</p></div>
-      <div style="background:var(--paper-warm)"><b>Итог</b><p>Частное автономное решение, которое можно упаковать и сделать доступным каждому.</p></div>
-    </div>
-
-    <div class="two" style="margin-top:clamp(3.5rem,7vw,5rem)">
-      <div class="r">
+      <div class="card">
         <h3>Ядро — автономный эко-агромодуль</h3>
-        <p class="sub" style="margin-top:1.4rem">Умный дом с интегрированным смарт-агрокомплексом: теплица и оранжерея для растениеводства, ферма для животноводства, мастерская для ремесла, гараж и техзоны. Своя энергия — солнце, ветер, вода. Своя вода, своя еда, переработка отходов в энергию и удобрения, высокий урожай на малых площадях.</p>
-        <div class="stats">
-          <div><span class="v">1–3</span><span class="l">часа в день на хозяйство — или 1–3 дня в неделю</span></div>
-          <div><span class="v">1–3</span><span class="l">недели можно оставить модуль автономно</span></div>
-          <div><span class="v">2–4</span><span class="l">года окупаемости: дом не только тратит, но и приносит</span></div>
+        <p class="txt">Умный дом с интегрированным смарт-агрокомплексом: теплица и оранжерея, ферма, мастерская, гараж и техзоны. Своя энергия — солнце, ветер, вода. Своя вода, своя еда, переработка отходов в энергию и удобрения, высокий урожай на малых площадях.</p>
+        <div class="grid3" style="margin-top:1.1rem">
+          <div class="num"><b>1–3 ч</b><span>в день на хозяйство, или 1–3 дня в неделю</span></div>
+          <div class="num"><b>1–3 нед</b><span>можно оставить модуль автономно</span></div>
+          <div class="num"><b>2–4 года</b><span>окупаемость: дом приносит, а не только тратит</span></div>
         </div>
       </div>
-      <figure class="figure r" style="margin-top:0">
-        <img src="/biom/images/module-1-cutaway.jpg" alt="Разрез эко-агромодуля: жилая зона с оранжереей и аквапоникой, под ней технический отсек с фильтрацией воды и энергоузлом" loading="lazy" width="1280" height="945">
-        <figcaption>Разрез: жилая зона, оранжерея, технический отсек</figcaption>
-      </figure>
-    </div>
 
-    <div style="margin-top:clamp(3.5rem,7vw,5rem)">
-      <h3 class="r">Лестница развития</h3>
-      <ol class="ladder r">
-        <li><div><b>Эко-модуль</b><p>Дом плюс смарт-теплица — версия для проверки на себе.</p></div></li>
-        <li><div><b>Эко-агромодуль</b><p>Полный замкнутый цикл: растениеводство, животноводство, ремесло.</p></div></li>
-        <li><div><b>Агротуристический кластер</b><p>Однотипные модули, иммерсивный фермерский и ремесленный глэмпинг как альтернатива загородной жизни.</p></div></li>
-        <li><div><b>Автономное экопоселение</b><p>10–20 домов, общая инфраструктура, коворкинг и мастерские, продовольственная кооперация, внутренняя экономика на блокчейне, экологичная память — деревья вместо крестов.</p></div></li>
-        <li><div><b>Новый мир</b><p>Сообщество, собранное вокруг аутентичности, осознанности, созидания и самодостаточности.</p></div></li>
-      </ol>
+      <div>
+        <h3>Лестница развития</h3>
+        <div class="rows">
+          <div class="row"><span class="k">01</span><div><b>Эко-модуль</b><span>Дом плюс смарт-теплица — версия для проверки на себе.</span></div></div>
+          <div class="row"><span class="k">02</span><div><b>Эко-агромодуль</b><span>Полный замкнутый цикл: растениеводство, животноводство, ремесло.</span></div></div>
+          <div class="row"><span class="k">03</span><div><b>Агротуристический кластер</b><span>Однотипные модули, иммерсивный фермерский и ремесленный глэмпинг.</span></div></div>
+          <div class="row"><span class="k">04</span><div><b>Автономное экопоселение</b><span>10–20 домов, общая инфраструктура, коворкинг и мастерские, продовольственная кооперация, внутренняя экономика на блокчейне, экологичная память — деревья вместо крестов.</span></div></div>
+          <div class="row"><span class="k">05</span><div><b>Новый мир</b><span>Сообщество вокруг аутентичности, осознанности, созидания и самодостаточности.</span></div></div>
+        </div>
+      </div>
+
+      <div>
+        <h3>Принципы</h3>
+        <div class="chips">
+          <span class="chip">Быть настоящим</span>
+          <span class="chip">Уважать место и людей</span>
+          <span class="chip">Создавать, а не разрушать</span>
+          <span class="chip">Постепенная децентрализация</span>
+          <span class="chip">Прозрачность</span>
+          <span class="chip">Эстетика</span>
+        </div>
+      </div>
+
+      <div class="links"><a href="../biom/">Проект Biom</a></div>
     </div>
   </div>
+</section>
 
-  <figure class="figure bleed r">
-    <img src="/biom/images/cluster-aerial.jpg" alt="Экопоселение с высоты: ряды домов с солнечными кровлями, общие теплицы, поля и сады между улицами" loading="lazy" width="1149" height="1080">
-    <figcaption>Ступень 4 — автономное экопоселение</figcaption>
-  </figure>
+<!-- III -->
+<section class="sec" id="vnutr">
+  <div class="wrap sec-grid">
+    <div class="tag">
+      <span class="n">03</span>
+      <h2>Трансформация внутренняя</h2>
+      <p class="sub">Внутренний контур · программа</p>
+    </div>
+    <div class="body">
+      <p class="lede">Полноценное раскрытие истинной природы и потенциала человека, путь от социального выживания к осознанному созиданию — через уникальную программу и систему практик и знаний.</p>
 
-  <div class="wrap" style="margin-top:clamp(3rem,6vw,4.5rem)">
-    <div class="r">
-      <h3>Принципы</h3>
-      <ul class="facts" style="margin-top:1.6rem">
-        <li><b>Быть настоящим</b><span>Жить честно, в согласии с собой.</span></li>
-        <li><b>Уважать место и людей</b><span>Не потребитель, а созидатель.</span></li>
-        <li><b>Создавать, а не разрушать</b><span>Проект как пример новой формы жизни, а не критика старой.</span></li>
-        <li><b>Постепенная децентрализация</b><span>DAO и блокчейн после доверия, не раньше.</span></li>
-        <li><b>Прозрачность</b><span>Честный показ бюджета, ошибок и решений.</span></li>
-        <li><b>Эстетика</b><span>Натуральность, минимализм, красота как ценность.</span></li>
-      </ul>
-      <div class="btnrow">
-        <a class="btn" href="/biom/">Проект Biom</a>
+      <div class="rows">
+        <div class="row"><span class="k">01</span><div><b>Социальная адаптация и эффективность в рамках системы</b><span>Выход на уровень свободного функционирования в устойчивой системе сложившегося устройства миропорядка: анализ механизмов управления системы, материальное развитие и ускоренное достижение целей, раскрытие безграничности своих возможностей, познание пределов и необходимости, проявление и управление истинной природой пороков и других деструктивных состояний — превращая их в ресурс.</span></div></div>
+        <div class="row"><span class="k">02</span><div><b>Выход из социального автоматизма и пробуждение чистого разума</b><span>Преодоление конформизма, обусловленного восприятия и навязанных иллюзий: избавление от бессознательного потребления, примитивных интересов с поверхностными ценностями, погони за посредственными целями и желаниями, которые управляются через инстинкты, страхи, предрассудки, чувство дефицита и конкурентного выживания.</span></div></div>
+        <div class="row"><span class="k">03</span><div><b>Развитие сознания и познание в себе со-творца своей реальности</b><span>Осознание истинной природы человека, открытие творческой силы и абсолютной свободы: познание истинного счастья, свободы и самодостаточности, переход от слепого выживания к осознанному следованию высшим идеям, ценностям, миссии и предназначению, принятие конечности и закономерности перехода, интеграция сознательного с бессознательным, духовное развитие, осознание совершенства и открытие непоколебимого источника жизни в себе, воплощение творческого потенциала, формирование индивидуальной структуры созидания реальности — ограниченной лишь условиями замысла и законами мироздания, природы и жизни, всеобъемлющей любви, единства и благодати в гармонии с миром и собой.</span></div></div>
+      </div>
+
+      <div>
+        <h3>Что даёт на выходе</h3>
+        <div class="grid2">
+          <div><b>Устойчивый внутренний центр</b><p class="txt">Истинное счастье, свобода и самодостаточность.</p></div>
+          <div><b>Открытие чистого разума</b><p class="txt">Развитие сознания и пробуждение внутреннего источника жизни, благодати и духа.</p></div>
+          <div><b>Путь Творца и сотворчество</b><p class="txt">Раскрытие потенциала для сотворчества в рамках всеобщего замысла природы и единого сознания, творческая сила для осознанного созидания собственной реальности.</p></div>
+          <div><b>Роль автора своей жизни</b><p class="txt">Индивидуальная программа на основе самоанализа, самопознания и саморазвития: освоить мудрость и практики всех времён без чтения множества книг, проникать в суть любого смысла и стать единственным автором своей книги жизни.</p></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<hr class="rule">
-
-<!-- ═══ III. ТРАНСФОРМАЦИЯ ВНУТРЕННЯЯ ═══ -->
-<section class="sec" id="vnutrennyaya">
-  <div class="wrap">
-    <div class="kicker r"><span class="num">Опора III</span><span class="eyebrow sub">Внутренний контур</span></div>
-    <h2 class="r">Трансформация внутренняя</h2>
-    <p class="lead sub prose r" style="margin-top:1.8rem">Полноценное раскрытие истинной природы и потенциала человека, путь от социального выживания к осознанному созиданию — достигаемое через уникальную программу и систему практик и знаний.</p>
-
-    <div style="margin-top:clamp(3rem,6vw,4.5rem);max-width:56rem">
-      <div class="r" style="padding-block:2rem;border-top:1px solid var(--line)">
-        <h3>Социальная адаптация и эффективность в рамках системы</h3>
-        <p class="sub" style="margin-top:1rem">Выход на уровень свободного функционирования в устойчивой системе сложившегося устройства миропорядка: анализ механизмов управления системы, материальное развитие и ускоренное достижение целей, раскрытие безграничности своих возможностей, познание пределов и необходимости, проявление и управление истинной природой пороков и других деструктивных состояний — превращая их в ресурс.</p>
-      </div>
-      <div class="r" style="padding-block:2rem;border-top:1px solid var(--line)">
-        <h3>Выход из социального автоматизма и пробуждение чистого разума</h3>
-        <p class="sub" style="margin-top:1rem">Преодоление конформизма, обусловленного восприятия и навязанных иллюзий: избавление от бессознательного потребления, примитивных интересов с поверхностными ценностями, погони за посредственными целями и желаниями, которые управляются через инстинкты, страхи, предрассудки, чувство дефицита и конкурентного выживания.</p>
-      </div>
-      <div class="r" style="padding-block:2rem;border-block:1px solid var(--line)">
-        <h3>Развитие сознания и познание в себе со-творца своей реальности</h3>
-        <p class="sub" style="margin-top:1rem">Осознание истинной природы человека, открытие творческой силы и абсолютной свободы: познание истинного счастья, свободы и самодостаточности, переход от слепого выживания к осознанному следованию высшим идеям, ценностям, миссии и предназначению, принятие конечности и закономерности перехода, интеграция сознательного с бессознательным, духовное развитие, осознание совершенства и открытие непоколебимого источника жизни в себе, воплощение творческого потенциала, формирование индивидуальной структуры созидания реальности — ограниченной лишь условиями замысла и законами мироздания, природы и жизни, всеобъемлющей любви, единства и благодати в гармонии с миром и собой.</p>
-      </div>
-    </div>
-
-    <div style="margin-top:clamp(3rem,6vw,4.5rem)">
-      <h3 class="r">Что даёт на выходе</h3>
-      <ul class="facts r" style="margin-top:1.6rem;max-width:56rem">
-        <li><b>Устойчивый внутренний центр</b><span>Истинное счастье, свобода и самодостаточность.</span></li>
-        <li><b>Открытие чистого разума</b><span>Развитие сознания и пробуждение внутреннего источника жизни, благодати и духа.</span></li>
-        <li><b>Путь Творца и сотворчество</b><span>Раскрытие потенциала для сотворчества в рамках всеобщего замысла природы и единого сознания, творческая сила для осознанного созидания собственной реальности.</span></li>
-        <li><b>Роль автора своей жизни</b><span>Индивидуальная программа на основе самоанализа, самопознания и саморазвития, позволяющая освоить мудрость и практики всех времён без чтения множества книг: проникать в суть любого смысла, опираясь на собственную осознанность, и стать единственным автором своей книги жизни.</span></li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<hr class="rule">
-
-<!-- ═══ МОТОР ═══ -->
+<!-- IV -->
 <section class="sec" id="motor">
-  <div class="wrap">
-    <div class="kicker r"><span class="num">Мотор</span><span class="eyebrow sub">Ресурс и полигон</span></div>
-    <h2 class="r">Cimo</h2>
-    <p class="lead sub prose r" style="margin-top:1.8rem">Действующий бизнес — источник ресурса для первых двух опор и полигон, где технология проверяется на реальных оборотах, а не на слайдах.</p>
-
-    <div class="panel r">
-      <h3>Cimo-Platform</h3>
-      <p class="canon" style="margin-top:1.4rem">Внутренняя операционная система Cimo Group под управлением искусственного интеллекта, созданная для полной автоматизации операционной деятельности компании. Миссия платформы — исключить человека из ручного управления бизнес-процессами и перевести его в зону контроля. Платформа представляет собой полностью автономную AI-экосистему Media Buying полного цикла — от создания креативов до залива трафика (A-DSP). С помощью AI-агентов самостоятельно создаёт креативы, приложения и рекламные кампании, заливает и ведёт трафик, оптимизируя его по фактическому ROI, и сводит данные всех рабочих сервисов и кабинетов рекламодателей в единое сквозное хранилище. Отображая финансовые потоки в реальном времени — расходы, возвраты и точки потери прибыли, — платформа вытесняет ручной стек из Excel и Google-таблиц. Это позволяет принимать решения по трафику мгновенно и на точных цифрах, в момент, когда они актуальны, минуя ручной разбор отчётов.</p>
-      <div class="btnrow">
-        <a class="btn" href="https://platform.cimo-ai.site" rel="noopener">Cimo-Platform <em>по логину</em></a>
-      </div>
+  <div class="wrap sec-grid">
+    <div class="tag">
+      <span class="n">04</span>
+      <h2>Мотор</h2>
+      <p class="sub">Ресурс и полигон · Cimo</p>
     </div>
+    <div class="body">
+      <p class="lede">Действующий бизнес — источник ресурса для первых двух опор и полигон, где технология проверяется на реальных оборотах, а не на слайдах.</p>
 
-    <div class="two" style="margin-top:clamp(2.6rem,5vw,3.6rem)">
-      <div class="r">
-        <h3>Что под этим</h3>
-        <p class="sub" style="margin-top:1.2rem">Cimo Group — Mobile AdTech и iGaming. Данные лежали в пяти разных местах: рекламные кабинеты, трекер, партнёрская сеть, таблицы, чаты отделов; общую картину можно было собрать только руками и только к вечеру. Платформа сводит всё в одну ссылку: сколько потрачено, сколько вернулось, где течёт, что делать в первую очередь.</p>
+      <div class="card">
+        <h3>Cimo-Platform</h3>
+        <p class="txt">Внутренняя операционная система Cimo Group под управлением искусственного интеллекта, созданная для полной автоматизации операционной деятельности компании. Миссия платформы — исключить человека из ручного управления бизнес-процессами и перевести его в зону контроля. Платформа представляет собой полностью автономную AI-экосистему Media Buying полного цикла — от создания креативов до залива трафика (A-DSP). С помощью AI-агентов самостоятельно создаёт креативы, приложения и рекламные кампании, заливает и ведёт трафик, оптимизируя его по фактическому ROI, и сводит данные всех рабочих сервисов и кабинетов рекламодателей в единое сквозное хранилище. Отображая финансовые потоки в реальном времени — расходы, возвраты и точки потери прибыли, — платформа вытесняет ручной стек из Excel и Google-таблиц. Это позволяет принимать решения по трафику мгновенно и на точных цифрах, в момент, когда они актуальны, минуя ручной разбор отчётов.</p>
       </div>
-      <div class="r">
-        <div class="stats" style="margin-top:0">
-          <div><span class="v">~30</span><span class="l">человек в команде</span></div>
-          <div><span class="v">$2M+</span><span class="l">оборот в месяц</span></div>
-          <div><span class="v">1</span><span class="l">страница вместо пяти рабочих сервисов и кабинетов</span></div>
+
+      <div class="grid2">
+        <div>
+          <h3>Что под этим</h3>
+          <p class="txt">Cimo Group — Mobile AdTech и iGaming. Данные лежали в пяти разных местах: рекламные кабинеты, трекер, партнёрская сеть, таблицы, чаты отделов; общую картину можно было собрать только руками и только к вечеру. Платформа сводит всё в одну ссылку: сколько потрачено, сколько вернулось, где течёт, что делать в первую очередь.</p>
+        </div>
+        <div class="grid3" style="align-content:start">
+          <div class="num"><b>~30</b><span>человек в команде</span></div>
+          <div class="num"><b>$2M+</b><span>оборот в месяц</span></div>
+          <div class="num"><b>1</b><span>страница вместо пяти сервисов</span></div>
         </div>
       </div>
+
+      <div class="links"><a href="https://platform.cimo-ai.site" rel="noopener">Cimo-Platform</a></div>
     </div>
   </div>
 </section>
 
-<!-- ═══ ФИНАЛ ═══ -->
-<section class="sec final">
-  <div class="wrap">
-    <div class="quiet r">
-      <div class="eyebrow sub" style="margin-bottom:1.6rem">Как это работает вместе</div>
-      <h2>Технологический мост снимает операционку и генерирует доход.</h2>
-      <p class="sub">Освобождаются время и деньги — они уходят во внешнюю трансформацию: физическую среду, которая обнуляет операционные расходы на жизнь и превращает жильё из пассива в актив. Освободившийся ресурс — время, внимание, спокойствие — идёт во внутреннюю трансформацию, ради которой всё и строится. Cimo даёт горючее на этом пути и служит доказательством, что технология работает.</p>
-      <p class="sub">Замысел не заканчивается на владельце: цифровой двойник накапливает мышление, принципы, решения и стиль — и несёт их дальше как механизм преемственности.</p>
+<!-- ФИНАЛ -->
+<section class="end">
+  <div class="wrap sec-grid">
+    <div class="tag"><span class="n">→</span><h2>Как это работает вместе</h2></div>
+    <div class="body">
+      <p class="lede">Технологический мост снимает операционку и генерирует доход.</p>
+      <p class="txt">Освобождаются время и деньги — они уходят во внешнюю трансформацию: физическую среду, которая обнуляет операционные расходы на жизнь и превращает жильё из пассива в актив. Освободившийся ресурс — время, внимание, спокойствие — идёт во внутреннюю трансформацию, ради которой всё и строится. Cimo даёт горючее на этом пути и служит доказательством, что технология работает.</p>
+      <p class="txt">Замысел не заканчивается на владельце: цифровой двойник накапливает мышление, принципы, решения и стиль — и несёт их дальше как механизм преемственности.</p>
     </div>
   </div>
 </section>
 
-<footer>
-  <div class="wrap">
-    <div class="flinks">
-      <a href="/alive/">Alive — манифест</a>
-      <a href="/biom/">Biom</a>
-      <a href="/alive-builder/">Конструктор Alive</a>
-      <a href="/alive-audit/">AI-аудит</a>
-      <a href="https://platform.cimo-ai.site" rel="noopener">Cimo-Platform</a>
-    </div>
-    <div class="fnote">Аутентичная автаркия · 2026</div>
-  </div>
+<footer class="wrap">
+  <nav class="nav">
+    <a href="../alive/">Alive</a>
+    <a href="../biom/">Biom</a>
+    <a href="../alive-builder/">Конструктор</a>
+    <a href="../alive-audit/">AI-аудит</a>
+    <a href="https://platform.cimo-ai.site" rel="noopener">Cimo-Platform</a>
+  </nav>
+  <div class="c">Аутентичная автаркия · 2026</div>
 </footer>
 
-</div><!-- /paper -->
-
-<script>
-(function(){
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ——— появление блоков ——— */
-  var io = new IntersectionObserver(function(es){
-    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  },{rootMargin:'0px 0px -12% 0px',threshold:.12});
-  document.querySelectorAll('.r').forEach(function(el){ io.observe(el); });
-
-  /* ——— небо: непрерывный рассвет по скроллу ——— */
-  var c = document.getElementById('sky'), ctx = c.getContext('2d'), dpr = Math.min(devicePixelRatio||1, 2);
-  var W=0, H=0, parts=[], p=0, target=0;
-
-  /* три состояния неба: ночь → рассвет → день */
-  var SKY = [
-    [[4,14,22],[10,30,34]],
-    [[26,44,62],[176,110,58]],
-    [[228,214,182],[242,236,224]]
-  ];
-  function mix(a,b,t){ return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t]; }
-  function stops(t){
-    var i = t<.5 ? 0 : 1, k = t<.5 ? t/.5 : (t-.5)/.5;
-    return [mix(SKY[i][0],SKY[i+1][0],k), mix(SKY[i][1],SKY[i+1][1],k)];
-  }
-  function rgb(a){ return 'rgb('+(a[0]|0)+','+(a[1]|0)+','+(a[2]|0)+')'; }
-
-  function resize(){
-    W = c.width = innerWidth*dpr; H = c.height = innerHeight*dpr;
-    c.style.width = innerWidth+'px'; c.style.height = innerHeight+'px';
-    var n = innerWidth < 700 ? 90 : 190;
-    parts = [];
-    for(var i=0;i<n;i++){
-      parts.push({ x:Math.random(), y:Math.random(), s:Math.random()*1.6+.4,
-                   d:Math.random()*.5+.25, ph:Math.random()*Math.PI*2 });
-    }
-  }
-
-  function draw(time){
-    var g = ctx.createLinearGradient(0,0,0,H), s = stops(p);
-    g.addColorStop(0, rgb(s[0])); g.addColorStop(1, rgb(s[1]));
-    ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
-
-    /* тёплое зарево у горизонта — разгорается к середине пути */
-    var glow = Math.sin(Math.min(p,1)*Math.PI);
-    if(glow > .01){
-      var r = ctx.createRadialGradient(W*.5,H*.92,0,W*.5,H*.92,H*1.05);
-      r.addColorStop(0,'rgba(226,160,84,'+(glow*.55)+')');
-      r.addColorStop(1,'rgba(226,160,84,0)');
-      ctx.fillStyle = r; ctx.fillRect(0,0,W,H);
-    }
-
-    /* частицы: хаос → мост (тугая линия) → растворение в свете */
-    var band = p<.34 ? 0 : (p<.72 ? (p-.34)/.38 : 1);
-    var fade = p<.72 ? 1 : Math.max(0, 1-(p-.72)/.28);
-    var t = reduce ? 0 : time*.00006;
-    for(var i=0;i<parts.length;i++){
-      var q = parts[i];
-      var fx = (q.x + t*q.d) % 1;
-      var fy = q.y + Math.sin(t*6 + q.ph)*.012;
-      var by = .58 + Math.sin(fx*Math.PI*2 + q.ph)*.012;
-      var y  = fy + (by-fy)*Math.min(band,1);
-      var a  = (.18 + Math.sin(time*.001 + q.ph)*.08) * fade * (1 - p*.25);
-      if(a <= 0) continue;
-      ctx.fillStyle = 'rgba('+(p<.5?'214,232,232':'255,236,205')+','+a.toFixed(3)+')';
-      ctx.beginPath();
-      ctx.arc(fx*W, y*H, q.s*dpr*(1+band*.5), 0, 6.2832);
-      ctx.fill();
-    }
-  }
-
-  function progress(){
-    var max = document.body.scrollHeight - innerHeight;
-    return max > 0 ? Math.min(1, Math.max(0, scrollY/max)) : 0;
-  }
-
-  var raf;
-  function loop(time){
-    target = progress();
-    p += (target - p) * (reduce ? 1 : .07);
-    draw(time||0);
-    raf = requestAnimationFrame(loop);
-  }
-
-  addEventListener('resize', resize, {passive:true});
-  resize(); loop(0);
-})();
-</script>
 </body>
 </html>
