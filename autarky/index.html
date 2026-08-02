@@ -66,6 +66,16 @@ details.frame .hint{grid-column:1}
 details.frame .ttl{font-weight:500;color:var(--ink-2)}
 details.frame[open] .ttl{color:var(--ink)}
 
+/* статус опоры */
+.st{display:inline-block;vertical-align:middle;margin-left:.55rem;font-family:var(--mono);
+  font-size:9.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  padding:.22rem .5rem;border-radius:100px;border:1px solid var(--line-2);color:var(--ink-3);
+  position:relative;top:-1px}
+.st.on{color:var(--acc);border-color:rgba(0,209,143,.45);background:rgba(0,209,143,.07)}
+.legend{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-3);
+  margin:-1.4rem 0 1.7rem;line-height:1.6}
+.legend b{color:var(--acc);font-weight:500}
+
 /* метка стоит ровно посередине промежутка между блоками */
 .group{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
   color:var(--ink-3);margin:1.2rem 0;display:flex;align-items:center;gap:.9rem;line-height:1}
@@ -186,6 +196,8 @@ footer a:hover{color:var(--acc)}
   <p class="mission">Ключевая миссия современной мировой системы заключается в том, чтобы освободить человека от внешнего контура рутинных и операционных процессов, обеспечить ему самодостаточную материальную устойчивость и тем самым высвободить внутренний ресурс для реализации фундаментальных жизненных ценностей, сохраняя и продолжая созидательный замысел во времени.</p>
 
 
+  <p class="legend"><b>работает</b> — действует сегодня, есть подтверждение · <span>в разработке</span> — спроектировано, но не построено</p>
+
   <!-- 00 -->
   <details class="frame">
     <summary>
@@ -225,7 +237,7 @@ footer a:hover{color:var(--acc)}
   <details class="pillar">
     <summary>
       <span class="no">01</span>
-      <span class="ttl">Технологический мост</span>
+      <span class="ttl">Технологический мост<span class="st on">работает</span></span>
       <span class="sign">+</span>
       <span class="hint">Цифровой контур · воплощение — Alive</span>
     </summary>
@@ -264,7 +276,7 @@ footer a:hover{color:var(--acc)}
   <details class="pillar">
     <summary>
       <span class="no">02</span>
-      <span class="ttl">Трансформация внешняя</span>
+      <span class="ttl">Трансформация внешняя<span class="st ">в разработке</span></span>
       <span class="sign">+</span>
       <span class="hint">Физический контур · воплощение — Biom</span>
     </summary>
@@ -336,7 +348,7 @@ footer a:hover{color:var(--acc)}
   <details class="pillar">
     <summary>
       <span class="no">03</span>
-      <span class="ttl">Трансформация внутренняя</span>
+      <span class="ttl">Трансформация внутренняя<span class="st ">в разработке</span></span>
       <span class="sign">+</span>
       <span class="hint">Внутренний контур · программа практик и знаний</span>
     </summary>
@@ -374,7 +386,7 @@ footer a:hover{color:var(--acc)}
   <!-- 04 -->
   <details class="frame">
     <summary>
-      <span class="ttl">Тестовый полигон</span>
+      <span class="ttl">Тестовый полигон<span class="st on">работает</span></span>
       <span class="sign">+</span>
       <span class="hint">Ресурс для первых двух опор и полигон технологии — Cimo</span>
     </summary>
@@ -405,12 +417,13 @@ footer a:hover{color:var(--acc)}
       </div>
       <div class="sub">
         <h3>Результат пилота</h3>
+        <p class="txt">Это не показатель компании, а пример работы отдельных агентов: три кампании одного рекламного кабинета. Проверка механизма, а не масштаба — цифры показывают, что цепочка «креатив → запуск → ведение → прибыль» замыкается без человека.</p>
         <div class="nums">
           <div><b>+106%</b><span>ROI за месяц</span></div>
           <div><b>+$765</b><span>прибыль при расходе $720</span></div>
           <div><b>+131%</b><span>ROI лучшей кампании, +$842 прибыли</span></div>
         </div>
-        <p class="cap">Июль 2026 · отчёт агента по кампаниям, сверка рекламной и партнёрской сети.</p>
+        <p class="cap">Июль 2026 · отчёт агента по кампаниям, сверка рекламной и партнёрской сети. Лучшая кампания дала +$842; две тестовые, остановленные без дохода, забрали $76 — отсюда итог +$765.</p>
       </div>
       <div class="sub">
         <h3>Как это выглядит в работе</h3>
